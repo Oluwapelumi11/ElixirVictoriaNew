@@ -8,6 +8,7 @@ const { Pool } = require('pg')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
+const TelegramBot = require('node-telegram-bot-api')
 require('dotenv').config()
 
 const app = express()
@@ -19,6 +20,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 // Paystack Configuration
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY
 const PAYSTACK_PUBLIC_KEY = process.env.PAYSTACK_PUBLIC_KEY
+
+// Telegram Bot Configuration
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 
 // Database connection
 const pool = new Pool({
@@ -363,6 +368,93 @@ const sendAdminEmail = async (data) => {
   }
 
   return transporter.sendMail(mailOptions)
+}
+
+// ===== TELEGRAM BOT FUNCTIONS =====
+
+// Initialize Telegram Bot
+let telegramBot = null
+if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+  telegramBot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false })
+}
+
+// Send Telegram notification
+const sendTelegramNotification = async (message) => {
+  if (!telegramBot || !TELEGRAM_CHAT_ID) {
+    console.log('Telegram bot not configured, skipping notification')
+    return
+  }
+
+  try {
+    await telegramBot.sendMessage(TELEGRAM_CHAT_ID, message, { parse_mode: 'HTML' })
+    console.log('Telegram notification sent successfully')
+  } catch (error) {
+    console.error('Error sending Telegram notification:', error)
+  }
+}
+
+// Send order notification to Telegram
+const sendOrderNotification = async (order, items) => {
+  if (!telegramBot || !TELEGRAM_CHAT_ID) return
+
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
+  const orderTime = new Date(order.created_at).toLocaleString('en-NG', {
+    timeZone: 'Africa/Lagos',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+
+  const message = `
+🛍️ <b>NEW ORDER RECEIVED!</b>
+
+📦 <b>Order:</b> ${order.order_number}
+👤 <b>Customer:</b> ${order.customer_name}
+📧 <b>Email:</b> ${order.customer_email}
+📱 <b>Phone:</b> ${order.customer_phone || 'Not provided'}
+💰 <b>Total:</b> ₦${order.total.toLocaleString()}
+📊 <b>Items:</b> ${totalItems} item${totalItems !== 1 ? 's' : ''}
+⏰ <b>Time:</b> ${orderTime}
+
+📋 <b>Items:</b>
+${items.map(item => `• ${item.product_name} (Qty: ${item.quantity})`).join('\n')}
+
+${order.notes ? `📝 <b>Notes:</b> ${order.notes}` : ''}
+
+🔗 <b>Status:</b> ${order.status.toUpperCase()}
+  `.trim()
+
+  await sendTelegramNotification(message)
+}
+
+// Send contact form notification to Telegram
+const sendContactNotification = async (submission) => {
+  if (!telegramBot || !TELEGRAM_CHAT_ID) return
+
+  const message = `
+📞 <b>NEW CONTACT FORM SUBMISSION!</b>
+
+👤 <b>Name:</b> ${submission.name}
+📧 <b>Email:</b> ${submission.email}
+📱 <b>Phone:</b> ${submission.phone || 'Not provided'}
+📋 <b>Subject:</b> ${submission.subject}
+
+💬 <b>Message:</b>
+${submission.message}
+
+⏰ <b>Time:</b> ${new Date().toLocaleString('en-NG', {
+    timeZone: 'Africa/Lagos',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })}
+  `.trim()
+
+  await sendTelegramNotification(message)
 }
 
 // ===== AUTHENTICATION ENDPOINTS =====
@@ -821,6 +913,9 @@ app.post('/api/orders', [
       [order.id, 'pending', 'Order created successfully']
     )
 
+    // Send Telegram notification
+    await sendOrderNotification(order, items)
+
     res.status(201).json({
       message: 'Order created successfully',
       order: {
@@ -1115,6 +1210,9 @@ app.post('/api/contact', [
 
     // Send notification email to admin
     await sendAdminEmail({ name, email, phone, subject, message })
+
+    // Send Telegram notification
+    await sendContactNotification({ name, email, phone, subject, message })
 
     res.status(200).json({
       message: 'Message sent successfully',

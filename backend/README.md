@@ -44,6 +44,10 @@ DATABASE_URL=postgresql://username:password@localhost:5432/elixir_victoria
 # Paystack Configuration
 PAYSTACK_SECRET_KEY=sk_test_your_paystack_secret_key
 PAYSTACK_PUBLIC_KEY=pk_test_your_paystack_public_key
+
+# Telegram Bot Configuration (Optional)
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
 ```
 
 ### 3. Database Setup

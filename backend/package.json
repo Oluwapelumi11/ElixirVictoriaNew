@@ -22,7 +22,8 @@
     "express-validator": "^7.0.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "node-telegram-bot-api": "^0.64.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
