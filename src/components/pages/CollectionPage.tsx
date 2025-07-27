@@ -220,12 +220,12 @@ export function CollectionPage() {
 
       {/* Products Grid */}
       <section className="py-24 bg-black">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center"
+            className="flex flex-wrap justify-center gap-8 w-full"
           >
             {filteredProducts.map((product, index) => (
               <ProductCard key={product.id} product={product} index={index} />
@@ -351,21 +351,19 @@ function ProductCard({ product, index }: ProductCardProps) {
   return (
     <motion.div
       variants={itemVariants}
-      className="group relative bg-gray-800 border border-gray-700 rounded-sm overflow-hidden hover:border-yellow-500/50 transition-all duration-300"
+      className="group relative flex-shrink-0"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ 
+        minWidth: '300px',
+        maxWidth: '400px',
+        flex: '1 1 auto'
+      }}
     >
-      {/* Product Image */}
-      <div className="relative aspect-square bg-gradient-to-br from-yellow-500/20 to-yellow-200/10 overflow-hidden">
-        {/* Product Image */}
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className={`object-cover transition-transform duration-500 ${isZoomed ? 'scale-125' : 'scale-100'}`}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        
+      {/* Product Card */}
+      <div className="bg-gray-800 border border-gray-700 rounded-sm overflow-hidden hover:border-yellow-500/50 transition-all duration-300 h-full flex flex-col">
         {/* Badges */}
-        <div className="absolute top-4 left-4 flex space-x-2">
+        <div className="absolute top-4 left-4 z-10 flex space-x-2">
           {product.isNew && (
             <span className="bg-yellow-500 text-black text-xs font-medium px-2 py-1">NEW</span>
           )}
@@ -374,47 +372,64 @@ function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
 
-        {/* Quick Actions */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-          <Link href={`/product/${product.id}`}>
+        {/* Product Image */}
+        <div className="relative aspect-square overflow-hidden">
+          <div className="w-full h-full bg-gray-800 relative">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className={`object-cover transition-transform duration-500 ${isZoomed ? 'scale-125' : 'scale-100'}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+
+          {/* Hover Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 bg-black/60 flex items-center justify-center space-x-4"
+          >
+            <Link href={`/product/${product.id}`}>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+                title="View Details"
+              >
+                <Eye size={20} />
+              </motion.button>
+            </Link>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
-              title="View Details"
+              onClick={handleWishlistToggle}
+              className={`p-3 rounded-full transition-colors duration-300 ${
+                isInWishlistItem 
+                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-yellow-500 text-black hover:bg-yellow-400'
+              }`}
+              title={isInWishlistItem ? 'Remove from wishlist' : 'Add to wishlist'}
             >
-              <Eye size={20} />
+              <Heart size={20} className={isInWishlistItem ? 'fill-current' : ''} />
             </motion.button>
-          </Link>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleWishlistToggle}
-            className={`p-3 rounded-full transition-colors duration-300 ${
-              isInWishlistItem 
-                ? 'bg-red-500 text-white hover:bg-red-600' 
-                : 'bg-yellow-500 text-black hover:bg-yellow-400'
-            }`}
-            title={isInWishlistItem ? 'Remove from wishlist' : 'Add to wishlist'}
-          >
-            <Heart size={20} className={isInWishlistItem ? 'fill-current' : ''} />
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleAddToCart}
-            className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
-            title="Add to cart"
-          >
-            <ShoppingBag size={20} />
-          </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleAddToCart}
+              className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+              title="Add to cart"
+            >
+              <ShoppingBag size={20} />
+            </motion.button>
+          </motion.div>
         </div>
-      </div>
 
-      {/* Product Info */}
-      <div className="p-6 space-y-4">
-        <div>
-          <div className="flex items-center justify-between mb-2">
+        {/* Product Info */}
+        <div className="p-6 space-y-4 flex-1 flex flex-col">
+          {/* Category and Rating */}
+          <div className="flex items-center justify-between">
             <span className="text-yellow-500 text-sm font-medium">{product.category}</span>
             <div className="flex items-center space-x-1">
               <Star size={14} className="text-yellow-500 fill-current" />
@@ -422,42 +437,46 @@ function ProductCard({ product, index }: ProductCardProps) {
               <span className="text-xs text-gray-500">({product.reviews})</span>
             </div>
           </div>
-          <h3 className="text-xl font-serif font-semibold text-white mb-2 group-hover:text-yellow-500 transition-colors duration-300">
+
+          {/* Product Name */}
+          <h3 className="text-xl font-serif font-semibold text-white group-hover:text-yellow-500 transition-colors duration-300">
             {product.name}
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed mb-4">
+
+          {/* Description */}
+          <p className="text-gray-400 text-sm leading-relaxed flex-1">
             {product.description}
           </p>
-        </div>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2">
-          {product.tags.map((tag, tagIndex) => (
-            <span
-              key={tagIndex}
-              className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Price and CTA */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
-            {product.originalPrice > product.price && (
-              <span className="text-sm text-gray-400 line-through">₦{product.originalPrice.toLocaleString()}</span>
-            )}
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {product.tags.map((tag, tagIndex) => (
+              <span
+                key={tagIndex}
+                className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleAddToCart}
-            className="bg-yellow-500 text-black px-4 py-2 text-sm font-medium hover:bg-yellow-400 transition-colors duration-300"
-          >
-            Add to Cart
-          </motion.button>
+
+          {/* Price and CTA */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
+              {product.originalPrice > product.price && (
+                <span className="text-sm text-gray-400 line-through">₦{product.originalPrice.toLocaleString()}</span>
+              )}
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleAddToCart}
+              className="bg-yellow-500 text-black px-4 py-2 text-sm font-medium hover:bg-yellow-400 transition-colors duration-300"
+            >
+              Add to Cart
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>
