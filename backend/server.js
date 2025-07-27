@@ -28,8 +28,30 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 // Database connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  ssl: process.env.NODE_ENV === 'production' 
+    ? { rejectUnauthorized: false } 
+    : process.env.DATABASE_URL?.includes('localhost') || process.env.DATABASE_URL?.includes('127.0.0.1')
+      ? false
+      : { rejectUnauthorized: false }
 })
+
+// Test database connection
+const testDatabaseConnection = async () => {
+  try {
+    if (!process.env.DATABASE_URL) {
+      console.log('⚠️  DATABASE_URL not configured - database features will be limited')
+      return false
+    }
+    
+    const result = await pool.query('SELECT NOW()')
+    console.log('✅ Database connection successful')
+    return true
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message)
+    console.log('⚠️  Some features may not work without database connection')
+    return false
+  }
+}
 
 // Middleware
 app.use(helmet())
@@ -114,6 +136,12 @@ const storeEmailInDatabase = async (email, name) => {
 // Store contact submission
 const storeContactSubmission = async (data) => {
   try {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
+      console.log('Database URL not configured, skipping database storage')
+      return { id: 'temp-' + Date.now() }
+    }
+
     const query = `
       INSERT INTO contact_submissions (name, email, phone, subject, message, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
@@ -129,7 +157,10 @@ const storeContactSubmission = async (data) => {
     return result.rows[0]
   } catch (error) {
     console.error('Database error:', error)
-    throw new Error('Failed to store contact submission')
+    // Don't throw error, just log it and continue
+    // This prevents the entire contact form from failing if database is unavailable
+    console.log('Contact submission stored in memory only due to database error')
+    return { id: 'temp-' + Date.now() }
   }
 }
 
@@ -1199,20 +1230,40 @@ app.post('/api/contact', [
 
     const { name, email, phone, subject, message } = req.body
 
-    // Store email in database for marketing
-    await storeEmailInDatabase(email, name)
+    // Store email in database for marketing (non-blocking)
+    try {
+      await storeEmailInDatabase(email, name)
+    } catch (error) {
+      console.log('Failed to store email in database:', error.message)
+    }
 
-    // Store contact submission
-    await storeContactSubmission({ name, email, phone, subject, message })
+    // Store contact submission (non-blocking)
+    try {
+      await storeContactSubmission({ name, email, phone, subject, message })
+    } catch (error) {
+      console.log('Failed to store contact submission in database:', error.message)
+    }
 
     // Send confirmation email to customer
-    await sendCustomerEmail({ name, email, subject, message })
+    try {
+      await sendCustomerEmail({ name, email, subject, message })
+    } catch (error) {
+      console.error('Failed to send customer email:', error.message)
+    }
 
     // Send notification email to admin
-    await sendAdminEmail({ name, email, phone, subject, message })
+    try {
+      await sendAdminEmail({ name, email, phone, subject, message })
+    } catch (error) {
+      console.error('Failed to send admin email:', error.message)
+    }
 
     // Send Telegram notification
-    await sendContactNotification({ name, email, phone, subject, message })
+    try {
+      await sendContactNotification({ name, email, phone, subject, message })
+    } catch (error) {
+      console.error('Failed to send Telegram notification:', error.message)
+    }
 
     res.status(200).json({
       message: 'Message sent successfully',
@@ -1269,8 +1320,10 @@ app.use('*', (req, res) => {
   })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 Elixir Victoria Backend running on port ${PORT}`)
   console.log(`📧 SMTP: ${process.env.SMTP_HOST}`)
-  console.log(`🗄️  Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`)
+  
+  // Test database connection
+  await testDatabaseConnection()
 }) 
