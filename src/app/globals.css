@@ -1,82 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Luxury Color Palette */
-  --luxury-black: #0a0a0a;
-  --charcoal: #1a1a1a;
-  --warm-black: #111111;
-  
-  /* Gold Accent */
-  --champagne-gold: #d4af37;
-  --soft-gold: #f4e4bc;
-  --gold-shimmer: #faf0e6;
-  
-  /* Neutrals */
-  --pearl-white: #fefefe;
-  --warm-beige: #f5f3f0;
-  --subtle-gray: #8a8a8a;
-  --divider-gray: #e5e5e5;
-  
-  /* Transparency Layers */
-  --glass-overlay: rgba(255, 255, 255, 0.05);
-  --dark-overlay: rgba(0, 0, 0, 0.6);
-  
-  /* Typography */
-  --font-playfair: 'Playfair Display', serif;
-  --font-inter: 'Inter', sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    --font-playfair: 'Playfair Display', serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-inter);
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  /* Luxury Typography System */
+  .font-serif {
+    font-family: var(--font-playfair);
+  }
+
+  .font-sans {
+    font-family: var(--font-inter);
+  }
+
+  /* Heading Styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  /* Luxury Text Gradients */
+  .text-gradient-luxury {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-pearl {
+    background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 50%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  font-family: var(--font-inter);
-  background-color: var(--luxury-black);
-  color: var(--pearl-white);
-  scroll-behavior: smooth;
-}
-
-/* Luxury Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--charcoal);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--champagne-gold);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--soft-gold);
-}
-
-/* Luxury Selection */
-::selection {
-  background: var(--champagne-gold);
-  color: var(--luxury-black);
-}
-
-/* Luxury Focus States */
-*:focus-visible {
-  outline: 2px solid var(--champagne-gold);
-  outline-offset: 2px;
-}
-
-/* Luxury Button Styles */
 @layer components {
   .btn-luxury {
     @apply bg-black text-white border border-yellow-500 px-8 py-4 
@@ -123,110 +96,79 @@ body {
   
   /* Luxury Input Styles */
   .input-luxury {
-    @apply bg-gray-800 border border-gray-600 text-white px-4 py-3
-           font-medium transition-all duration-300
+    @apply bg-gray-800 border border-gray-700 text-white placeholder-gray-400
            focus:border-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500
-           placeholder:text-gray-400;
+           transition-all duration-300;
   }
-  
-  /* Luxury Typography */
-  .text-hero {
-    @apply font-serif text-6xl md:text-8xl lg:text-9xl font-bold;
+
+  /* Luxury Typography Classes */
+  .text-heading-xl {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-medium leading-tight;
   }
-  
-  .text-h1 {
-    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-semibold;
+
+  .text-heading-lg {
+    @apply font-serif text-3xl md:text-4xl font-medium leading-tight;
   }
-  
-  .text-h2 {
-    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-medium;
+
+  .text-heading-md {
+    @apply font-serif text-2xl md:text-3xl font-medium leading-tight;
   }
-  
-  .text-body {
-    @apply font-sans text-lg md:text-xl font-normal;
+
+  .text-heading-sm {
+    @apply font-serif text-xl md:text-2xl font-medium leading-tight;
   }
-  
+
+  .text-body-lg {
+    @apply font-sans text-lg leading-relaxed;
+  }
+
+  .text-body-md {
+    @apply font-sans text-base leading-relaxed;
+  }
+
+  .text-body-sm {
+    @apply font-sans text-sm leading-relaxed;
+  }
+
   .text-caption {
-    @apply font-sans text-sm md:text-base font-normal;
+    @apply font-sans text-xs leading-relaxed;
   }
-  
+}
+
+@layer utilities {
+  /* Luxury Spacing */
+  .space-luxury {
+    @apply space-y-8 md:space-y-12 lg:space-y-16;
+  }
+
   /* Luxury Animations */
-  .animate-stagger {
-    animation-delay: calc(var(--stagger-index, 0) * 0.1s);
+  .animate-luxury-fade {
+    animation: luxury-fade 0.8s ease-out;
   }
-  
-  /* Luxury Glass Effect */
-  .glass-effect {
-    @apply bg-white/5 backdrop-blur-sm border border-white/10;
-  }
-  
-  /* Luxury Gradient */
-  .gradient-luxury {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  }
-  
-  .gradient-gold {
-    background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%);
-  }
-  
-  /* Luxury Hover Effects */
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-2;
-  }
-  
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
-  }
-  
-  /* Luxury Loading States */
-  .skeleton {
-    @apply bg-charcoal animate-pulse rounded;
-  }
-  
-  .shimmer {
-    @apply relative overflow-hidden;
-  }
-  
-  .shimmer::after {
-    content: '';
-    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-yellow-500 to-transparent;
-    animation: shimmer 2s infinite;
-  }
-}
 
-/* Luxury Responsive Design */
-@media (max-width: 768px) {
-  .text-hero {
-    @apply text-2xl;
+  .animate-luxury-slide {
+    animation: luxury-slide 0.6s ease-out;
   }
-  
-  .text-h1 {
-    @apply text-xl;
-  }
-  
-  .text-h2 {
-    @apply text-lg;
-  }
-  
-  .text-body {
-    @apply text-sm;
-  }
-}
 
-/* Luxury Print Styles */
-@media print {
-  .no-print {
-    display: none !important;
+  @keyframes luxury-fade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-}
 
-/* Luxury Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  @keyframes luxury-slide {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 } 

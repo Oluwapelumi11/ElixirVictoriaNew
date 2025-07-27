@@ -1,165 +1,182 @@
 'use client'
 
-import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Mail, Instagram, Facebook, Twitter } from 'lucide-react'
+import { useInView } from 'react-intersection-observer'
+import Link from 'next/link'
 import { Logo } from '@/components/ui/Logo'
+import { Instagram, Phone, Mail, MessageCircle } from 'lucide-react'
 
 export function Footer() {
-  const footerLinks = {
-            company: [
-          { name: 'About Us', href: '/about' },
-          { name: 'Our Story', href: '/brand-story' },
-        ],
-    support: [
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Shipping & Returns', href: '/shipping' },
-      { name: 'Size Guide', href: '/size-guide' },
-      { name: 'FAQ', href: '/faq' },
-    ],
-    legal: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
-    ],
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  })
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
   }
 
-  const socialLinks = [
-    { name: 'Instagram', href: '#', icon: Instagram },
-    { name: 'Facebook', href: '#', icon: Facebook },
-    { name: 'Twitter', href: '#', icon: Twitter },
-  ]
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: 'easeOut',
+      },
+    },
+  }
 
   return (
-    <footer className="bg-gray-800 border-t border-gray-600">
+    <footer className="bg-black border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
+        >
           {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              viewport={{ once: true }}
-            >
-              <div className="mb-4">
-                <Logo size="lg" />
+          <motion.div variants={itemVariants} className="lg:col-span-2">
+            <div className="mb-6">
+              <Logo />
+            </div>
+            <p className="text-gray-400 text-body-md mb-8 max-w-md">
+              Discover the finest luxury fragrances and body care products, crafted with rare ingredients and unparalleled artistry. Each piece tells a story of sophistication and timeless elegance.
+            </p>
+            
+            {/* Contact Information */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <Instagram size={20} className="text-yellow-500" />
+                <a 
+                  href="https://instagram.com/elixirvictoria" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-yellow-500 transition-colors duration-300"
+                >
+                  @elixirvictoria
+                </a>
               </div>
-                                        <p className="text-lg text-gray-400 mb-6 leading-relaxed">
-                            Where luxury meets wellness. Crafting the world's most exclusive beauty and wellness products with unparalleled artistry and the rarest ingredients from around the globe.
-                          </p>
               
-              {/* Newsletter Signup */}
-              <div className="mb-6">
-                                  <h4 className="text-sm font-medium text-white mb-3">Stay Connected</h4>
-                <div className="flex">
-                                      <input
-                      type="email"
-                      placeholder="Enter your email"
-                      className="flex-1 bg-black border border-gray-600 text-white px-4 py-3 text-sm focus:border-yellow-500 focus:outline-none transition-colors duration-300"
-                    />
-                    <button className="bg-yellow-500 text-black px-4 py-3 hover:bg-yellow-400 transition-colors duration-300">
-                    <Mail size={16} />
-                  </button>
-                </div>
+              <div className="flex items-center space-x-3">
+                <Phone size={20} className="text-yellow-500" />
+                <a 
+                  href="tel:+2347048928368"
+                  className="text-gray-400 hover:text-yellow-500 transition-colors duration-300"
+                >
+                  +234 704 892 8368
+                </a>
               </div>
-            </motion.div>
-          </div>
+              
+              <div className="flex items-center space-x-3">
+                <MessageCircle size={20} className="text-yellow-500" />
+                <a 
+                  href="https://wa.me/2347048928368"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-yellow-500 transition-colors duration-300"
+                >
+                  WhatsApp
+                </a>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <Mail size={20} className="text-yellow-500" />
+                <a 
+                  href="mailto:info@elixirvictoria.com"
+                  className="text-gray-400 hover:text-yellow-500 transition-colors duration-300"
+                >
+                  info@elixirvictoria.com
+                </a>
+              </div>
+            </div>
+          </motion.div>
 
-          {/* Company Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            viewport={{ once: true }}
-          >
-            <h4 className="text-sm font-medium text-white mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+          {/* Quick Links */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-heading-sm font-serif text-white mb-6">Quick Links</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link href="/collection" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Collection
+                </Link>
+              </li>
+              <li>
+                <Link href="/brand-story" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Our Story
+                </Link>
+              </li>
+              <li>
+                <Link href="/cart" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Shopping Cart
+                </Link>
+              </li>
+              <li>
+                <Link href="/wishlist" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Wishlist
+                </Link>
+              </li>
             </ul>
           </motion.div>
 
-          {/* Support Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <h4 className="text-sm font-medium text-white mb-4">Support</h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+          {/* Customer Service */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-heading-sm font-serif text-white mb-6">Customer Service</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link href="/contact" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/shipping" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Shipping & Returns
+                </Link>
+              </li>
+              <li>
+                <Link href="/size-guide" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Size Guide
+                </Link>
+              </li>
+              <li>
+                <Link href="/care-instructions" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Care Instructions
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </motion.div>
-
-          {/* Legal Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <h4 className="text-sm font-medium text-white mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
+        </motion.div>
 
         {/* Bottom Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-12 pt-8 border-t border-gray-600"
+          variants={itemVariants}
+          className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            {/* Copyright */}
-            <div className="text-gray-400 text-sm">
-              © 2024 Elixir Victoria. All rights reserved.
-            </div>
-
-            {/* Social Links */}
-            <div className="flex items-center space-x-4">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  className="text-gray-400 hover:text-yellow-500 transition-colors duration-300"
-                  aria-label={social.name}
-                >
-                  <social.icon size={20} />
-                </Link>
-              ))}
-            </div>
+          <p className="text-gray-400 text-body-sm">
+            © 2024 Elixir Victoria. All rights reserved.
+          </p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <Link href="/privacy" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-body-sm">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-body-sm">
+              Terms of Service
+            </Link>
           </div>
         </motion.div>
       </div>

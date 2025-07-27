@@ -91,6 +91,12 @@ export function Header() {
             >
               Our Story
             </Link>
+            <Link
+              href="/contact"
+              className="text-white hover:text-yellow-500 transition-colors duration-300 font-medium"
+            >
+              Contact
+            </Link>
           </nav>
 
           {/* Desktop Actions */}
@@ -266,6 +272,13 @@ export function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Our Story
+                </Link>
+                <Link
+                  href="/contact"
+                  className="block text-white hover:text-yellow-500 transition-colors duration-300 font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contact
                 </Link>
               </nav>
 
