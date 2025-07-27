@@ -2644,6 +2644,10 @@ video {
     margin-top: 2rem;
   }
 
+  .sm\:inline-flex {
+    display: inline-flex;
+  }
+
   .sm\:h-1\.5 {
     height: 0.375rem;
   }
@@ -2722,6 +2726,10 @@ video {
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:flex-none {
+    flex: none;
   }
 
   .sm\:grid-cols-2 {

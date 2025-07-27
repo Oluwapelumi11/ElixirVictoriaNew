@@ -163,19 +163,19 @@ export default function ContactPage() {
 
               <div className="bg-gray-800 border border-gray-700 rounded-sm p-6 sm:p-8">
                 <h2 className="text-xl sm:text-heading-lg font-serif text-white mb-4 sm:mb-6">Quick Support</h2>
-                <div className="space-y-3 sm:space-y-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <a 
                     href="https://wa.me/2347048928368"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-luxury w-full justify-center flex items-center space-x-2 text-sm sm:text-base py-3 sm:py-4"
+                    className="btn-luxury flex-1 sm:flex-none justify-center flex items-center space-x-2 text-sm sm:text-base py-3 sm:py-4 px-6 sm:px-8"
                   >
                     <MessageCircle size={18} className="sm:w-5 sm:h-5" />
                     <span>WhatsApp Support</span>
                   </a>
                   <a 
                     href="mailto:info@elixirvictoria.com"
-                    className="btn-luxury-ghost w-full justify-center text-sm sm:text-base py-3 sm:py-4"
+                    className="btn-luxury-ghost flex-1 sm:flex-none justify-center text-sm sm:text-base py-3 sm:py-4 px-6 sm:px-8"
                   >
                     Send Email
                   </a>
