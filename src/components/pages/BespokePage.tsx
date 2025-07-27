@@ -144,7 +144,7 @@ export function BespokePage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="relative py-24 bg-black">
+      <section className="relative py-16 sm:py-24 bg-black">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             ref={ref}
@@ -153,18 +153,18 @@ export function BespokePage() {
             animate={inView ? 'visible' : 'hidden'}
             className="text-center"
           >
-            <motion.div variants={itemVariants} className="mb-8">
-              <Link href="/" className="inline-flex items-center text-yellow-500 hover:text-yellow-400 transition-colors duration-300 mb-8">
+            <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+              <Link href="/" className="inline-flex items-center text-yellow-500 hover:text-yellow-400 transition-colors duration-300 mb-6 sm:mb-8">
                 <ArrowLeft size={20} className="mr-2" />
                 Back to Home
               </Link>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6">
+            <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-4 sm:mb-6">
               Custom Signature
             </motion.h1>
 
-            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+            <motion.p variants={itemVariants} className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed px-4">
               Create your own unique perfumes and essential oil blends tailored to your budget. We work with your desired flavor profile and budget to craft something truly special. Contact us via WhatsApp for quick consultation or use our contact form for detailed discussions.
             </motion.p>
           </motion.div>
@@ -172,56 +172,56 @@ export function BespokePage() {
       </section>
 
       {/* Services Overview */}
-      <section className="py-24 bg-gray-800">
+      <section className="py-16 sm:py-24 bg-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white mb-4 sm:mb-6">
               Choose Your Custom Experience
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto px-4">
               Whether you're looking for a signature perfume or therapeutic oil blend, we create something uniquely yours tailored to your budget.
             </motion.p>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {bespokeServices.map((service, index) => (
               <motion.div
                 key={service.id}
                 variants={itemVariants}
-                className={`bg-black border-2 p-8 rounded-sm transition-all duration-300 cursor-pointer ${
+                className={`bg-black border-2 p-6 sm:p-8 rounded-sm transition-all duration-300 cursor-pointer ${
                   selectedService === service.id 
                     ? 'border-yellow-500 bg-gray-900' 
                     : 'border-yellow-500/30 hover:border-yellow-500/50'
                 }`}
                 onClick={() => setSelectedService(selectedService === service.id ? null : service.id)}
               >
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="text-center mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                     {service.icon}
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-2">
                     {service.title}
                   </h3>
-                  <p className="text-gray-400 mb-4">
+                  <p className="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">
                     {service.description}
                   </p>
-                  <div className="flex justify-center items-center space-x-4 text-sm">
+                  <div className="flex justify-center items-center space-x-3 sm:space-x-4 text-xs sm:text-sm">
                     <span className="text-yellow-500 font-semibold">{service.priceRange}</span>
                     <span className="text-gray-500">•</span>
                     <span className="text-gray-400">{service.duration}</span>
                   </div>
                 </div>
 
-                <ul className="space-y-3">
+                <ul className="space-y-2 sm:space-y-3">
                   {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-300 text-sm">{feature}</span>
+                    <li key={featureIndex} className="flex items-start space-x-2 sm:space-x-3">
+                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-300 text-xs sm:text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -231,17 +231,17 @@ export function BespokePage() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="mt-6 pt-6 border-t border-gray-700"
+                    className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-700"
                   >
-                    <h4 className="text-lg font-semibold text-white mb-3">What's Included:</h4>
-                    <p className="text-gray-400 text-sm mb-4">{service.details.description}</p>
+                    <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">What's Included:</h4>
+                    <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">{service.details.description}</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                       <div>
-                        <h5 className="text-yellow-500 font-medium mb-2">Process:</h5>
-                        <ul className="space-y-1 text-sm text-gray-300">
+                        <h5 className="text-yellow-500 font-medium mb-1 sm:mb-2 text-sm sm:text-base">Process:</h5>
+                        <ul className="space-y-1 text-xs sm:text-sm text-gray-300">
                           {service.details.process.map((step, idx) => (
-                            <li key={idx} className="flex items-start space-x-2">
+                            <li key={idx} className="flex items-start space-x-1 sm:space-x-2">
                               <span className="text-yellow-500">•</span>
                               <span>{step}</span>
                             </li>
@@ -249,10 +249,10 @@ export function BespokePage() {
                         </ul>
                       </div>
                       <div>
-                        <h5 className="text-yellow-500 font-medium mb-2">Ingredients:</h5>
-                        <ul className="space-y-1 text-sm text-gray-300">
+                        <h5 className="text-yellow-500 font-medium mb-1 sm:mb-2 text-sm sm:text-base">Ingredients:</h5>
+                        <ul className="space-y-1 text-xs sm:text-sm text-gray-300">
                           {service.details.ingredients.map((ingredient, idx) => (
-                            <li key={idx} className="flex items-start space-x-2">
+                            <li key={idx} className="flex items-start space-x-1 sm:space-x-2">
                               <span className="text-yellow-500">•</span>
                               <span>{ingredient}</span>
                             </li>
@@ -266,13 +266,13 @@ export function BespokePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-full mt-8 btn-luxury flex items-center justify-center space-x-2"
+                  className="w-full mt-6 sm:mt-8 btn-luxury flex items-center justify-center space-x-2 text-sm sm:text-base py-3 sm:py-4"
                   onClick={() => {
                     const message = `Hi! I'm interested in your ${service.title.toLowerCase()} service. Can you help me get started?`;
                     window.open(`https://wa.me/2347048928368?text=${encodeURIComponent(message)}`, '_blank');
                   }}
                 >
-                  <MessageCircle size={18} />
+                  <MessageCircle size={16} className="sm:w-4 sm:h-4" />
                   <span>WhatsApp Consultation</span>
                 </motion.button>
               </motion.div>
@@ -282,46 +282,46 @@ export function BespokePage() {
       </section>
 
       {/* Budget Tiers */}
-      <section className="py-24 bg-black">
+      <section className="py-16 sm:py-24 bg-black">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white mb-4 sm:mb-6">
               Tailored to Your Budget
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto px-4">
               We work with your budget to create something special. No matter your budget, we'll craft something uniquely yours with quality ingredients and expert craftsmanship.
             </motion.p>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {budgetTiers.map((tier, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-gray-800 border border-gray-700 p-6 rounded-sm hover:border-yellow-500/50 transition-colors duration-300"
+                className="bg-gray-800 border border-gray-700 p-4 sm:p-6 rounded-sm hover:border-yellow-500/50 transition-colors duration-300"
               >
-                <div className="text-center mb-6">
-                  <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Sparkles size={24} className="text-yellow-500" />
+                <div className="text-center mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                    <Sparkles size={20} className="sm:w-6 sm:h-6 text-yellow-500" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                     {tier.range}
                   </h3>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-400 text-xs sm:text-sm">
                     {tier.description}
                   </p>
                 </div>
 
-                <ul className="space-y-2">
+                <ul className="space-y-1.5 sm:space-y-2">
                   {tier.includes.map((item, itemIndex) => (
-                    <li key={itemIndex} className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-300 text-sm">{item}</span>
+                    <li key={itemIndex} className="flex items-start space-x-1.5 sm:space-x-2">
+                      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-yellow-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-300 text-xs sm:text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -332,59 +332,59 @@ export function BespokePage() {
       </section>
 
       {/* Process Section */}
-      <section className="py-24 bg-gray-800">
+      <section className="py-16 sm:py-24 bg-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white mb-4 sm:mb-6">
               Your Custom Journey
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto px-4">
               From initial consultation to final delivery, every step is crafted with your vision in mind
             </motion.p>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <motion.div variants={itemVariants} className="text-center space-y-4">
-              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-yellow-500">1</span>
+          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
+            <motion.div variants={itemVariants} className="text-center space-y-3 sm:space-y-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-xl sm:text-2xl font-bold text-yellow-500">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Consultation</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">Consultation</h3>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Discuss your budget, preferences, and desired scent profile
               </p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="text-center space-y-4">
-              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-yellow-500">2</span>
+            <motion.div variants={itemVariants} className="text-center space-y-3 sm:space-y-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-xl sm:text-2xl font-bold text-yellow-500">2</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Creation</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">Creation</h3>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Expert blending with ingredients that match your budget
               </p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="text-center space-y-4">
-              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-yellow-500">3</span>
+            <motion.div variants={itemVariants} className="text-center space-y-3 sm:space-y-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-xl sm:text-2xl font-bold text-yellow-500">3</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Refinement</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">Refinement</h3>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Adjustments and fine-tuning to perfect your creation
               </p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="text-center space-y-4">
-              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-yellow-500">4</span>
+            <motion.div variants={itemVariants} className="text-center space-y-3 sm:space-y-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-xl sm:text-2xl font-bold text-yellow-500">4</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Delivery</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="text-lg sm:text-xl font-semibold text-white">Delivery</h3>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Beautiful packaging and ongoing support for your creation
               </p>
             </motion.div>
@@ -393,31 +393,31 @@ export function BespokePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-black">
+      <section className="py-16 sm:py-24 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
           >
-            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white mb-4 sm:mb-6">
               Ready to Create Your Signature?
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
               Let's discuss your vision, budget, and create something uniquely yours. We work with every budget to craft something special just for you.
             </motion.p>
-            <motion.p variants={itemVariants} className="text-sm text-gray-500 max-w-2xl mx-auto mb-8">
+            <motion.p variants={itemVariants} className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
               💬 Quick consultation via WhatsApp or detailed discussion through our contact form - choose what works best for you.
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <a href="https://wa.me/2347048928368?text=Hi! I'm interested in creating a custom signature perfume/oil blend. Can you help me get started?" target="_blank" rel="noopener noreferrer">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-luxury text-lg px-12 py-6 flex items-center justify-center space-x-2"
+                  className="btn-luxury text-sm sm:text-lg px-6 sm:px-12 py-4 sm:py-6 flex items-center justify-center space-x-2 w-full sm:w-auto"
                 >
-                  <MessageCircle size={20} />
+                  <MessageCircle size={18} className="sm:w-5 sm:h-5" />
                   <span>WhatsApp Consultation</span>
                 </motion.button>
               </a>
@@ -425,7 +425,7 @@ export function BespokePage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-luxury-ghost text-lg px-12 py-6"
+                  className="btn-luxury-ghost text-sm sm:text-lg px-6 sm:px-12 py-4 sm:py-6 w-full sm:w-auto"
                 >
                   Contact Us
                 </motion.button>

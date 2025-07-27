@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     question: "What payment methods do you accept?",
-    answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and Apple Pay for secure transactions."
+    answer: "We accept a comprehensive range of payment methods through Paystack, including: Credit/Debit Cards (Visa, Mastercard, Verve), Bank Transfers, USSD payments, Mobile Money, and other local payment options. All transactions are secure and encrypted for your protection."
   },
   {
     question: "Are your products cruelty-free?",

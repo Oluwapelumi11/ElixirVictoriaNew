@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
-import { ArrowLeft, CreditCard, MapPin, User, Mail, Phone, ShoppingBag, CheckCircle } from 'lucide-react'
+import { ArrowLeft, CreditCard, MapPin, User, Mail, Phone, ShoppingBag, CheckCircle, Plus } from 'lucide-react'
 import { useCartStore, useUserStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -48,8 +48,8 @@ export default function CheckoutPage() {
   const router = useRouter()
 
   const [formData, setFormData] = useState<CheckoutForm>({
-    customer_name: user?.firstName ? `${user.firstName} ${user.lastName}` : '',
-    customer_email: user?.email || '',
+    customer_name: '',
+    customer_email: '',
     customer_phone: '',
     notes: '',
     // Initialize shipping address fields for guests
@@ -78,6 +78,18 @@ export default function CheckoutPage() {
       router.push('/cart')
     }
   }, [items, router])
+
+  // Pre-fill user details when authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setFormData(prev => ({
+        ...prev,
+        customer_name: `${user.firstName} ${user.lastName}`,
+        customer_email: user.email,
+        customer_phone: user.phone || ''
+      }))
+    }
+  }, [isAuthenticated, user])
 
   // Load user addresses if authenticated
   useEffect(() => {
@@ -421,10 +433,19 @@ export default function CheckoutPage() {
                       </div>
                     </>
                   ) : (
-                    <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
-                      <p className="text-yellow-500 text-sm">
-                        ✓ Using your saved information: {user?.firstName} {user?.lastName} ({user?.email})
-                      </p>
+                    <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-sm">
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle size={20} className="text-green-500" />
+                        <div>
+                          <p className="text-green-500 text-sm font-medium">
+                            Using your saved information
+                          </p>
+                          <p className="text-gray-400 text-sm">
+                            {user?.firstName} {user?.lastName} • {user?.email}
+                            {user?.phone && ` • ${user.phone}`}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
 
@@ -436,31 +457,64 @@ export default function CheckoutPage() {
                     
                     {isAuthenticated ? (
                       <div className="space-y-4">
-                        <div className="relative">
-                          <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                          <select
-                            id="shipping_address_id"
-                            name="shipping_address_id"
-                            value={formData.shipping_address_id}
-                            onChange={handleInputChange}
-                            className="input-luxury w-full h-14 pl-10"
-                          >
-                            <option value="">Select a saved address</option>
-                            <option value="manual">Enter new address manually</option>
-                          </select>
-                        </div>
-                        {formData.shipping_address_id === 'manual' ? (
-                          <p className="text-gray-400 text-sm">
-                            Please enter your shipping address below
-                          </p>
-                        ) : formData.shipping_address_id ? (
-                          <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-sm">
-                            <p className="text-green-400 text-sm">✓ Using saved address</p>
-                          </div>
+                        {addressesLoaded && userAddresses.length > 0 ? (
+                          <>
+                            <div className="space-y-3">
+                              {userAddresses.filter(addr => addr.type === 'shipping').map((address) => (
+                                <label key={address.id} className="flex items-start space-x-3 cursor-pointer">
+                                  <input
+                                    type="radio"
+                                    name="shipping_address_id"
+                                    value={address.id.toString()}
+                                    checked={formData.shipping_address_id === address.id.toString()}
+                                    onChange={handleInputChange}
+                                    className="mt-1 text-yellow-500 focus:ring-yellow-500"
+                                  />
+                                  <div className="flex-1 p-3 bg-gray-700 rounded-sm border border-gray-600 hover:border-yellow-500/50 transition-colors">
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <p className="text-white text-sm font-medium">
+                                          {address.address_line1}
+                                        </p>
+                                        {address.address_line2 && (
+                                          <p className="text-gray-400 text-sm">{address.address_line2}</p>
+                                        )}
+                                        <p className="text-gray-400 text-sm">
+                                          {address.city}, {address.state} {address.postal_code}
+                                        </p>
+                                        <p className="text-gray-400 text-sm">{address.country}</p>
+                                      </div>
+                                      {address.is_default && (
+                                        <span className="text-xs bg-yellow-500 text-black px-2 py-1 rounded">
+                                          Default
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </label>
+                              ))}
+                            </div>
+                            
+                            <div className="flex items-center space-x-3">
+                              <input
+                                type="radio"
+                                name="shipping_address_id"
+                                value="manual"
+                                checked={formData.shipping_address_id === 'manual'}
+                                onChange={handleInputChange}
+                                className="text-yellow-500 focus:ring-yellow-500"
+                              />
+                              <span className="text-gray-400 text-sm">Enter new address manually</span>
+                            </div>
+                          </>
                         ) : (
-                          <p className="text-gray-400 text-sm">
-                            Select an option above
-                          </p>
+                          <div className="p-4 bg-gray-700 rounded-sm">
+                            <p className="text-gray-400 text-sm mb-3">No saved addresses found</p>
+                            <Link href="/account/addresses/new" className="inline-flex items-center text-yellow-500 hover:text-yellow-400 text-sm">
+                              <Plus size={16} className="mr-1" />
+                              Add new address
+                            </Link>
+                          </div>
                         )}
                       </div>
                     ) : (
