@@ -22,6 +22,7 @@ interface CheckoutForm {
   shipping_city: string
   shipping_state: string
   shipping_country: string
+  website?: string // honeypot
 }
 
 interface UserAddress {
@@ -56,7 +57,8 @@ export default function CheckoutPage() {
     shipping_address_line2: '',
     shipping_city: '',
     shipping_state: '',
-    shipping_country: ''
+    shipping_country: '',
+    website: '' // honeypot
   })
 
   const [userAddresses, setUserAddresses] = useState<UserAddress[]>([])
@@ -144,6 +146,10 @@ export default function CheckoutPage() {
   }
 
   const handleCreateOrder = async () => {
+    if (formData.website) {
+      setError('Bot detected. Submission blocked.')
+      return
+    }
     // For guests, validate all required fields
     if (!isAuthenticated) {
       if (!formData.customer_name || !formData.customer_email) {

@@ -17,7 +17,8 @@ export default function ContactPage() {
     email: '',
     phone: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // honeypot
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -59,6 +60,11 @@ export default function ContactPage() {
     e.preventDefault()
     setIsSubmitting(true)
     setError('')
+    if (formData.website) {
+      setIsSubmitting(false)
+      setError('Bot detected. Submission blocked.')
+      return
+    }
 
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
@@ -77,7 +83,8 @@ export default function ContactPage() {
           email: '',
           phone: '',
           subject: '',
-          message: ''
+          message: '',
+          website: ''
         })
       } else {
         const errorData = await response.json()
@@ -210,6 +217,19 @@ export default function ContactPage() {
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+                    {/* Honeypot field (hidden from users) */}
+                    <div style={{ display: 'none' }}>
+                      <label htmlFor="website">Website</label>
+                      <input
+                        type="text"
+                        id="website"
+                        name="website"
+                        value={formData.website}
+                        onChange={handleInputChange}
+                        autoComplete="off"
+                        tabIndex={-1}
+                      />
+                    </div>
                     {error && (
                       <div className="bg-red-500/10 border border-red-500/20 rounded-sm p-4 sm:p-6">
                         <p className="text-red-400 text-sm sm:text-body-sm">{error}</p>
