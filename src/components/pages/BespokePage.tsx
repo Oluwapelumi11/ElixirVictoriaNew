@@ -3,13 +3,16 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
-import { ArrowLeft, Star, Users, Gift, Clock, Award } from 'lucide-react'
+import { ArrowLeft, Star, Users, Gift, Clock, Award, Palette, Droplets, Sparkles, Heart, MessageCircle } from 'lucide-react'
+import { useState } from 'react'
 
 export function BespokePage() {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+
+  const [selectedService, setSelectedService] = useState<string | null>(null)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -36,42 +39,104 @@ export function BespokePage() {
 
   const bespokeServices = [
     {
-      title: 'Signature Scent Creation',
-      description: 'Create your own unique fragrance with rare ingredients from around the world',
-      price: 'From $2,500',
-      duration: '3-4 weeks',
+      id: 'perfume',
+      title: 'Custom Signature Perfume',
+      description: 'Create your own unique fragrance that tells your story',
+      icon: <Droplets size={32} className="text-yellow-500" />,
+      priceRange: 'Tailored to your budget',
+      duration: '2-4 weeks',
       features: [
-        'Personal consultation with master artisans',
-        'Custom fragrance blending session',
-        'Exclusive access to rare ingredients',
+        'Personal fragrance consultation',
+        'Custom scent blending session',
+        'Rare and exotic ingredients',
         'Bespoke packaging with personal monogram',
-        'Lifetime refill service'
+        'Lifetime refill service',
+        'Flexible pricing based on your budget'
+      ],
+      details: {
+        description: 'Our master perfumers work with your budget and desired scent profile to create a truly unique fragrance that captures your essence.',
+        process: [
+          'Initial consultation to understand your preferences and budget',
+          'Scent profiling and ingredient selection',
+          'Custom blending session with master perfumer',
+          'Multiple iterations to perfect your signature scent',
+          'Bespoke packaging and presentation'
+        ],
+        ingredients: [
+          'Rare essential oils from around the world',
+          'Exotic floral extracts',
+          'Precious woods and resins',
+          'Custom base formulations',
+          'Long-lasting fixatives'
+        ]
+      }
+    },
+    {
+      id: 'oil',
+      title: 'Custom Essential Oil Blend',
+      description: 'Tailored therapeutic and aromatic oil combinations',
+      icon: <Palette size={32} className="text-yellow-500" />,
+      priceRange: 'Tailored to your budget',
+      duration: '1-3 weeks',
+      features: [
+        'Therapeutic consultation',
+        'Custom oil blending',
+        'Pure essential oils',
+        'Personalized usage guide',
+        'Refill and adjustment service',
+        'Budget-friendly options available'
+      ],
+      details: {
+        description: 'Create therapeutic oil blends for wellness, relaxation, or specific health benefits, tailored to your needs and budget.',
+        process: [
+          'Wellness consultation and goal setting',
+          'Oil selection based on therapeutic properties',
+          'Custom blending with precise ratios',
+          'Safety testing and quality assurance',
+          'Personalized usage instructions'
+        ],
+        ingredients: [
+          'Pure essential oils',
+          'Carrier oils (jojoba, almond, coconut)',
+          'Therapeutic grade extracts',
+          'Natural preservatives',
+          'Custom scent enhancers'
+        ]
+      }
+    }
+  ]
+
+  const budgetTiers = [
+    {
+      range: 'Essential',
+      description: 'Quality custom blend with standard ingredients',
+      includes: [
+        'Basic consultation',
+        'Standard ingredient selection',
+        'Simple custom packaging',
+        'Basic usage guide'
       ]
     },
     {
-      title: 'Complete Wellness Journey',
-      description: 'A comprehensive beauty and wellness experience tailored to your lifestyle',
-      price: 'From $3,500',
-      duration: '4-6 weeks',
-      features: [
-        'Personalized beauty routine consultation',
-        'Custom body care product creation',
-        'Signature fragrance + matching body products',
-        'Luxury packaging and presentation',
-        'Ongoing wellness support'
+      range: 'Premium',
+      description: 'Enhanced custom creation with rare ingredients',
+      includes: [
+        'Extended consultation',
+        'Rare and exotic ingredients',
+        'Luxury packaging',
+        'Detailed usage guide',
+        'Follow-up consultation'
       ]
     },
     {
-      title: 'Launch Day Exclusive',
-      description: 'Limited edition bespoke experience available only during our launch period',
-      price: 'From $5,000',
-      duration: '6-8 weeks',
-      features: [
-        'Founder consultation with Victoria Elixir',
-        'Exclusive ingredients not in regular collection',
-        'Commemorative launch day packaging',
-        'Private launch event invitation',
-        'Lifetime VIP status'
+      range: 'Ultimate',
+      description: 'Master artisan experience with rarest ingredients',
+      includes: [
+        'Master artisan consultation',
+        'Rarest ingredients available',
+        'Bespoke packaging design',
+        'Lifetime support',
+        'VIP client status'
       ]
     }
   ]
@@ -96,11 +161,11 @@ export function BespokePage() {
             </motion.div>
 
             <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6">
-              Bespoke Services
+              Custom Signature
             </motion.h1>
 
             <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
-              Experience the ultimate in luxury customization. Create products that are uniquely yours, crafted with the rarest ingredients and unparalleled artistry.
+              Create your own unique perfumes and essential oil blends tailored to your budget. We work with your desired flavor profile and budget to craft something truly special. Contact us via WhatsApp for quick consultation or use our contact form for detailed discussions.
             </motion.p>
           </motion.div>
         </div>
@@ -116,25 +181,28 @@ export function BespokePage() {
             className="text-center mb-16"
           >
             <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
-              Exclusive Customization
+              Choose Your Custom Experience
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Each bespoke experience is a journey of discovery, creativity, and luxury. Limited availability ensures the highest level of personal attention.
+              Whether you're looking for a signature perfume or therapeutic oil blend, we create something uniquely yours tailored to your budget.
             </motion.p>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {bespokeServices.map((service, index) => (
               <motion.div
-                key={index}
+                key={service.id}
                 variants={itemVariants}
-                className="bg-black border border-yellow-500/30 p-8 rounded-sm hover:border-yellow-500/50 transition-colors duration-300"
+                className={`bg-black border-2 p-8 rounded-sm transition-all duration-300 cursor-pointer ${
+                  selectedService === service.id 
+                    ? 'border-yellow-500 bg-gray-900' 
+                    : 'border-yellow-500/30 hover:border-yellow-500/50'
+                }`}
+                onClick={() => setSelectedService(selectedService === service.id ? null : service.id)}
               >
                 <div className="text-center mb-6">
                   <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    {index === 0 && <Star size={32} className="text-yellow-500" />}
-                    {index === 1 && <Users size={32} className="text-yellow-500" />}
-                    {index === 2 && <Award size={32} className="text-yellow-500" />}
+                    {service.icon}
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-white mb-2">
                     {service.title}
@@ -143,7 +211,7 @@ export function BespokePage() {
                     {service.description}
                   </p>
                   <div className="flex justify-center items-center space-x-4 text-sm">
-                    <span className="text-yellow-500 font-semibold">{service.price}</span>
+                    <span className="text-yellow-500 font-semibold">{service.priceRange}</span>
                     <span className="text-gray-500">•</span>
                     <span className="text-gray-400">{service.duration}</span>
                   </div>
@@ -158,12 +226,54 @@ export function BespokePage() {
                   ))}
                 </ul>
 
+                {selectedService === service.id && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-6 pt-6 border-t border-gray-700"
+                  >
+                    <h4 className="text-lg font-semibold text-white mb-3">What's Included:</h4>
+                    <p className="text-gray-400 text-sm mb-4">{service.details.description}</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="text-yellow-500 font-medium mb-2">Process:</h5>
+                        <ul className="space-y-1 text-sm text-gray-300">
+                          {service.details.process.map((step, idx) => (
+                            <li key={idx} className="flex items-start space-x-2">
+                              <span className="text-yellow-500">•</span>
+                              <span>{step}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h5 className="text-yellow-500 font-medium mb-2">Ingredients:</h5>
+                        <ul className="space-y-1 text-sm text-gray-300">
+                          {service.details.ingredients.map((ingredient, idx) => (
+                            <li key={idx} className="flex items-start space-x-2">
+                              <span className="text-yellow-500">•</span>
+                              <span>{ingredient}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-full mt-8 btn-luxury"
+                  className="w-full mt-8 btn-luxury flex items-center justify-center space-x-2"
+                  onClick={() => {
+                    const message = `Hi! I'm interested in your ${service.title.toLowerCase()} service. Can you help me get started?`;
+                    window.open(`https://wa.me/2347048928368?text=${encodeURIComponent(message)}`, '_blank');
+                  }}
                 >
-                  Begin Consultation
+                  <MessageCircle size={18} />
+                  <span>WhatsApp Consultation</span>
                 </motion.button>
               </motion.div>
             ))}
@@ -171,7 +281,7 @@ export function BespokePage() {
         </div>
       </section>
 
-      {/* Process Section */}
+      {/* Budget Tiers */}
       <section className="py-24 bg-black">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -181,10 +291,60 @@ export function BespokePage() {
             className="text-center mb-16"
           >
             <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
-              The Bespoke Journey
+              Tailored to Your Budget
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
-              From initial consultation to final delivery, every step is crafted with precision and care
+              We work with your budget to create something special. No matter your budget, we'll craft something uniquely yours with quality ingredients and expert craftsmanship.
+            </motion.p>
+          </motion.div>
+
+          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {budgetTiers.map((tier, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="bg-gray-800 border border-gray-700 p-6 rounded-sm hover:border-yellow-500/50 transition-colors duration-300"
+              >
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Sparkles size={24} className="text-yellow-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    {tier.range}
+                  </h3>
+                  <p className="text-gray-400 text-sm">
+                    {tier.description}
+                  </p>
+                </div>
+
+                <ul className="space-y-2">
+                  {tier.includes.map((item, itemIndex) => (
+                    <li key={itemIndex} className="flex items-start space-x-2">
+                      <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-300 text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-24 bg-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+              Your Custom Journey
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
+              From initial consultation to final delivery, every step is crafted with your vision in mind
             </motion.p>
           </motion.div>
 
@@ -195,7 +355,7 @@ export function BespokePage() {
               </div>
               <h3 className="text-xl font-semibold text-white">Consultation</h3>
               <p className="text-gray-400 text-sm">
-                Personal meeting to understand your preferences, lifestyle, and vision
+                Discuss your budget, preferences, and desired scent profile
               </p>
             </motion.div>
 
@@ -205,7 +365,7 @@ export function BespokePage() {
               </div>
               <h3 className="text-xl font-semibold text-white">Creation</h3>
               <p className="text-gray-400 text-sm">
-                Master artisans craft your unique product using rare ingredients
+                Expert blending with ingredients that match your budget
               </p>
             </motion.div>
 
@@ -215,7 +375,7 @@ export function BespokePage() {
               </div>
               <h3 className="text-xl font-semibold text-white">Refinement</h3>
               <p className="text-gray-400 text-sm">
-                Multiple iterations to perfect your bespoke creation
+                Adjustments and fine-tuning to perfect your creation
               </p>
             </motion.div>
 
@@ -225,7 +385,7 @@ export function BespokePage() {
               </div>
               <h3 className="text-xl font-semibold text-white">Delivery</h3>
               <p className="text-gray-400 text-sm">
-                Luxurious presentation and ongoing support for your creation
+                Beautiful packaging and ongoing support for your creation
               </p>
             </motion.div>
           </motion.div>
@@ -233,7 +393,7 @@ export function BespokePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gray-800">
+      <section className="py-24 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             variants={containerVariants}
@@ -241,20 +401,26 @@ export function BespokePage() {
             animate={inView ? 'visible' : 'hidden'}
           >
             <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
-              Ready to Begin Your Journey?
+              Ready to Create Your Signature?
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
-              Limited availability ensures the highest level of personal attention. Book your consultation today.
+              Let's discuss your vision, budget, and create something uniquely yours. We work with every budget to craft something special just for you.
+            </motion.p>
+            <motion.p variants={itemVariants} className="text-sm text-gray-500 max-w-2xl mx-auto mb-8">
+              💬 Quick consultation via WhatsApp or detailed discussion through our contact form - choose what works best for you.
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-luxury text-lg px-12 py-6"
-              >
-                Book Consultation
-              </motion.button>
+              <a href="https://wa.me/2347048928368?text=Hi! I'm interested in creating a custom signature perfume/oil blend. Can you help me get started?" target="_blank" rel="noopener noreferrer">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-luxury text-lg px-12 py-6 flex items-center justify-center space-x-2"
+                >
+                  <MessageCircle size={20} />
+                  <span>WhatsApp Consultation</span>
+                </motion.button>
+              </a>
               <Link href="/contact">
                 <motion.button
                   whileHover={{ scale: 1.05 }}

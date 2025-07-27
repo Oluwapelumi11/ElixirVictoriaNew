@@ -273,11 +273,20 @@ export function CollectionPage() {
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/brand-story">
+              <Link href="/bespoke">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="btn-luxury text-lg px-12 py-6"
+                >
+                  Custom Signature
+                </motion.button>
+              </Link>
+              <Link href="/brand-story">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-luxury-ghost text-lg px-12 py-6"
                 >
                   Our Story
                 </motion.button>

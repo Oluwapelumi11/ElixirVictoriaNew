@@ -93,6 +93,12 @@ export function Header() {
               Our Story
             </Link>
             <Link
+              href="/bespoke"
+              className="text-white hover:text-yellow-500 transition-colors duration-300 font-medium"
+            >
+              Custom Signature
+            </Link>
+            <Link
               href="/contact"
               className="text-white hover:text-yellow-500 transition-colors duration-300 font-medium"
             >
@@ -295,6 +301,13 @@ export function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Our Story
+                </Link>
+                <Link
+                  href="/bespoke"
+                  className="block text-white hover:text-yellow-500 transition-colors duration-300 font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Custom Signature
                 </Link>
                 <Link
                   href="/contact"

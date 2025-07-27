@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
-import { ArrowLeft, Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react'
 import { useState } from 'react'
 
 export default function ContactPage() {
@@ -168,9 +168,10 @@ export default function ContactPage() {
                     href="https://wa.me/2347048928368"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-luxury w-full justify-center"
+                    className="btn-luxury w-full justify-center flex items-center space-x-2"
                   >
-                    WhatsApp Support
+                    <MessageCircle size={20} />
+                    <span>WhatsApp Support</span>
                   </a>
                   <a 
                     href="mailto:info@elixirvictoria.com"
@@ -279,6 +280,7 @@ export default function ContactPage() {
                         >
                           <option value="">Select a subject</option>
                           <option value="General Inquiry">General Inquiry</option>
+                          <option value="Custom Signature/Bespoke">Custom Signature/Bespoke</option>
                           <option value="Product Information">Product Information</option>
                           <option value="Order Support">Order Support</option>
                           <option value="Shipping & Returns">Shipping & Returns</option>

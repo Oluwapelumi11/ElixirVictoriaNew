@@ -56,12 +56,14 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       addItem: (product: Product, quantity = 1, size?: string) => {
+        console.log('Adding to cart:', { product, quantity, size })
         set((state) => {
           const existingItem = state.items.find(
             (item) => item.productId === product.id && item.size === size
           )
 
           if (existingItem) {
+            console.log('Updating existing item quantity')
             return {
               items: state.items.map((item) =>
                 item.id === existingItem.id
@@ -80,6 +82,7 @@ export const useCartStore = create<CartStore>()(
             addedAt: new Date(),
           }
 
+          console.log('Adding new item to cart:', newItem)
           return {
             items: [...state.items, newItem],
           }
@@ -116,9 +119,7 @@ export const useCartStore = create<CartStore>()(
       },
       getTotal: () => {
         const subtotal = get().getSubtotal()
-        const tax = subtotal * 0.08 // 8% tax
-        const shipping = subtotal > 200 ? 0 : 15 // Free shipping over $200
-        return subtotal + tax + shipping
+        return subtotal
       },
     }),
     {

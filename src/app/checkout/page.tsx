@@ -16,6 +16,13 @@ interface CheckoutForm {
   shipping_address_id?: string
   billing_address_id?: string
   notes: string
+  // Shipping address fields for guests
+  shipping_address_line1: string
+  shipping_address_line2: string
+  shipping_city: string
+  shipping_state: string
+  shipping_postal_code: string
+  shipping_country: string
 }
 
 interface UserAddress {
@@ -44,7 +51,14 @@ export default function CheckoutPage() {
     customer_name: user?.firstName ? `${user.firstName} ${user.lastName}` : '',
     customer_email: user?.email || '',
     customer_phone: '',
-    notes: ''
+    notes: '',
+    // Initialize shipping address fields for guests
+    shipping_address_line1: '',
+    shipping_address_line2: '',
+    shipping_city: '',
+    shipping_state: '',
+    shipping_postal_code: '',
+    shipping_country: ''
   })
 
   const [userAddresses, setUserAddresses] = useState<UserAddress[]>([])
@@ -55,9 +69,7 @@ export default function CheckoutPage() {
   const [paymentUrl, setPaymentUrl] = useState('')
 
   const subtotal = getSubtotal()
-  const shipping = subtotal > 200 ? 0 : 15
-  const tax = subtotal * 0.1
-  const total = getTotal()
+  const total = subtotal
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -100,6 +112,20 @@ export default function CheckoutPage() {
   }
 
   const handleCreateOrder = async () => {
+    // Validate shipping address
+    if (!formData.shipping_address_id && !formData.shipping_address_line1) {
+      setError('Please provide a shipping address')
+      return
+    }
+
+    if (!formData.shipping_address_id) {
+      // Validate required fields for new address
+      if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_postal_code || !formData.shipping_country) {
+        setError('Please fill in all required shipping address fields')
+        return
+      }
+    }
+
     setIsLoading(true)
     setError('')
 
@@ -120,12 +146,17 @@ export default function CheckoutPage() {
             quantity: item.quantity
           })),
           subtotal,
-          tax,
-          shipping,
           total,
           shipping_address_id: formData.shipping_address_id,
           billing_address_id: formData.billing_address_id,
-          notes: formData.notes
+          notes: formData.notes,
+          // Include shipping address for guests
+          shipping_address_line1: formData.shipping_address_line1,
+          shipping_address_line2: formData.shipping_address_line2,
+          shipping_city: formData.shipping_city,
+          shipping_state: formData.shipping_state,
+          shipping_postal_code: formData.shipping_postal_code,
+          shipping_country: formData.shipping_country
         }),
       })
 
@@ -225,7 +256,7 @@ export default function CheckoutPage() {
               Checkout
             </h1>
             <p className="text-body-lg text-gray-400">
-              Complete your purchase with secure payment via Paystack. No account required - just provide your email to track your order.
+              Complete your purchase with secure payment via Paystack. You'll be contacted for shipping details and fees after order confirmation. No account required - just provide your email to track your order.
             </p>
           </div>
 
@@ -269,19 +300,14 @@ export default function CheckoutPage() {
                     <span className="text-gray-400">Subtotal</span>
                     <span className="text-white">₦{subtotal.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Tax (10%)</span>
-                    <span className="text-white">₦{tax.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Shipping</span>
-                    <span className="text-white">
-                      {shipping === 0 ? 'Free' : `₦${shipping.toLocaleString()}`}
-                    </span>
-                  </div>
                   <div className="flex justify-between text-lg font-medium border-t border-gray-700 pt-3">
                     <span className="text-white">Total</span>
                     <span className="text-yellow-500">₦{total.toLocaleString()}</span>
+                  </div>
+                  <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
+                    <p className="text-yellow-500 text-sm text-center">
+                      📞 You'll be contacted for shipping details and fees after order confirmation
+                    </p>
                   </div>
                 </div>
               </div>
@@ -357,32 +383,126 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {isAuthenticated && userAddresses.length > 0 && (
-                    <div className="space-y-3">
-                      <label htmlFor="shipping_address_id" className="block text-white text-body-sm font-medium">
-                        Shipping Address
-                      </label>
+                  {/* Shipping Address Section */}
+                  <div className="space-y-3">
+                    <label className="block text-white text-body-sm font-medium">
+                      Shipping Address *
+                    </label>
+                    
+                    {isAuthenticated && userAddresses.length > 0 && (
+                      <div className="mb-4">
+                        <div className="relative">
+                          <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <select
+                            id="shipping_address_id"
+                            name="shipping_address_id"
+                            value={formData.shipping_address_id}
+                            onChange={handleInputChange}
+                            className="input-luxury w-full h-14 pl-10"
+                          >
+                            <option value="">Select saved address or enter new one</option>
+                            {userAddresses
+                              .filter(addr => addr.type === 'shipping')
+                              .map((address) => (
+                                <option key={address.id} value={address.id}>
+                                  {address.address_line1}, {address.city}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <p className="text-gray-400 text-sm mt-2">
+                          Or enter a new shipping address below
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Shipping Address Form */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div className="relative">
                         <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <select
-                          id="shipping_address_id"
-                          name="shipping_address_id"
-                          value={formData.shipping_address_id}
+                        <input
+                          type="text"
+                          id="shipping_address_line1"
+                          name="shipping_address_line1"
+                          value={formData.shipping_address_line1}
+                          onChange={handleInputChange}
+                          required={!formData.shipping_address_id}
+                          className="input-luxury w-full h-14 pl-10"
+                          placeholder="Address Line 1"
+                        />
+                      </div>
+                      <div className="relative">
+                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="shipping_address_line2"
+                          name="shipping_address_line2"
+                          value={formData.shipping_address_line2}
                           onChange={handleInputChange}
                           className="input-luxury w-full h-14 pl-10"
-                        >
-                          <option value="">Select shipping address</option>
-                          {userAddresses
-                            .filter(addr => addr.type === 'shipping')
-                            .map((address) => (
-                              <option key={address.id} value={address.id}>
-                                {address.address_line1}, {address.city}
-                              </option>
-                            ))}
-                        </select>
+                          placeholder="Address Line 2 (optional)"
+                        />
                       </div>
                     </div>
-                  )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="relative">
+                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="shipping_city"
+                          name="shipping_city"
+                          value={formData.shipping_city}
+                          onChange={handleInputChange}
+                          required={!formData.shipping_address_id}
+                          className="input-luxury w-full h-14 pl-10"
+                          placeholder="City"
+                        />
+                      </div>
+                      <div className="relative">
+                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="shipping_state"
+                          name="shipping_state"
+                          value={formData.shipping_state}
+                          onChange={handleInputChange}
+                          required={!formData.shipping_address_id}
+                          className="input-luxury w-full h-14 pl-10"
+                          placeholder="State"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="relative">
+                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="shipping_postal_code"
+                          name="shipping_postal_code"
+                          value={formData.shipping_postal_code}
+                          onChange={handleInputChange}
+                          required={!formData.shipping_address_id}
+                          className="input-luxury w-full h-14 pl-10"
+                          placeholder="Postal Code"
+                        />
+                      </div>
+                      <div className="relative">
+                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="shipping_country"
+                          name="shipping_country"
+                          value={formData.shipping_country}
+                          onChange={handleInputChange}
+                          required={!formData.shipping_address_id}
+                          className="input-luxury w-full h-14 pl-10"
+                          placeholder="Country"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  
 
                   <div className="space-y-3">
                     <label htmlFor="notes" className="block text-white text-body-sm font-medium">

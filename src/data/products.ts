@@ -303,7 +303,7 @@ export const convertToProduct = (simpleProduct: SimpleProduct): Product => {
     stockQuantity: simpleProduct.inStock ? 10 : 0, // Default stock quantity
     sku: `ELX-${simpleProduct.id.toString().padStart(3, '0')}`,
     fragranceNotes: [], // Empty for now, can be populated later
-    size: '50ml', // Default size
+    size: simpleProduct.volume || '50ml', // Use volume if available, otherwise default
     weight: 0.05, // Default weight in kg
     dimensions: {
       length: 5,

@@ -109,7 +109,17 @@ export function HeroSection() {
                         </motion.button>
                       </Link>
                       
-                      <Link href="/brand-story" className="hidden sm:block">
+                      <Link href="/bespoke">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="btn-luxury-ghost text-lg px-12 py-6 flex items-center space-x-2"
+                        >
+                          <span>Custom Signature</span>
+                        </motion.button>
+                      </Link>
+                      
+                      <Link href="/brand-story" className="hidden lg:block">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
