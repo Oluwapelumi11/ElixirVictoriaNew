@@ -12,14 +12,35 @@ export function Newsletter() {
   })
   const [email, setEmail] = useState('')
   const [isSubscribed, setIsSubscribed] = useState(false)
+  const [error, setError] = useState('')
+  const [honeypot, setHoneypot] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle newsletter subscription
-    setIsSubscribed(true)
-    setEmail('')
-    // Reset after 3 seconds
-    setTimeout(() => setIsSubscribed(false), 3000)
+    setError('')
+    if (honeypot) {
+      setError('Bot detected. Submission blocked.')
+      return
+    }
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      const data = await response.json()
+      if (response.ok && data.success !== false) {
+        setIsSubscribed(true)
+        setEmail('')
+        setTimeout(() => setIsSubscribed(false), 3000)
+      } else if (data.message && data.message.includes('already subscribed')) {
+        setError('This email is already subscribed to our newsletter.')
+      } else {
+        setError(data.message || 'Something went wrong. Please try again.')
+      }
+    } catch (err) {
+      setError('Network error. Please try again.')
+    }
   }
 
   const containerVariants = {
@@ -83,6 +104,19 @@ export function Newsletter() {
             >
               {!isSubscribed ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Honeypot field (hidden from users) */}
+                  <div style={{ display: 'none' }}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      value={honeypot}
+                      onChange={e => setHoneypot(e.target.value)}
+                      autoComplete="off"
+                      tabIndex={-1}
+                    />
+                  </div>
                   <div className="relative">
                     <input
                       type="email"
@@ -93,6 +127,9 @@ export function Newsletter() {
                       className="w-full bg-luxury-black border border-divider-gray text-pearl-white px-6 py-4 text-center focus:border-champagne-gold focus:outline-none transition-colors duration-300 placeholder:text-subtle-gray"
                     />
                   </div>
+                  {error && (
+                    <div className="text-red-400 text-sm text-center">{error}</div>
+                  )}
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

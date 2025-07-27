@@ -5,6 +5,9 @@ const rateLimit = require('express-rate-limit')
 const { body, validationResult } = require('express-validator')
 const nodemailer = require('nodemailer')
 const { Pool } = require('pg')
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+})
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
@@ -24,16 +27,6 @@ const PAYSTACK_PUBLIC_KEY = process.env.PAYSTACK_PUBLIC_KEY
 // Telegram Bot Configuration
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
-
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' 
-    ? { rejectUnauthorized: false } 
-    : process.env.DATABASE_URL?.includes('localhost') || process.env.DATABASE_URL?.includes('127.0.0.1')
-      ? false
-      : { rejectUnauthorized: false }
-})
 
 // Test database connection
 const testDatabaseConnection = async () => {
@@ -110,29 +103,84 @@ const createTransporter = () => {
   })
 }
 
-// Store email in database (placeholder for now)
-const storeEmailInDatabase = async (email, name) => {
-  // TODO: Implement PostgreSQL connection and email storage
-  // This would typically involve:
-  // 1. Connecting to your PostgreSQL database
-  // 2. Inserting the email into a subscribers/contacts table
-  // 3. Handling duplicates and validation
-  
-  console.log(`Storing email: ${email} for user: ${name}`)
-  
-  // Example implementation:
-  // const { Pool } = require('pg')
-  // const pool = new Pool({
-  //   connectionString: process.env.DATABASE_URL,
-  // })
-  // 
-  // const query = `
-  //   INSERT INTO subscribers (email, name, created_at)
-  //   VALUES ($1, $2, NOW())
-  //   ON CONFLICT (email) DO NOTHING
-  // `
-  // 
-  // await pool.query(query, [email, name])
+// Real implementation for storing newsletter subscribers
+const ensureSubscribersTable = async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS subscribers (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      name VARCHAR(255),
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `)
+}
+
+const storeEmailInDatabase = async (email) => {
+  await ensureSubscribersTable()
+  // Check if email exists
+  const existing = await pool.query('SELECT id FROM subscribers WHERE email = $1', [email])
+  if (existing.rows.length > 0) {
+    return { status: 'exists' }
+  }
+  // Insert new subscriber
+  await pool.query('INSERT INTO subscribers (email) VALUES ($1)', [email])
+  return { status: 'new' }
+}
+
+// Send newsletter welcome email
+const sendNewsletterWelcomeEmail = async (email) => {
+  const transporter = createTransporter()
+  const mailOptions = {
+    from: `"Elixir Victoria" <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: 'Welcome to Elixir Victoria Newsletter',
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to Elixir Victoria</title>
+      </head>
+      <body style="margin:0;padding:0;background-color:#f8f8f8;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f8f8f8;">
+          <tr>
+            <td align="center" style="padding:40px 0;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#fff;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;text-align:center;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);border-radius:8px 8px 0 0;">
+                    <h1 style="color:#d4af37;margin:0;font-size:28px;font-weight:600;letter-spacing:1px;">ELIXIR VICTORIA</h1>
+                    <p style="color:#fff;margin:10px 0 0 0;font-size:14px;opacity:0.8;">Luxury Fragrances & Body Care</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;">
+                    <h2 style="color:#000;margin:0 0 20px 0;font-size:22px;font-weight:600;">Welcome to the Elixir Victoria Family!</h2>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">Thank you for subscribing to our newsletter. You'll be the first to know about new launches, exclusive offers, and luxury fragrance inspiration.</p>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">Stay tuned for updates and special treats, just for you.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 40px 40px 40px;text-align:center;background-color:#f9f9f9;border-radius:0 0 8px 8px;">
+                    <p style="color:#666;margin:0;font-size:14px;line-height:1.5;">Best regards,<br><strong>The Elixir Victoria Team</strong></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+  }
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Newsletter welcome sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending newsletter welcome:', error)
+    throw error
+  }
 }
 
 // Store contact submission
@@ -376,8 +424,8 @@ const sendAdminEmail = async (data) => {
                         <td align="center">
                           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                             <tr>
-                              <td style="border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%); margin-right: 10px;">
-                                <a href="mailto:${data.email}" style="background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%); border: 1px solid #d4af37; display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 6px; color: #000000; font-weight: 600; font-size: 14px;">Reply to Customer</a>
+                              <td style="border-radius: 6px; background: #d4af37; margin-right: 10px;">
+                                <a href="mailto:${data.email}" style="background: #d4af37; border: 1px solid #d4af37; display: inline-block; padding: 12px 28px; text-decoration: none; border-radius: 6px; color: #000000; font-weight: bold; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Reply to Customer</a>
                               </td>
                             </tr>
                           </table>
@@ -502,6 +550,247 @@ ${submission.message}
   `.trim()
 
   await sendTelegramNotification(message)
+}
+
+// Send order confirmation email to customer
+const sendOrderConfirmationEmail = async (order, items) => {
+  const transporter = createTransporter()
+  const productRows = items.map(item => `
+    <tr>
+      <td style="padding: 8px 0; color: #333; font-size: 14px;">${item.product_name}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: center;">${item.quantity}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.unit_price.toLocaleString()}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.total_price.toLocaleString()}</td>
+    </tr>
+  `).join('')
+  const mailOptions = {
+    from: `"Elixir Victoria" <${process.env.SMTP_USER}>`,
+    to: order.customer_email,
+    subject: `Order Confirmation - Elixir Victoria [${order.order_number}]`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Order Confirmation</title>
+      </head>
+      <body style="margin:0;padding:0;background-color:#f8f8f8;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f8f8f8;">
+          <tr>
+            <td align="center" style="padding:40px 0;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#fff;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;text-align:center;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);border-radius:8px 8px 0 0;">
+                    <h1 style="color:#d4af37;margin:0;font-size:28px;font-weight:600;letter-spacing:1px;">ELIXIR VICTORIA</h1>
+                    <p style="color:#fff;margin:10px 0 0 0;font-size:14px;opacity:0.8;">Luxury Fragrances & Body Care</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;">
+                    <h2 style="color:#000;margin:0 0 20px 0;font-size:22px;font-weight:600;">Thank you for your order!</h2>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">Dear ${order.customer_name},</p>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">Your order <strong>${order.order_number}</strong> has been received and is being processed. We will notify you when it ships.</p>
+                    <div style="background-color:#f9f9f9;padding:20px;border-radius:6px;margin:30px 0;">
+                      <h3 style="color:#000;margin:0 0 15px 0;font-size:16px;font-weight:600;">Order Summary</h3>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <th align="left" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Product</th>
+                          <th align="center" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Qty</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Unit Price</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Total</th>
+                        </tr>
+                        ${productRows}
+                        <tr>
+                          <td colspan="3" style="color:#333;font-size:15px;font-weight:bold;padding-top:16px;text-align:right;">Order Total:</td>
+                          <td style="color:#d4af37;font-size:16px;font-weight:bold;padding-top:16px;text-align:right;">₦${order.total.toLocaleString()}</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">If you have any questions, reply to this email or contact us at <a href="mailto:info@elixirvictoria.com" style="color:#d4af37;text-decoration:none;">info@elixirvictoria.com</a>.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 40px 40px 40px;text-align:center;background-color:#f9f9f9;border-radius:0 0 8px 8px;">
+                    <p style="color:#666;margin:0;font-size:14px;line-height:1.5;">Best regards,<br><strong>The Elixir Victoria Team</strong></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+  }
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Order confirmation sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending order confirmation:', error)
+    throw error
+  }
+}
+
+// Send 'Order Received, Awaiting Payment' email to customer
+const sendOrderReceivedEmail = async (order, items) => {
+  const transporter = createTransporter()
+  const productRows = items.map(item => `
+    <tr>
+      <td style="padding: 8px 0; color: #333; font-size: 14px;">${item.product_name}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: center;">${item.quantity}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.unit_price.toLocaleString()}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.total_price.toLocaleString()}</td>
+    </tr>
+  `).join('')
+  const mailOptions = {
+    from: `"Elixir Victoria" <${process.env.SMTP_USER}>`,
+    to: order.customer_email,
+    subject: `Order Received - Awaiting Payment [${order.order_number}]`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Received - Awaiting Payment</title>
+      </head>
+      <body style="margin:0;padding:0;background-color:#f8f8f8;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f8f8f8;">
+          <tr>
+            <td align="center" style="padding:40px 0;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#fff;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;text-align:center;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);border-radius:8px 8px 0 0;">
+                    <h1 style="color:#d4af37;margin:0;font-size:28px;font-weight:600;letter-spacing:1px;">ELIXIR VICTORIA</h1>
+                    <p style="color:#fff;margin:10px 0 0 0;font-size:14px;opacity:0.8;">Luxury Fragrances & Body Care</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;">
+                    <h2 style="color:#000;margin:0 0 20px 0;font-size:22px;font-weight:600;">Order Received - Awaiting Payment</h2>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">Dear ${order.customer_name},</p>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">We have received your order <strong>${order.order_number}</strong>. Please complete your payment to process your order. If you have already paid, kindly wait for payment confirmation.</p>
+                    <div style="background-color:#f9f9f9;padding:20px;border-radius:6px;margin:30px 0;">
+                      <h3 style="color:#000;margin:0 0 15px 0;font-size:16px;font-weight:600;">Order Summary</h3>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <th align="left" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Product</th>
+                          <th align="center" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Qty</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Unit Price</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Total</th>
+                        </tr>
+                        ${productRows}
+                        <tr>
+                          <td colspan="3" style="color:#333;font-size:15px;font-weight:bold;padding-top:16px;text-align:right;">Order Total:</td>
+                          <td style="color:#d4af37;font-size:16px;font-weight:bold;padding-top:16px;text-align:right;">₦${order.total.toLocaleString()}</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;">If you have any questions, reply to this email or contact us at <a href="mailto:info@elixirvictoria.com" style="color:#d4af37;text-decoration:none;">info@elixirvictoria.com</a>.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 40px 40px 40px;text-align:center;background-color:#f9f9f9;border-radius:0 0 8px 8px;">
+                    <p style="color:#666;margin:0;font-size:14px;line-height:1.5;">Best regards,<br><strong>The Elixir Victoria Team</strong></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+  }
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Order received/awaiting payment sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending order received/awaiting payment:', error)
+    throw error
+  }
+}
+// Send admin notification for new order
+const sendOrderAdminNotification = async (order, items) => {
+  const transporter = createTransporter()
+  const productRows = items.map(item => `
+    <tr>
+      <td style="padding: 8px 0; color: #333; font-size: 14px;">${item.product_name}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: center;">${item.quantity}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.unit_price.toLocaleString()}</td>
+      <td style="padding: 8px 0; color: #333; font-size: 14px; text-align: right;">₦${item.total_price.toLocaleString()}</td>
+    </tr>
+  `).join('')
+  const mailOptions = {
+    from: `"Elixir Victoria Orders" <${process.env.SMTP_USER}>`,
+    to: process.env.ADMIN_EMAIL || 'info@elixirvictoria.com',
+    subject: `New Order Received [${order.order_number}]`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Order Received</title>
+      </head>
+      <body style="margin:0;padding:0;background-color:#f8f8f8;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f8f8f8;">
+          <tr>
+            <td align="center" style="padding:40px 0;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;background-color:#fff;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;text-align:center;background:linear-gradient(135deg,#d4af37 0%,#b8941f 100%);border-radius:8px 8px 0 0;">
+                    <h1 style="color:#000;margin:0;font-size:24px;font-weight:600;">New Order Received</h1>
+                    <p style="color:#000;margin:10px 0 0 0;font-size:14px;opacity:0.8;">Elixir Victoria Website</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:40px 40px 20px 40px;">
+                    <h2 style="color:#000;margin:0 0 20px 0;font-size:20px;font-weight:600;">Order Details</h2>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;"><strong>Order Number:</strong> ${order.order_number}</p>
+                    <p style="color:#333;margin:0 0 20px 0;font-size:16px;line-height:1.6;"><strong>Customer:</strong> ${order.customer_name} (${order.customer_email})</p>
+                    <div style="background-color:#f9f9f9;padding:20px;border-radius:6px;margin:30px 0;">
+                      <h3 style="color:#000;margin:0 0 15px 0;font-size:16px;font-weight:600;">Order Summary</h3>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <th align="left" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Product</th>
+                          <th align="center" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Qty</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Unit Price</th>
+                          <th align="right" style="color:#d4af37;font-size:14px;padding-bottom:8px;">Total</th>
+                        </tr>
+                        ${productRows}
+                        <tr>
+                          <td colspan="3" style="color:#333;font-size:15px;font-weight:bold;padding-top:16px;text-align:right;">Order Total:</td>
+                          <td style="color:#d4af37;font-size:16px;font-weight:bold;padding-top:16px;text-align:right;">₦${order.total.toLocaleString()}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 40px 40px 40px;text-align:center;background-color:#f9f9f9;border-radius:0 0 8px 8px;">
+                    <p style="color:#666;margin:0;font-size:14px;line-height:1.5;">This notification was sent from the Elixir Victoria website order system.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+  }
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Admin order notification sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending admin order notification:', error)
+    throw error
+  }
 }
 
 // ===== AUTHENTICATION ENDPOINTS =====
@@ -965,6 +1254,19 @@ app.post('/api/orders', [
     // Send Telegram notification with database items
     await sendOrderNotification(order, orderItems)
 
+    // Send 'Order Received, Awaiting Payment' email to customer
+    try {
+      await sendOrderReceivedEmail(order, orderItems)
+    } catch (error) {
+      console.error('Failed to send order received/awaiting payment email:', error.message)
+    }
+    // Send admin notification for new order
+    try {
+      await sendOrderAdminNotification(order, orderItems)
+    } catch (error) {
+      console.error('Failed to send admin order notification:', error.message)
+    }
+
     res.status(201).json({
       message: 'Order created successfully',
       order: {
@@ -1108,6 +1410,17 @@ app.post('/api/payments/verify', [
           'INSERT INTO order_status_history (order_id, status, notes) VALUES ($1, $2, $3)',
           [orderResult.rows[0].id, 'paid', `Payment verified. Transaction ID: ${transaction.id}`]
         )
+        // Fetch order and items for confirmation email
+        const orderId = orderResult.rows[0].id
+        const orderData = await pool.query('SELECT * FROM orders WHERE id = $1', [orderId])
+        const order = orderData.rows[0]
+        const itemsData = await pool.query('SELECT * FROM order_items WHERE order_id = $1', [orderId])
+        const items = itemsData.rows
+        try {
+          await sendOrderConfirmationEmail(order, items)
+        } catch (error) {
+          console.error('Failed to send order confirmation email:', error.message)
+        }
       }
 
       res.json({
@@ -1248,11 +1561,26 @@ app.post('/api/contact', [
 
     const { name, email, phone, subject, message } = req.body
 
-    // Store email in database for marketing (non-blocking)
+    // Store email in database for marketing (blocking, so we can check status)
+    let subscriberStatus = null
     try {
-      await storeEmailInDatabase(email, name)
+      subscriberStatus = await storeEmailInDatabase(email)
     } catch (error) {
       console.log('Failed to store email in database:', error.message)
+    }
+    if (subscriberStatus && subscriberStatus.status === 'new') {
+      // Send welcome email
+      try {
+        await sendNewsletterWelcomeEmail(email)
+      } catch (error) {
+        console.error('Failed to send newsletter welcome email:', error.message)
+      }
+    }
+    if (subscriberStatus && subscriberStatus.status === 'exists') {
+      return res.status(200).json({
+        message: 'This email is already subscribed to our newsletter.',
+        success: false
+      })
     }
 
     // Store contact submission (non-blocking)
@@ -1290,6 +1618,52 @@ app.post('/api/contact', [
 
   } catch (error) {
     console.error('Contact form error:', error)
+    res.status(500).json({
+      message: 'Internal server error. Please try again later.',
+      success: false
+    })
+  }
+})
+
+// Newsletter subscription endpoint
+app.post('/api/newsletter', [
+  body('email').isEmail().normalizeEmail().withMessage('Valid email is required')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: 'Validation failed',
+        errors: errors.array()
+      })
+    }
+    const { email } = req.body
+    let subscriberStatus = null
+    try {
+      subscriberStatus = await storeEmailInDatabase(email)
+    } catch (error) {
+      console.log('Failed to store newsletter subscriber:', error.message)
+    }
+    if (subscriberStatus && subscriberStatus.status === 'new') {
+      try {
+        await sendNewsletterWelcomeEmail(email)
+      } catch (error) {
+        console.error('Failed to send newsletter welcome email:', error.message)
+      }
+    }
+    if (subscriberStatus && subscriberStatus.status === 'exists') {
+      res.status(200).json({
+        message: 'This email is already subscribed to our newsletter.',
+        success: false
+      })
+    } else {
+      res.status(500).json({
+        message: 'Failed to subscribe to newsletter.',
+        success: false
+      })
+    }
+  } catch (error) {
+    console.error('Newsletter subscription error:', error)
     res.status(500).json({
       message: 'Internal server error. Please try again later.',
       success: false

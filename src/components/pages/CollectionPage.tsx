@@ -118,7 +118,7 @@ export function CollectionPage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <section className="py-16 bg-gradient-to-b from-gray-900 to-black">
+      <section className="pt-24 pb-16 bg-gradient-to-b from-gray-900 to-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             ref={ref}
