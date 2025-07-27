@@ -61,7 +61,8 @@ export default function ContactPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/contact', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
+      const response = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,40 +184,40 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <motion.div variants={itemVariants}>
-              <div className="bg-gray-800 border border-gray-700 rounded-sm p-8">
-                <h2 className="text-heading-lg font-serif text-white mb-6">Send us a Message</h2>
+              <div className="bg-gray-800 border border-gray-700 rounded-sm p-10">
+                <h2 className="text-heading-lg font-serif text-white mb-8">Send us a Message</h2>
                 
                 {isSubmitted ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-8"
+                    className="text-center py-12"
                   >
-                    <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle size={32} className="text-green-500" />
+                    <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <CheckCircle size={40} className="text-green-500" />
                     </div>
-                    <h3 className="text-heading-md font-serif text-white mb-2">Message Sent!</h3>
-                    <p className="text-gray-400 text-body-md mb-6">
+                    <h3 className="text-heading-md font-serif text-white mb-3">Message Sent!</h3>
+                    <p className="text-gray-400 text-body-md mb-8">
                       Thank you for reaching out. We'll get back to you within 24 hours.
                     </p>
                     <button
                       onClick={() => setIsSubmitted(false)}
-                      className="btn-luxury"
+                      className="btn-luxury px-8 py-4"
                     >
                       Send Another Message
                     </button>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-8">
                     {error && (
-                      <div className="bg-red-500/10 border border-red-500/20 rounded-sm p-4">
+                      <div className="bg-red-500/10 border border-red-500/20 rounded-sm p-6">
                         <p className="text-red-400 text-body-sm">{error}</p>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-white text-body-sm font-medium mb-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label htmlFor="name" className="block text-white text-body-sm font-medium">
                           Full Name *
                         </label>
                         <input
@@ -226,13 +227,13 @@ export default function ContactPage() {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="input-luxury w-full"
+                          className="input-luxury w-full h-14 px-6"
                           placeholder="Your full name"
                         />
                       </div>
 
-                      <div>
-                        <label htmlFor="email" className="block text-white text-body-sm font-medium mb-2">
+                      <div className="space-y-3">
+                        <label htmlFor="email" className="block text-white text-body-sm font-medium">
                           Email Address *
                         </label>
                         <input
@@ -242,15 +243,15 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="input-luxury w-full"
+                          className="input-luxury w-full h-14 px-6"
                           placeholder="your@email.com"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="phone" className="block text-white text-body-sm font-medium mb-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label htmlFor="phone" className="block text-white text-body-sm font-medium">
                           Phone Number
                         </label>
                         <input
@@ -259,13 +260,13 @@ export default function ContactPage() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="input-luxury w-full"
+                          className="input-luxury w-full h-14 px-6"
                           placeholder="+234 704 892 8368"
                         />
                       </div>
 
-                      <div>
-                        <label htmlFor="subject" className="block text-white text-body-sm font-medium mb-2">
+                      <div className="space-y-3">
+                        <label htmlFor="subject" className="block text-white text-body-sm font-medium">
                           Subject *
                         </label>
                         <select
@@ -274,7 +275,7 @@ export default function ContactPage() {
                           value={formData.subject}
                           onChange={handleInputChange}
                           required
-                          className="input-luxury w-full"
+                          className="input-luxury w-full h-14 px-6"
                         >
                           <option value="">Select a subject</option>
                           <option value="General Inquiry">General Inquiry</option>
@@ -288,8 +289,8 @@ export default function ContactPage() {
                       </div>
                     </div>
 
-                    <div>
-                      <label htmlFor="message" className="block text-white text-body-sm font-medium mb-2">
+                    <div className="space-y-3">
+                      <label htmlFor="message" className="block text-white text-body-sm font-medium">
                         Message *
                       </label>
                       <textarea
@@ -298,29 +299,31 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={handleInputChange}
                         required
-                        rows={6}
-                        className="input-luxury w-full resize-none"
+                        rows={8}
+                        className="input-luxury w-full resize-none px-6 py-4"
                         placeholder="Tell us how we can help you..."
                       />
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn-luxury w-full flex items-center justify-center"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Send size={20} className="mr-2" />
-                          Send Message
-                        </>
-                      )}
-                    </button>
+                    <div className="pt-4">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="btn-luxury w-full h-14 flex items-center justify-center text-body-md font-medium"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                            Sending Message...
+                          </>
+                        ) : (
+                          <>
+                            <Send size={22} className="mr-3" />
+                            Send Message
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </form>
                 )}
               </div>

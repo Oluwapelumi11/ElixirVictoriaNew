@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Menu, X, User, Heart, ShoppingBag, ArrowRight } from 'lucide-react'
+import { Search, Menu, X, User, Heart, ShoppingBag, ArrowRight, LogOut } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
-import { useCartStore, useWishlistStore } from '@/lib/store'
+import { useCartStore, useWishlistStore, useUserStore } from '@/lib/store'
 import { products, convertToProduct } from '@/data/products'
 
 // Fuzzy search function (same as CollectionPage)
@@ -46,6 +46,7 @@ export function Header() {
   
   const { getTotalItems: getCartCount } = useCartStore()
   const { getTotalItems: getWishlistCount } = useWishlistStore()
+  const { user, isAuthenticated, logout } = useUserStore()
 
   const cartCount = getCartCount()
   const wishlistCount = getWishlistCount()
@@ -125,13 +126,35 @@ export function Header() {
             </Link>
 
             {/* Account */}
-            <Link
-              href="/account"
-              className="text-white hover:text-yellow-500 transition-colors duration-300"
-              aria-label="Account"
-            >
-              <User size={20} />
-            </Link>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-white text-sm hidden md:block">
+                  Hi, {user?.firstName || user?.email}
+                </span>
+                <Link
+                  href="/account"
+                  className="text-white hover:text-yellow-500 transition-colors duration-300"
+                  aria-label="Account"
+                >
+                  <User size={20} />
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-white hover:text-yellow-500 transition-colors duration-300"
+                  aria-label="Logout"
+                >
+                  <LogOut size={20} />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-white hover:text-yellow-500 transition-colors duration-300"
+                aria-label="Login"
+              >
+                <User size={20} />
+              </Link>
+            )}
 
             {/* Cart */}
             <Link

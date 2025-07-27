@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Trash2, Minus, Plus, ShoppingBag } from 'lucide-react'
+import { ArrowLeft, Trash2, Minus, Plus, ShoppingBag, CreditCard } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
 
 export default function CartPage() {
@@ -217,9 +217,10 @@ export default function CartPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <button className="w-full btn-luxury py-4">
+                  <Link href="/checkout" className="w-full btn-luxury py-4 flex items-center justify-center">
+                    <CreditCard size={20} className="mr-2" />
                     Proceed to Checkout
-                  </button>
+                  </Link>
                   <button
                     onClick={clearCart}
                     className="w-full bg-transparent border border-gray-600 text-white px-6 py-4 font-medium hover:bg-gray-700 transition-colors duration-300"

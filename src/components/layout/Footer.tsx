@@ -139,6 +139,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/track-order" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
+                  Track Order
+                </Link>
+              </li>
+              <li>
                 <Link href="/shipping" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300">
                   Shipping & Returns
                 </Link>

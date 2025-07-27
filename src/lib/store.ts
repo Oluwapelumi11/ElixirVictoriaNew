@@ -15,11 +15,12 @@ interface CartStore {
 
 interface UserStore {
   user: User | null
+  token: string | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (user: User) => void
+  login: (userData: { user: User; token: string }) => void
   logout: () => void
-  updateUser: (user: Partial<User>) => void
+  updateUser: (userData: Partial<User>) => void
 }
 
 interface UIStore {
@@ -128,13 +129,14 @@ export const useCartStore = create<CartStore>()(
 
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
+  token: null,
   isAuthenticated: false,
   isLoading: false,
-  login: (user: User) => {
-    set({ user, isAuthenticated: true })
+  login: (userData: { user: User; token: string }) => {
+    set({ user: userData.user, token: userData.token, isAuthenticated: true })
   },
   logout: () => {
-    set({ user: null, isAuthenticated: false })
+    set({ user: null, token: null, isAuthenticated: false })
   },
   updateUser: (userData: Partial<User>) => {
     set((state) => ({

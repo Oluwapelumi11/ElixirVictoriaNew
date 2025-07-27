@@ -1,7 +1,7 @@
 {
-  "/privacy/page": "app/privacy/page.js",
-  "/shipping/page": "app/shipping/page.js",
   "/wishlist/page": "app/wishlist/page.js",
   "/collection/page": "app/collection/page.js",
-  "/cart/page": "app/cart/page.js"
+  "/cart/page": "app/cart/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/page": "app/page.js"
 }
