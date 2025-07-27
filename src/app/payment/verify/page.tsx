@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
@@ -8,7 +8,7 @@ import { CheckCircle, XCircle, Loader2, ShoppingBag } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useCartStore } from '@/lib/store'
 
-export default function PaymentVerifyPage() {
+function PaymentVerifyContent() {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -184,5 +184,13 @@ export default function PaymentVerifyPage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function PaymentVerifyPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
+      <PaymentVerifyContent />
+    </Suspense>
   )
 } 

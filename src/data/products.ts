@@ -43,8 +43,8 @@ export const products: SimpleProduct[] = [
     id: 1,
     name: 'Elixir Victoria',
     description: 'A bold yet tender blend that opens with a burst of fruits, blooms into elegant florals, and settles into a sensual oud embrace. Elixir Victoria is a journey of grace, strength, and unforgettable presence.',
-    price: 850,
-    originalPrice: 950,
+    price: 100000,
+    originalPrice: 100000,
     image: '/images/products/victoria-nocturne.png',
     category: 'Fragrance',
     tags: ['Evening', 'Oriental', 'Luxury', 'Floral', 'Woody', 'Fruity'],
@@ -69,10 +69,10 @@ export const products: SimpleProduct[] = [
   },
   {
     id: 2,
-    name: 'Honey & Sugar Luxury Body Scrub',
+    name: 'Honey & Sugar Luxury Body Scrub (Large)',
     description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
-    price: 120,
-    originalPrice: 140,
+    price: 10000,
+    originalPrice: 10000,
     image: '/images/products/luxury-body-scrub.png',
     category: 'Body Care',
     tags: ['Exfoliating', 'Wellness', 'Natural', 'Moisturizing', 'Luxury'],
@@ -80,14 +80,56 @@ export const products: SimpleProduct[] = [
     isFeatured: true,
     rating: 4.9,
     reviews: 8,
-    inStock: true,
+    inStock: false,
     // Additional product details
     ingredients: ['Raw Honey', 'Fine Sugar Crystals', 'Coconut Oil', 'Vitamin E', 'Natural Essential Oils'],
     benefits: ['Gentle Exfoliation', 'Deep Moisturization', 'Natural Radiance', 'Smooth Skin Texture', 'Antioxidant Protection'],
     skinType: ['All Skin Types', 'Sensitive Skin Friendly'],
     usage: 'Apply to damp skin in gentle circular motions, then rinse thoroughly',
     frequency: '2-3 times per week',
-    volume: '200g',
+    volume: '300g',
+    longDescription: `Transform your bathing ritual into a luxurious spa experience with our Honey & Sugar Luxury Body Scrub. This carefully crafted formula combines the natural sweetness of raw honey with fine sugar crystals to create a gentle yet effective exfoliating treatment.
+
+The raw honey acts as a natural humectant, drawing moisture to your skin while providing antibacterial properties. Fine sugar crystals gently slough away dead skin cells, revealing the soft, radiant skin beneath. Enriched with coconut oil and vitamin E, this scrub deeply nourishes and moisturizes, leaving your skin silky smooth and beautifully hydrated.
+
+Perfect for those seeking a natural, indulgent skincare experience that delivers visible results. The warm, honey-sweet fragrance creates a sensorial experience that transforms your daily routine into a moment of pure luxury and self-care.`,
+    keyFeatures: [
+      'Natural raw honey for deep moisturization',
+      'Fine sugar crystals for gentle exfoliation',
+      'Coconut oil for intense hydration',
+      'Vitamin E for antioxidant protection',
+      'Suitable for all skin types',
+      'Luxurious honey-sweet fragrance'
+    ],
+    results: [
+      'Smoother, softer skin texture',
+      'Enhanced natural radiance',
+      'Improved skin hydration',
+      'Gentle exfoliation without irritation',
+      'Long-lasting moisturization'
+    ]
+  },
+  {
+    id: 5,
+    name: 'Honey & Sugar Luxury Body Scrub (Small)',
+    description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
+    price: 5000,
+    originalPrice: 5000,
+    image: '/images/products/luxury-body-scrub.png',
+    category: 'Body Care',
+    tags: ['Exfoliating', 'Wellness', 'Natural', 'Moisturizing', 'Luxury'],
+    isNew: false,
+    isFeatured: false,
+    rating: 4.9,
+    reviews: 8,
+    inStock: false,
+    // Additional product details
+    ingredients: ['Raw Honey', 'Fine Sugar Crystals', 'Coconut Oil', 'Vitamin E', 'Natural Essential Oils'],
+    benefits: ['Gentle Exfoliation', 'Deep Moisturization', 'Natural Radiance', 'Smooth Skin Texture', 'Antioxidant Protection'],
+    skinType: ['All Skin Types', 'Sensitive Skin Friendly'],
+    usage: 'Apply to damp skin in gentle circular motions, then rinse thoroughly',
+    frequency: '2-3 times per week',
+    volume: '150g',
     longDescription: `Transform your bathing ritual into a luxurious spa experience with our Honey & Sugar Luxury Body Scrub. This carefully crafted formula combines the natural sweetness of raw honey with fine sugar crystals to create a gentle yet effective exfoliating treatment.
 
 The raw honey acts as a natural humectant, drawing moisture to your skin while providing antibacterial properties. Fine sugar crystals gently slough away dead skin cells, revealing the soft, radiant skin beneath. Enriched with coconut oil and vitamin E, this scrub deeply nourishes and moisturizes, leaving your skin silky smooth and beautifully hydrated.
@@ -113,8 +155,8 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
     id: 3,
     name: 'High Class Lip Gloss',
     description: 'A sophisticated white lip gloss that delivers high-shine luxury with a subtle pearl finish. This premium formula provides intense hydration while creating a stunning, high-class appearance.',
-    price: 65,
-    originalPrice: 75,
+    price: 5000,
+    originalPrice: 5000,
     image: '/images/products/high-class-lip-gloss.png',
     category: 'Makeup',
     tags: ['Luxury', 'High-Shine', 'Hydrating', 'Pearl Finish', 'Sophisticated'],
@@ -155,8 +197,8 @@ High Class Lip Gloss is designed for those who appreciate the finer things in li
     id: 4,
     name: 'Magic Lip Gloss',
     description: 'A mesmerizing pink lip gloss that creates a magical, enchanting effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a work of art.',
-    price: 65,
-    originalPrice: 75,
+    price: 5000,
+    originalPrice: 5000,
     image: '/images/products/magic-lip-gloss.png',
     category: 'Makeup',
     tags: ['Vibrant', 'Enchanting', 'High-Shine', 'Pink Hue', 'Magical'],

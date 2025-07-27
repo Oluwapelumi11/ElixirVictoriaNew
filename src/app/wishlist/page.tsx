@@ -169,11 +169,9 @@ export default function WishlistPage() {
                   {/* Price */}
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center space-x-3">
-                      <span className="text-xl font-semibold text-white">
-                        ${product.price}
-                      </span>
+                      <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
                       {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-sm text-gray-400 line-through">${product.originalPrice}</span>
+                        <span className="text-sm text-gray-400 line-through">₦{product.originalPrice.toLocaleString()}</span>
                       )}
                     </div>
                     <motion.button

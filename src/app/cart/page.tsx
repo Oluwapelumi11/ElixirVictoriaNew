@@ -172,12 +172,12 @@ export default function CartPage() {
 
                       {/* Price */}
                       <div className="text-right">
-                        <p className="text-xl font-semibold text-white">
-                          ${(item.product.price * item.quantity).toFixed(2)}
-                        </p>
-                        <p className="text-gray-400 text-sm">
-                          ${item.product.price} each
-                        </p>
+                        <div className="text-lg font-semibold text-white">
+                          ₦{(item.product.price * item.quantity).toLocaleString()}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          ₦{item.product.price.toLocaleString()} each
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -198,20 +198,20 @@ export default function CartPage() {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-400">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>₦{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                    <span>{shipping === 0 ? 'Free' : `₦${shipping.toLocaleString()}`}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
                     <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>₦{tax.toLocaleString()}</span>
                   </div>
                   <div className="border-t border-gray-700 pt-4">
                     <div className="flex justify-between text-white font-semibold text-lg">
                       <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>₦{total.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default function CartPage() {
                 {subtotal < 200 && (
                   <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
                     <p className="text-yellow-500 text-sm">
-                      Add ${(200 - subtotal).toFixed(2)} more for free shipping
+                      Add ₦{(200 - subtotal).toLocaleString()} more for free shipping
                     </p>
                   </div>
                 )}

@@ -236,7 +236,7 @@ export function Header() {
                               <h4 className="text-white font-medium truncate">{product.name}</h4>
                               <p className="text-gray-400 text-sm truncate">{product.category}</p>
                             </div>
-                            <div className="text-yellow-500 font-semibold">${product.price}</div>
+                            <div className="text-yellow-500 font-semibold">₦{product.price.toLocaleString()}</div>
                           </Link>
                         ))}
                       </div>
