@@ -21,7 +21,6 @@ interface CheckoutForm {
   shipping_address_line2: string
   shipping_city: string
   shipping_state: string
-  shipping_postal_code: string
   shipping_country: string
 }
 
@@ -57,7 +56,6 @@ export default function CheckoutPage() {
     shipping_address_line2: '',
     shipping_city: '',
     shipping_state: '',
-    shipping_postal_code: '',
     shipping_country: ''
   })
 
@@ -153,7 +151,7 @@ export default function CheckoutPage() {
         return
       }
 
-      if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_postal_code || !formData.shipping_country) {
+      if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_country) {
         setError('Please fill in all required shipping address fields')
         return
       }
@@ -165,7 +163,7 @@ export default function CheckoutPage() {
       }
 
       if (formData.shipping_address_id === 'manual') {
-        if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_postal_code || !formData.shipping_country) {
+        if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_country) {
           setError('Please fill in all required shipping address fields')
           return
         }
@@ -201,7 +199,6 @@ export default function CheckoutPage() {
           shipping_address_line2: formData.shipping_address_line2,
           shipping_city: formData.shipping_city,
           shipping_state: formData.shipping_state,
-          shipping_postal_code: formData.shipping_postal_code,
           shipping_country: formData.shipping_country
         }),
       })
@@ -582,19 +579,6 @@ export default function CheckoutPage() {
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div className="relative">
-                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                            <input
-                              type="text"
-                              id="shipping_postal_code"
-                              name="shipping_postal_code"
-                              value={formData.shipping_postal_code}
-                              onChange={handleInputChange}
-                              required
-                              className="input-luxury w-full h-14 pl-10"
-                              placeholder="Postal Code"
-                            />
-                          </div>
                           <div className="relative">
                             <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                             <input

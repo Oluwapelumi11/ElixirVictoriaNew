@@ -14,7 +14,6 @@ interface AddressForm {
   address_line2: string
   city: string
   state: string
-  postal_code: string
   country: string
   is_default: boolean
 }
@@ -36,7 +35,6 @@ export default function NewAddressPage() {
     address_line2: '',
     city: '',
     state: '',
-    postal_code: '',
     country: '',
     is_default: false
   })
@@ -247,44 +245,23 @@ export default function NewAddressPage() {
                   </div>
                 </motion.div>
 
-                {/* Postal Code and Country */}
-                <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label htmlFor="postal_code" className="block text-white text-body-sm font-medium">
-                      Postal Code *
-                    </label>
-                    <div className="relative">
-                      <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="text"
-                        id="postal_code"
-                        name="postal_code"
-                        value={formData.postal_code}
-                        onChange={handleInputChange}
-                        required
-                        className="input-luxury w-full h-14 pl-10"
-                        placeholder="Postal code"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label htmlFor="country" className="block text-white text-body-sm font-medium">
-                      Country *
-                    </label>
-                    <div className="relative">
-                      <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="text"
-                        id="country"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleInputChange}
-                        required
-                        className="input-luxury w-full h-14 pl-10"
-                        placeholder="Country"
-                      />
-                    </div>
+                {/* Country */}
+                <motion.div variants={itemVariants} className="space-y-3">
+                  <label htmlFor="country" className="block text-white text-body-sm font-medium">
+                    Country *
+                  </label>
+                  <div className="relative">
+                    <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      id="country"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      required
+                      className="input-luxury w-full h-14 pl-10"
+                      placeholder="Country"
+                    />
                   </div>
                 </motion.div>
 

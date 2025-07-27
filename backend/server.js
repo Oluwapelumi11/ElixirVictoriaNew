@@ -97,7 +97,8 @@ const authenticateToken = (req, res, next) => {
 
 // Email transporter
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  console.log('Creating email transporter with SMTP:', process.env.SMTP_HOST, process.env.SMTP_USER)
+  return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false,
@@ -271,8 +272,15 @@ const sendCustomerEmail = async (data) => {
       </html>
     `,
   }
-
-  return transporter.sendMail(mailOptions)
+  console.log('[EMAIL] Sending customer email to:', data.email, 'Subject:', mailOptions.subject)
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Customer email sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending customer email:', error)
+    throw error
+  }
 }
 
 // Send admin notification email
@@ -397,8 +405,15 @@ const sendAdminEmail = async (data) => {
       </html>
     `,
   }
-
-  return transporter.sendMail(mailOptions)
+  console.log('[EMAIL] Sending admin email to:', mailOptions.to, 'Subject:', mailOptions.subject)
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    console.log('[EMAIL] Admin email sent:', result)
+    return result
+  } catch (error) {
+    console.error('[EMAIL] Error sending admin email:', error)
+    throw error
+  }
 }
 
 // ===== TELEGRAM BOT FUNCTIONS =====
