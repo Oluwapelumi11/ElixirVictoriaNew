@@ -26,14 +26,13 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-gray-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Logo size="md" />
+        <div className="flex items-center h-20">
+          <Link href="/" className="flex  justify-start items-start flex-shrink-0">
+            <Logo size="md" className="w-full  h-full"/>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Center */}
+          <nav className="hidden md:flex items-center space-x-8 mx-auto">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -45,8 +44,8 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* Desktop Actions - Right side */}
+          <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
             {/* Search */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -87,10 +86,10 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Right side */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white hover:text-yellow-500 transition-colors duration-300"
+            className="md:hidden text-white hover:text-yellow-500 transition-colors duration-300 flex-shrink-0 ml-auto"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
