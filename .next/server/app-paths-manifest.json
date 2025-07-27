@@ -1,7 +1,6 @@
 {
-  "/cart/page": "app/cart/page.js",
-  "/wishlist/page": "app/wishlist/page.js",
-  "/login/page": "app/login/page.js",
+  "/bespoke/page": "app/bespoke/page.js",
   "/page": "app/page.js",
-  "/bespoke/page": "app/bespoke/page.js"
+  "/wishlist/page": "app/wishlist/page.js",
+  "/cart/page": "app/cart/page.js"
 }
