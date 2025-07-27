@@ -376,15 +376,16 @@ function ProductCard({ product, index }: ProductCardProps) {
 
         {/* Quick Actions */}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleViewZoom}
-            className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
-            title="View/Zoom"
-          >
-            <Eye size={20} />
-          </motion.button>
+          <Link href={`/product/${product.id}`}>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+              title="View Details"
+            >
+              <Eye size={20} />
+            </motion.button>
+          </Link>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

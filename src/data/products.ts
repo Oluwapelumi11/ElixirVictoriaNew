@@ -15,54 +15,184 @@ export interface SimpleProduct {
   rating: number
   reviews: number
   inStock: boolean
+  // Optional fragrance-specific properties
+  fragranceFamily?: string[]
+  scentType?: string
+  keyNotes?: {
+    top: string[]
+    middle: string[]
+    base: string[]
+  }
+  longDescription?: string
+  volume?: string
+  gender?: string
+  longevity?: string
+  occasion?: string[]
+  // Optional body care-specific properties
+  ingredients?: string[]
+  benefits?: string[]
+  skinType?: string[]
+  usage?: string
+  frequency?: string
+  keyFeatures?: string[]
+  results?: string[]
 }
 
 export const products: SimpleProduct[] = [
   {
     id: 1,
-    name: 'Victoria Nocturne',
-    description: 'A mysterious blend of oud, vanilla, and rare spices that evokes the magic of midnight',
+    name: 'Elixir Victoria',
+    description: 'A bold yet tender blend that opens with a burst of fruits, blooms into elegant florals, and settles into a sensual oud embrace. Elixir Victoria is a journey of grace, strength, and unforgettable presence.',
     price: 850,
     originalPrice: 950,
     image: '/images/products/victoria-nocturne.png',
     category: 'Fragrance',
-    tags: ['Evening', 'Oriental', 'Luxury'],
+    tags: ['Evening', 'Oriental', 'Luxury', 'Floral', 'Woody', 'Fruity'],
     isNew: true,
     isFeatured: true,
     rating: 5.0,
     reviews: 12,
     inStock: true,
+    // Additional product details
+    fragranceFamily: ['Floral', 'Woody', 'Fruity'],
+    scentType: 'Fruity Woody Oriental',
+    keyNotes: {
+      top: ['Bergamot', 'Juicy Pear'],
+      middle: ['Jasmine', 'Rose', 'Orange Blossom'],
+      base: ['Sandalwood', 'Vanilla']
+    },
+    longDescription: `Elixir Victoria represents confidence, elegance, and sensuality. This scent is soft but seductive, perfect for date nights or elegant dinners. Inspired by the phrase "Toque real, aire seductor", it denotes A Royal touch with a seductive vibe on a warm evening breeze and golden skin. Stays up to 18 hours without reapplying.`,
+    volume: '100ml',
+    gender: 'Unisex',
+    longevity: '18 hours',
+    occasion: ['Date Nights', 'Elegant Dinners', 'Evening Events']
   },
   {
     id: 2,
-    name: 'Honey and Sugar Body Scrub',
-    description: 'Exfoliating scrub with Himalayan salt and essential oils for silky smooth skin',
+    name: 'Honey & Sugar Luxury Body Scrub',
+    description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
     price: 120,
     originalPrice: 140,
     image: '/images/products/luxury-body-scrub.png',
     category: 'Body Care',
-    tags: ['Exfoliating', 'Wellness', 'Natural'],
+    tags: ['Exfoliating', 'Wellness', 'Natural', 'Moisturizing', 'Luxury'],
     isNew: false,
     isFeatured: true,
     rating: 4.9,
     reviews: 8,
     inStock: true,
+    // Additional product details
+    ingredients: ['Raw Honey', 'Fine Sugar Crystals', 'Coconut Oil', 'Vitamin E', 'Natural Essential Oils'],
+    benefits: ['Gentle Exfoliation', 'Deep Moisturization', 'Natural Radiance', 'Smooth Skin Texture', 'Antioxidant Protection'],
+    skinType: ['All Skin Types', 'Sensitive Skin Friendly'],
+    usage: 'Apply to damp skin in gentle circular motions, then rinse thoroughly',
+    frequency: '2-3 times per week',
+    volume: '200g',
+    longDescription: `Transform your bathing ritual into a luxurious spa experience with our Honey & Sugar Luxury Body Scrub. This carefully crafted formula combines the natural sweetness of raw honey with fine sugar crystals to create a gentle yet effective exfoliating treatment.
+
+The raw honey acts as a natural humectant, drawing moisture to your skin while providing antibacterial properties. Fine sugar crystals gently slough away dead skin cells, revealing the soft, radiant skin beneath. Enriched with coconut oil and vitamin E, this scrub deeply nourishes and moisturizes, leaving your skin silky smooth and beautifully hydrated.
+
+Perfect for those seeking a natural, indulgent skincare experience that delivers visible results. The warm, honey-sweet fragrance creates a sensorial experience that transforms your daily routine into a moment of pure luxury and self-care.`,
+    keyFeatures: [
+      'Natural raw honey for deep moisturization',
+      'Fine sugar crystals for gentle exfoliation',
+      'Coconut oil for intense hydration',
+      'Vitamin E for antioxidant protection',
+      'Suitable for all skin types',
+      'Luxurious honey-sweet fragrance'
+    ],
+    results: [
+      'Smoother, softer skin texture',
+      'Enhanced natural radiance',
+      'Improved skin hydration',
+      'Gentle exfoliation without irritation',
+      'Long-lasting moisturization'
+    ]
   },
-  // {
-  //   id: 3,
-  //   name: 'Elixir Royal',
-  //   description: 'Regal rose and jasmine with hints of amber - fit for royalty',
-  //   price: 1200,
-  //   originalPrice: 1200,
-  //   image: '/images/products/victoria-nocturne.png',
-  //   category: 'Fragrance',
-  //   tags: ['Royal', 'Floral', 'Luxury'],
-  //   isNew: true,
-  //   isFeatured: true,
-  //   rating: 5.0,
-  //   reviews: 15,
-  //   inStock: true,
-  // },
+  {
+    id: 3,
+    name: 'High Class Lip Gloss',
+    description: 'A sophisticated white lip gloss that delivers high-shine luxury with a subtle pearl finish. This premium formula provides intense hydration while creating a stunning, high-class appearance.',
+    price: 65,
+    originalPrice: 75,
+    image: '/images/products/high-class-lip-gloss.png',
+    category: 'Makeup',
+    tags: ['Luxury', 'High-Shine', 'Hydrating', 'Pearl Finish', 'Sophisticated'],
+    isNew: true,
+    isFeatured: true,
+    rating: 4.9,
+    reviews: 14,
+    inStock: true,
+    // Additional product details
+    ingredients: ['Jojoba Oil', 'Vitamin E', 'Pearl Extract', 'Hyaluronic Acid', 'Natural Waxes'],
+    benefits: ['Intense Hydration', 'Long-Lasting Shine', 'Plumping Effect', 'Non-Sticky Formula', 'Pearl Luminosity'],
+    skinType: ['All Skin Types', 'Sensitive Lips Friendly'],
+    usage: 'Apply directly to lips for instant shine and hydration',
+    frequency: 'As needed throughout the day',
+    volume: '8ml',
+    longDescription: `Elevate your beauty routine with High Class Lip Gloss - a sophisticated white lip gloss that embodies luxury and elegance. This premium formula features a unique pearl finish that creates a stunning high-shine effect while delivering intense hydration to your lips.
+
+The carefully crafted formula combines jojoba oil and hyaluronic acid for deep moisturization, while pearl extract provides a subtle luminosity that catches the light beautifully. The non-sticky texture ensures comfortable wear throughout the day, making it perfect for both everyday elegance and special occasions.
+
+High Class Lip Gloss is designed for those who appreciate the finer things in life. The white pearl finish creates a sophisticated, high-class appearance that complements any makeup look. Whether worn alone for a natural glow or layered over lipstick for added dimension, this gloss delivers the luxury experience you deserve.`,
+    keyFeatures: [
+      'Pearl white finish for sophisticated shine',
+      'Intense hydration with jojoba oil',
+      'Non-sticky, comfortable formula',
+      'Long-lasting shine and moisture',
+      'Suitable for all skin tones',
+      'Luxurious packaging design'
+    ],
+    results: [
+      'Instant high-shine finish',
+      'Deeply hydrated, plump lips',
+      'Sophisticated pearl luminosity',
+      'Comfortable, non-sticky wear',
+      'Long-lasting moisture retention'
+    ]
+  },
+  {
+    id: 4,
+    name: 'Magic Lip Gloss',
+    description: 'A mesmerizing pink lip gloss that creates a magical, enchanting effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a work of art.',
+    price: 65,
+    originalPrice: 75,
+    image: '/images/products/magic-lip-gloss.png',
+    category: 'Makeup',
+    tags: ['Vibrant', 'Enchanting', 'High-Shine', 'Pink Hue', 'Magical'],
+    isNew: true,
+    isFeatured: true,
+    rating: 4.8,
+    reviews: 16,
+    inStock: true,
+    // Additional product details
+    ingredients: ['Rosehip Oil', 'Vitamin E', 'Pink Pigments', 'Hyaluronic Acid', 'Natural Waxes'],
+    benefits: ['Vibrant Pink Color', 'Intense Hydration', 'Long-Lasting Shine', 'Plumping Effect', 'Magical Glow'],
+    skinType: ['All Skin Types', 'Sensitive Lips Friendly'],
+    usage: 'Apply directly to lips for instant color and shine',
+    frequency: 'As needed throughout the day',
+    volume: '8ml',
+    longDescription: `Discover the magic of transformation with Magic Lip Gloss - a mesmerizing pink lip gloss that creates an enchanting, magical effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a captivating work of art.
+
+The carefully selected pink pigments create a beautiful, buildable color that enhances your natural lip tone while providing a magical glow. Enriched with rosehip oil and hyaluronic acid, this gloss deeply hydrates and plumps your lips, creating a youthful, radiant appearance.
+
+Magic Lip Gloss is perfect for those who want to add a touch of enchantment to their beauty routine. The vibrant pink color creates a magical, eye-catching effect that's perfect for special occasions, date nights, or whenever you want to feel extraordinary. The high-shine finish catches the light beautifully, creating a mesmerizing, magical glow that draws attention to your beautiful smile.`,
+    keyFeatures: [
+      'Vibrant pink color with magical glow',
+      'Intense hydration with rosehip oil',
+      'Non-sticky, comfortable formula',
+      'Long-lasting color and shine',
+      'Buildable pink pigment',
+      'Enchanting high-shine finish'
+    ],
+    results: [
+      'Instant vibrant pink color',
+      'Deeply hydrated, plump lips',
+      'Magical high-shine glow',
+      'Comfortable, non-sticky wear',
+      'Long-lasting color retention'
+    ]
+  },
   // {
   //   id: 4,
   //   name: 'Silk Body Oil',
