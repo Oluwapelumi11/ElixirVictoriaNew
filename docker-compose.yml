@@ -25,6 +25,7 @@ services:
       - PAYSTACK_PUBLIC_KEY=${PAYSTACK_PUBLIC_KEY}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - JWT_SECRET=${JWT_SECRET}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]

@@ -14,7 +14,7 @@ RUN npm ci --only=production
 # Install backend dependencies
 COPY backend/package.json backend/package-lock.json* ./backend/
 WORKDIR /app/backend
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
