@@ -1,8 +1,9 @@
 {
   "/cart/page": "app/cart/page.js",
-  "/register/page": "app/register/page.js",
-  "/account/page": "app/account/page.js",
+  "/checkout/page": "app/checkout/page.js",
   "/page": "app/page.js",
-  "/collection/page": "app/collection/page.js",
-  "/bespoke/page": "app/bespoke/page.js"
+  "/bespoke/page": "app/bespoke/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/login/page": "app/login/page.js",
+  "/account/page": "app/account/page.js"
 }

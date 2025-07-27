@@ -4,8 +4,9 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Heart, ShoppingBag, Trash2 } from 'lucide-react'
+import { ArrowLeft, Heart, ShoppingBag, Trash2, Check } from 'lucide-react'
 import { useWishlistStore, useCartStore } from '@/lib/store'
+import { useState } from 'react'
 
 export default function WishlistPage() {
   const [ref, inView] = useInView({
@@ -15,6 +16,7 @@ export default function WishlistPage() {
 
   const { items, removeItem, clearWishlist } = useWishlistStore()
   const { addItem: addToCart } = useCartStore()
+  const [addingToCart, setAddingToCart] = useState<string | null>(null)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -37,6 +39,16 @@ export default function WishlistPage() {
         ease: 'easeOut',
       },
     },
+  }
+
+  const handleAddToCart = async (product: any) => {
+    setAddingToCart(product.id)
+    addToCart(product)
+    
+    // Reset button state after animation
+    setTimeout(() => {
+      setAddingToCart(null)
+    }, 1000)
   }
 
   if (items.length === 0) {
@@ -126,11 +138,26 @@ export default function WishlistPage() {
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      onClick={() => addToCart(product)}
-                      className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
-                      title="Add to cart"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={addingToCart === product.id}
+                      className={`p-3 rounded-full transition-colors duration-300 ${
+                        addingToCart === product.id 
+                          ? 'bg-green-500 text-white cursor-not-allowed' 
+                          : 'bg-yellow-500 text-black hover:bg-yellow-400'
+                      }`}
+                      title={addingToCart === product.id ? 'Added to cart!' : 'Add to cart'}
                     >
-                      <ShoppingBag size={20} />
+                      {addingToCart === product.id ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 200 }}
+                        >
+                          <Check size={20} />
+                        </motion.div>
+                      ) : (
+                        <ShoppingBag size={20} />
+                      )}
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
@@ -177,10 +204,27 @@ export default function WishlistPage() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => addToCart(product)}
-                      className="bg-yellow-500 text-black px-4 py-2 text-sm font-medium hover:bg-yellow-400 transition-colors duration-300"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={addingToCart === product.id}
+                      className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                        addingToCart === product.id 
+                          ? 'bg-green-500 text-white cursor-not-allowed' 
+                          : 'bg-yellow-500 text-black hover:bg-yellow-400'
+                      }`}
                     >
-                      Add to Cart
+                      {addingToCart === product.id ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 200 }}
+                          className="flex items-center space-x-2"
+                        >
+                          <Check size={16} />
+                          <span>Added!</span>
+                        </motion.div>
+                      ) : (
+                        'Add to Cart'
+                      )}
                     </motion.button>
                   </div>
                 </div>

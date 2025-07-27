@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Menu, X, User, Heart, ShoppingBag, ArrowRight, LogOut } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
-import { useCartStore, useWishlistStore, useUserStore } from '@/lib/store'
+import { CartAnimation } from '@/components/ui/CartAnimation'
+import { MobileCartToast } from '@/components/ui/MobileCartToast'
+import { useCartStore, useWishlistStore, useUserStore, useUIStore } from '@/lib/store'
 import { products, convertToProduct } from '@/data/products'
 
 // Fuzzy search function (same as CollectionPage)
@@ -47,6 +49,7 @@ export function Header() {
   const { getTotalItems: getCartCount } = useCartStore()
   const { getTotalItems: getWishlistCount } = useWishlistStore()
   const { user, isAuthenticated, logout } = useUserStore()
+  const { isCartAnimating } = useUIStore()
 
   const cartCount = getCartCount()
   const wishlistCount = getWishlistCount()
@@ -168,11 +171,20 @@ export function Header() {
               className="text-white hover:text-yellow-500 transition-colors duration-300 relative"
               aria-label="Shopping Cart"
             >
-              <ShoppingBag size={20} />
+              <motion.div
+                animate={isCartAnimating ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : {}}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+              >
+                <ShoppingBag size={20} />
+              </motion.div>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                <motion.span 
+                  className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium"
+                  animate={isCartAnimating ? { scale: [1, 1.3, 1], backgroundColor: ['#EAB308', '#FCD34D', '#EAB308'] } : {}}
+                  transition={{ duration: 0.6, ease: 'easeInOut' }}
+                >
                   {cartCount}
-                </span>
+                </motion.span>
               )}
             </Link>
           </div>
@@ -353,11 +365,20 @@ export function Header() {
                   className="text-white hover:text-yellow-500 transition-colors duration-300 relative"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <ShoppingBag size={20} />
+                  <motion.div
+                    animate={isCartAnimating ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : {}}
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                  >
+                    <ShoppingBag size={20} />
+                  </motion.div>
                   {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                    <motion.span 
+                      className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium"
+                      animate={isCartAnimating ? { scale: [1, 1.3, 1], backgroundColor: ['#EAB308', '#FCD34D', '#EAB308'] } : {}}
+                      transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    >
                       {cartCount}
-                    </span>
+                    </motion.span>
                   )}
                 </Link>
               </div>
@@ -365,6 +386,10 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+      
+      {/* Cart Animation */}
+      <CartAnimation />
+      <MobileCartToast />
     </header>
   )
 } 

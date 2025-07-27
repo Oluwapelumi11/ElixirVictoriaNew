@@ -28,6 +28,7 @@ interface UIStore {
   isSearchOpen: boolean
   isMobileMenuOpen: boolean
   isNewsletterOpen: boolean
+  isCartAnimating: boolean
   openCart: () => void
   closeCart: () => void
   toggleCart: () => void
@@ -40,6 +41,8 @@ interface UIStore {
   openNewsletter: () => void
   closeNewsletter: () => void
   toggleNewsletter: () => void
+  triggerCartAnimation: () => void
+  setCartAnimation: (isAnimating: boolean) => void
 }
 
 interface WishlistStore {
@@ -87,6 +90,15 @@ export const useCartStore = create<CartStore>()(
             items: [...state.items, newItem],
           }
         })
+        
+        // Trigger cart animation
+        const uiStore = useUIStore.getState()
+        uiStore.triggerCartAnimation()
+        
+        // Reset animation after 1 second
+        setTimeout(() => {
+          uiStore.setCartAnimation(false)
+        }, 1000)
       },
       removeItem: (itemId: string) => {
         set((state) => ({
@@ -151,6 +163,7 @@ export const useUIStore = create<UIStore>((set) => ({
   isSearchOpen: false,
   isMobileMenuOpen: false,
   isNewsletterOpen: false,
+  isCartAnimating: false,
   openCart: () => set({ isCartOpen: true }),
   closeCart: () => set({ isCartOpen: false }),
   toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
@@ -163,6 +176,8 @@ export const useUIStore = create<UIStore>((set) => ({
   openNewsletter: () => set({ isNewsletterOpen: true }),
   closeNewsletter: () => set({ isNewsletterOpen: false }),
   toggleNewsletter: () => set((state) => ({ isNewsletterOpen: !state.isNewsletterOpen })),
+  triggerCartAnimation: () => set((state) => ({ isCartAnimating: true })),
+  setCartAnimation: (isAnimating: boolean) => set({ isCartAnimating: isAnimating }),
 }))
 
 export const useWishlistStore = create<WishlistStore>()(

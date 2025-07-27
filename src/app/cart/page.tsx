@@ -15,9 +15,7 @@ export default function CartPage() {
 
   const { items, removeItem, updateQuantity, getSubtotal, getTotal, clearCart } = useCartStore()
   const subtotal = getSubtotal()
-  const total = getTotal()
-  const shipping = subtotal > 200 ? 0 : 15
-  const tax = subtotal * 0.08
+  const total = subtotal
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -200,14 +198,6 @@ export default function CartPage() {
                     <span>Subtotal</span>
                     <span>₦{subtotal.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-gray-400">
-                    <span>Shipping</span>
-                    <span>{shipping === 0 ? 'Free' : `₦${shipping.toLocaleString()}`}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-400">
-                    <span>Tax</span>
-                    <span>₦{tax.toLocaleString()}</span>
-                  </div>
                   <div className="border-t border-gray-700 pt-4">
                     <div className="flex justify-between text-white font-semibold text-lg">
                       <span>Total</span>
@@ -229,13 +219,7 @@ export default function CartPage() {
                   </button>
                 </div>
 
-                {subtotal < 200 && (
-                  <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
-                    <p className="text-yellow-500 text-sm">
-                      Add ₦{(200 - subtotal).toLocaleString()} more for free shipping
-                    </p>
-                  </div>
-                )}
+
               </motion.div>
             </div>
           </div>

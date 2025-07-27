@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
-import { ArrowLeft, Heart, ShoppingBag, Eye, Star, Clock, Users, Zap } from 'lucide-react'
+import { ArrowLeft, Heart, ShoppingBag, Eye, Star, Clock, Users, Zap, Check } from 'lucide-react'
 import Link from 'next/link'
 import { useCartStore, useWishlistStore, useUIStore } from '@/lib/store'
 import { products, convertToProduct } from '@/data/products'
@@ -26,6 +26,7 @@ export default function ProductDetailPage() {
 
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   if (!product) {
     return (
@@ -44,9 +45,15 @@ export default function ProductDetailPage() {
 
   const convertedProduct = convertToProduct(product)
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    setIsAddingToCart(true)
     addToCart(convertedProduct, quantity)
     openCart()
+    
+    // Reset button state after animation
+    setTimeout(() => {
+      setIsAddingToCart(false)
+    }, 1000)
   }
 
   const handleWishlistToggle = () => {
@@ -414,10 +421,29 @@ export default function ProductDetailPage() {
                 <div className="flex space-x-4">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 btn-luxury flex items-center justify-center"
+                    disabled={isAddingToCart}
+                    className={`flex-1 flex items-center justify-center ${
+                      isAddingToCart 
+                        ? 'bg-green-500 text-white cursor-not-allowed' 
+                        : 'btn-luxury'
+                    }`}
                   >
-                    <ShoppingBag size={20} className="mr-2" />
-                    Add to Cart
+                    {isAddingToCart ? (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 200 }}
+                        className="flex items-center"
+                      >
+                        <Check size={20} className="mr-2" />
+                        Added!
+                      </motion.div>
+                    ) : (
+                      <>
+                        <ShoppingBag size={20} className="mr-2" />
+                        Add to Cart
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={handleWishlistToggle}

@@ -67,6 +67,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState('')
   const [orderCreated, setOrderCreated] = useState(false)
   const [paymentUrl, setPaymentUrl] = useState('')
+  const [addressesLoaded, setAddressesLoaded] = useState(false)
 
   const subtotal = getSubtotal()
   const total = subtotal
@@ -80,26 +81,47 @@ export default function CheckoutPage() {
 
   // Load user addresses if authenticated
   useEffect(() => {
+    console.log('Checkout auth state:', { isAuthenticated, user, token })
     if (isAuthenticated && token) {
       loadUserAddresses()
     }
   }, [isAuthenticated, token])
 
+  // Auto-select first shipping address for logged-in users
+  useEffect(() => {
+    if (isAuthenticated && userAddresses.length > 0 && !formData.shipping_address_id) {
+      const firstShippingAddress = userAddresses.find(addr => addr.type === 'shipping')
+      if (firstShippingAddress) {
+        setFormData(prev => ({
+          ...prev,
+          shipping_address_id: firstShippingAddress.id.toString()
+        }))
+      }
+    }
+  }, [userAddresses, isAuthenticated, formData.shipping_address_id])
+
   const loadUserAddresses = async () => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/addresses`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/addresses`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       })
 
+      console.log('Address response:', response.status, response.ok)
+      
       if (response.ok) {
         const data = await response.json()
-        setUserAddresses(data.addresses)
+        console.log('Address data:', data)
+        setUserAddresses(data.addresses || [])
+      } else {
+        console.log('Address response not ok:', response.status, response.statusText)
       }
     } catch (error) {
       console.error('Failed to load addresses:', error)
+    } finally {
+      setAddressesLoaded(true)
     }
   }
 
@@ -112,17 +134,29 @@ export default function CheckoutPage() {
   }
 
   const handleCreateOrder = async () => {
-    // Validate shipping address
-    if (!formData.shipping_address_id && !formData.shipping_address_line1) {
-      setError('Please provide a shipping address')
-      return
-    }
+    // For guests, validate all required fields
+    if (!isAuthenticated) {
+      if (!formData.customer_name || !formData.customer_email) {
+        setError('Please fill in your name and email')
+        return
+      }
 
-    if (!formData.shipping_address_id) {
-      // Validate required fields for new address
       if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_postal_code || !formData.shipping_country) {
         setError('Please fill in all required shipping address fields')
         return
+      }
+    } else {
+      // For authenticated users, validate shipping address selection
+      if (!formData.shipping_address_id) {
+        setError('Please select a shipping address option')
+        return
+      }
+
+      if (formData.shipping_address_id === 'manual') {
+        if (!formData.shipping_address_line1 || !formData.shipping_city || !formData.shipping_state || !formData.shipping_postal_code || !formData.shipping_country) {
+          setError('Please fill in all required shipping address fields')
+          return
+        }
       }
     }
 
@@ -325,63 +359,74 @@ export default function CheckoutPage() {
                 )}
 
                 <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <label htmlFor="customer_name" className="block text-white text-body-sm font-medium">
-                        Full Name *
-                      </label>
-                      <div className="relative">
-                        <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="customer_name"
-                          name="customer_name"
-                          value={formData.customer_name}
-                          onChange={handleInputChange}
-                          required
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="Your full name"
-                        />
-                      </div>
-                    </div>
+                  {/* Customer Information - Only for guests */}
+                  {!isAuthenticated ? (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                          <label htmlFor="customer_name" className="block text-white text-body-sm font-medium">
+                            Full Name *
+                          </label>
+                          <div className="relative">
+                            <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="customer_name"
+                              name="customer_name"
+                              value={formData.customer_name}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="Your full name"
+                            />
+                          </div>
+                        </div>
 
-                    <div className="space-y-3">
-                      <label htmlFor="customer_email" className="block text-white text-body-sm font-medium">
-                        Email Address *
-                      </label>
-                      <div className="relative">
-                        <Mail size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="email"
-                          id="customer_email"
-                          name="customer_email"
-                          value={formData.customer_email}
-                          onChange={handleInputChange}
-                          required
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="your@email.com"
-                        />
+                        <div className="space-y-3">
+                          <label htmlFor="customer_email" className="block text-white text-body-sm font-medium">
+                            Email Address *
+                          </label>
+                          <div className="relative">
+                            <Mail size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="email"
+                              id="customer_email"
+                              name="customer_email"
+                              value={formData.customer_email}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="your@email.com"
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <label htmlFor="customer_phone" className="block text-white text-body-sm font-medium">
-                      Phone Number
-                    </label>
-                    <div className="relative">
-                      <Phone size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="tel"
-                        id="customer_phone"
-                        name="customer_phone"
-                        value={formData.customer_phone}
-                        onChange={handleInputChange}
-                        className="input-luxury w-full h-14 pl-10"
-                        placeholder="+234 704 892 8368"
-                      />
+                      <div className="space-y-3">
+                        <label htmlFor="customer_phone" className="block text-white text-body-sm font-medium">
+                          Phone Number
+                        </label>
+                        <div className="relative">
+                          <Phone size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            type="tel"
+                            id="customer_phone"
+                            name="customer_phone"
+                            value={formData.customer_phone}
+                            onChange={handleInputChange}
+                            className="input-luxury w-full h-14 pl-10"
+                            placeholder="+234 704 892 8368"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-sm">
+                      <p className="text-yellow-500 text-sm">
+                        ✓ Using your saved information: {user?.firstName} {user?.lastName} ({user?.email})
+                      </p>
                     </div>
-                  </div>
+                  )}
 
                   {/* Shipping Address Section */}
                   <div className="space-y-3">
@@ -389,8 +434,8 @@ export default function CheckoutPage() {
                       Shipping Address *
                     </label>
                     
-                    {isAuthenticated && userAddresses.length > 0 && (
-                      <div className="mb-4">
+                    {isAuthenticated ? (
+                      <div className="space-y-4">
                         <div className="relative">
                           <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                           <select
@@ -400,109 +445,119 @@ export default function CheckoutPage() {
                             onChange={handleInputChange}
                             className="input-luxury w-full h-14 pl-10"
                           >
-                            <option value="">Select saved address or enter new one</option>
-                            {userAddresses
-                              .filter(addr => addr.type === 'shipping')
-                              .map((address) => (
-                                <option key={address.id} value={address.id}>
-                                  {address.address_line1}, {address.city}
-                                </option>
-                              ))}
+                            <option value="">Select a saved address</option>
+                            <option value="manual">Enter new address manually</option>
                           </select>
                         </div>
-                        <p className="text-gray-400 text-sm mt-2">
-                          Or enter a new shipping address below
-                        </p>
+                        {formData.shipping_address_id === 'manual' ? (
+                          <p className="text-gray-400 text-sm">
+                            Please enter your shipping address below
+                          </p>
+                        ) : formData.shipping_address_id ? (
+                          <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-sm">
+                            <p className="text-green-400 text-sm">✓ Using saved address</p>
+                          </div>
+                        ) : (
+                          <p className="text-gray-400 text-sm">
+                            Select an option above
+                          </p>
+                        )}
                       </div>
+                    ) : (
+                      <p className="text-gray-400 text-sm mb-4">
+                        Please enter your shipping address
+                      </p>
                     )}
 
-                    {/* Shipping Address Form */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_address_line1"
-                          name="shipping_address_line1"
-                          value={formData.shipping_address_line1}
-                          onChange={handleInputChange}
-                          required={!formData.shipping_address_id}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="Address Line 1"
-                        />
-                      </div>
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_address_line2"
-                          name="shipping_address_line2"
-                          value={formData.shipping_address_line2}
-                          onChange={handleInputChange}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="Address Line 2 (optional)"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_city"
-                          name="shipping_city"
-                          value={formData.shipping_city}
-                          onChange={handleInputChange}
-                          required={!formData.shipping_address_id}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="City"
-                        />
-                      </div>
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_state"
-                          name="shipping_state"
-                          value={formData.shipping_state}
-                          onChange={handleInputChange}
-                          required={!formData.shipping_address_id}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="State"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_postal_code"
-                          name="shipping_postal_code"
-                          value={formData.shipping_postal_code}
-                          onChange={handleInputChange}
-                          required={!formData.shipping_address_id}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="Postal Code"
-                        />
-                      </div>
-                      <div className="relative">
-                        <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                          type="text"
-                          id="shipping_country"
-                          name="shipping_country"
-                          value={formData.shipping_country}
-                          onChange={handleInputChange}
-                          required={!formData.shipping_address_id}
-                          className="input-luxury w-full h-14 pl-10"
-                          placeholder="Country"
-                        />
-                      </div>
-                    </div>
+                    {/* Shipping Address Form - Only show if manual entry selected or guest */}
+                    {(!isAuthenticated || formData.shipping_address_id === 'manual') && (
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_address_line1"
+                              name="shipping_address_line1"
+                              value={formData.shipping_address_line1}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="Address Line 1"
+                            />
+                          </div>
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_address_line2"
+                              name="shipping_address_line2"
+                              value={formData.shipping_address_line2}
+                              onChange={handleInputChange}
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="Address Line 2 (optional)"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_city"
+                              name="shipping_city"
+                              value={formData.shipping_city}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="City"
+                            />
+                          </div>
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_state"
+                              name="shipping_state"
+                              value={formData.shipping_state}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="State"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_postal_code"
+                              name="shipping_postal_code"
+                              value={formData.shipping_postal_code}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="Postal Code"
+                            />
+                          </div>
+                          <div className="relative">
+                            <MapPin size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              id="shipping_country"
+                              name="shipping_country"
+                              value={formData.shipping_country}
+                              onChange={handleInputChange}
+                              required
+                              className="input-luxury w-full h-14 pl-10"
+                              placeholder="Country"
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
-
-                  
 
                   <div className="space-y-3">
                     <label htmlFor="notes" className="block text-white text-body-sm font-medium">

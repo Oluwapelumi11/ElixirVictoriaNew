@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Search, Filter, Heart, Eye, ShoppingBag, Star } from 'lucide-react'
+import { ArrowLeft, Search, Filter, Heart, Eye, ShoppingBag, Star, Check } from 'lucide-react'
 import { products, type SimpleProduct, convertToProduct } from '@/data/products'
 import { useCartStore, useWishlistStore, useUIStore } from '@/lib/store'
 import { useSearchParams } from 'next/navigation'
@@ -316,6 +316,7 @@ interface ProductCardProps {
 function ProductCard({ product, index }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
   
   const { addItem: addToCart } = useCartStore()
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore()
@@ -324,10 +325,16 @@ function ProductCard({ product, index }: ProductCardProps) {
   const productData = convertToProduct(product)
   const isInWishlistItem = isInWishlist(productData.id)
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    setIsAddingToCart(true)
     addToCart(productData)
     openCart()
     console.log(`Added ${product.name} to cart`)
+    
+    // Reset button state after animation
+    setTimeout(() => {
+      setIsAddingToCart(false)
+    }, 1000)
   }
 
   const handleWishlistToggle = () => {
@@ -427,10 +434,25 @@ function ProductCard({ product, index }: ProductCardProps) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleAddToCart}
-              className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
-              title="Add to cart"
+              disabled={isAddingToCart}
+              className={`p-3 rounded-full transition-colors duration-300 ${
+                isAddingToCart 
+                  ? 'bg-green-500 text-white cursor-not-allowed' 
+                  : 'bg-yellow-500 text-black hover:bg-yellow-400'
+              }`}
+              title={isAddingToCart ? 'Added to cart!' : 'Add to cart'}
             >
-              <ShoppingBag size={20} />
+              {isAddingToCart ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 200 }}
+                >
+                  <Check size={20} />
+                </motion.div>
+              ) : (
+                <ShoppingBag size={20} />
+              )}
             </motion.button>
           </motion.div>
         </div>
@@ -481,9 +503,26 @@ function ProductCard({ product, index }: ProductCardProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
-              className="bg-yellow-500 text-black px-4 py-2 text-sm font-medium hover:bg-yellow-400 transition-colors duration-300"
+              disabled={isAddingToCart}
+              className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                isAddingToCart 
+                  ? 'bg-green-500 text-white cursor-not-allowed' 
+                  : 'bg-yellow-500 text-black hover:bg-yellow-400'
+              }`}
             >
-              Add to Cart
+              {isAddingToCart ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 200 }}
+                  className="flex items-center space-x-2"
+                >
+                  <Check size={16} />
+                  <span>Added!</span>
+                </motion.div>
+              ) : (
+                'Add to Cart'
+              )}
             </motion.button>
           </div>
         </div>

@@ -32,10 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfairDisplay.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png" />
+        <link rel="icon" href="/images/products/victoria-nocturne.png" type="image/png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/products/victoria-nocturne.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/products/victoria-nocturne.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/products/victoria-nocturne.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="msapplication-TileColor" content="#0a0a0a" />
