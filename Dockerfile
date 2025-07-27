@@ -62,7 +62,6 @@ USER nextjs
 # Expose both ports
 EXPOSE 3000 5000
 
-ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Create a startup script that runs both services

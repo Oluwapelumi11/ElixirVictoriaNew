@@ -10,19 +10,19 @@ cleanup() {
 # Set up signal handlers
 trap cleanup SIGTERM SIGINT
 
-# Start backend server
+# Start backend server on port 5000
 echo "Starting backend server on port 5000..."
 cd /app/backend
-node server.js &
+PORT=5000 node server.js &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
 sleep 2
 
-# Start frontend server
+# Start frontend server on port 3000
 echo "Starting frontend server on port 3000..."
 cd /app
-node server.js &
+PORT=3000 node server.js &
 FRONTEND_PID=$!
 
 # Wait for both processes
