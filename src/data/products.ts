@@ -111,4 +111,34 @@ export const searchProducts = (query: string) =>
     product.name.toLowerCase().includes(query.toLowerCase()) ||
     product.description.toLowerCase().includes(query.toLowerCase()) ||
     product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
-  ) 
+  )
+
+// Utility function to convert SimpleProduct to Product
+export const convertToProduct = (simpleProduct: SimpleProduct): Product => {
+  return {
+    id: simpleProduct.id.toString(),
+    name: simpleProduct.name,
+    description: simpleProduct.description,
+    shortDescription: simpleProduct.description.substring(0, 100) + '...',
+    price: simpleProduct.price,
+    originalPrice: simpleProduct.originalPrice,
+    images: [simpleProduct.image],
+    category: simpleProduct.category,
+    tags: simpleProduct.tags,
+    isNew: simpleProduct.isNew,
+    isFeatured: simpleProduct.isFeatured,
+    isAvailable: simpleProduct.inStock,
+    stockQuantity: simpleProduct.inStock ? 10 : 0, // Default stock quantity
+    sku: `ELX-${simpleProduct.id.toString().padStart(3, '0')}`,
+    fragranceNotes: [], // Empty for now, can be populated later
+    size: '50ml', // Default size
+    weight: 0.05, // Default weight in kg
+    dimensions: {
+      length: 5,
+      width: 5,
+      height: 15
+    },
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+} 

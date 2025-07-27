@@ -6,7 +6,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, Eye, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
-import { getFeaturedProducts, type SimpleProduct } from '@/data/products'
+import { getFeaturedProducts, type SimpleProduct, convertToProduct } from '@/data/products'
+import { useCartStore, useWishlistStore, useUIStore } from '@/lib/store'
 
 // Get featured products from centralized data
 const featuredProducts = getFeaturedProducts()
@@ -64,7 +65,7 @@ export function ProductShowcase() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 max-w-4xl mx-auto"
+          className="flex flex-wrap justify-center gap-8 w-full"
         >
           {featuredProducts.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
@@ -100,6 +101,35 @@ interface ProductCardProps {
 
 function ProductCard({ product, index }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isZoomed, setIsZoomed] = useState(false)
+  
+  const { addItem: addToCart } = useCartStore()
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore()
+  const { openCart } = useUIStore()
+
+  const productData = convertToProduct(product)
+  const isInWishlistItem = isInWishlist(productData.id)
+
+  const handleAddToCart = () => {
+    addToCart(productData)
+    openCart()
+    console.log(`Added ${product.name} to cart`)
+  }
+
+  const handleWishlistToggle = () => {
+    if (isInWishlistItem) {
+      removeFromWishlist(productData.id)
+      console.log(`Removed ${product.name} from wishlist`)
+    } else {
+      addToWishlist(productData)
+      console.log(`Added ${product.name} to wishlist`)
+    }
+  }
+
+  const handleViewZoom = () => {
+    setIsZoomed(!isZoomed)
+    console.log(`${isZoomed ? 'Zoomed out' : 'Zoomed in'} on ${product.name}`)
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -116,12 +146,17 @@ function ProductCard({ product, index }: ProductCardProps) {
   return (
     <motion.div
       variants={itemVariants}
-      className="group relative"
+      className="group relative flex-shrink-0"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ 
+        minWidth: '300px',
+        maxWidth: '400px',
+        flex: '1 1 auto'
+      }}
     >
       {/* Product Card */}
-      <div className="card-luxury p-6 hover-lift">
+      <div className="bg-gray-800 border border-gray-700 rounded-sm overflow-hidden hover:border-yellow-500/50 transition-all duration-300 h-full flex flex-col">
         {/* New Badge */}
         {product.isNew && (
           <div className="absolute top-4 left-4 z-10">
@@ -132,14 +167,14 @@ function ProductCard({ product, index }: ProductCardProps) {
         )}
 
         {/* Product Image */}
-        <div className="relative aspect-product mb-6 overflow-hidden">
-          <div className="w-full h-full bg-gray-800 rounded-sm relative">
+        <div className="relative aspect-square overflow-hidden">
+          <div className="w-full h-full bg-gray-800 relative">
             <Image
               src={product.image}
               alt={product.name}
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              className={`object-cover transition-transform duration-500 ${isZoomed ? 'scale-125' : 'scale-100'}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
 
@@ -153,21 +188,31 @@ function ProductCard({ product, index }: ProductCardProps) {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              onClick={handleViewZoom}
               className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+              title="View/Zoom"
             >
               <Eye size={20} />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+              onClick={handleWishlistToggle}
+              className={`p-3 rounded-full transition-colors duration-300 ${
+                isInWishlistItem 
+                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-yellow-500 text-black hover:bg-yellow-400'
+              }`}
+              title={isInWishlistItem ? 'Remove from wishlist' : 'Add to wishlist'}
             >
-              <Heart size={20} />
+              <Heart size={20} className={isInWishlistItem ? 'fill-current' : ''} />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              onClick={handleAddToCart}
               className="bg-yellow-500 text-black p-3 rounded-full hover:bg-yellow-400 transition-colors duration-300"
+              title="Add to cart"
             >
               <ShoppingBag size={20} />
             </motion.button>
@@ -175,32 +220,40 @@ function ProductCard({ product, index }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="space-y-3">
+        <div className="p-6 space-y-4 flex-1 flex flex-col">
           {/* Category */}
           <p className="text-sm text-yellow-500 font-medium">
             {product.category}
           </p>
 
           {/* Product Name */}
-          <h3 className="text-lg font-serif font-semibold text-white group-hover:text-yellow-500 transition-colors duration-300">
+          <h3 className="text-xl font-serif font-semibold text-white group-hover:text-yellow-500 transition-colors duration-300">
             {product.name}
           </h3>
 
           {/* Description */}
-          <p className="text-sm text-gray-400 leading-relaxed">
+          <p className="text-sm text-gray-400 leading-relaxed flex-1">
             {product.description}
           </p>
 
           {/* Price */}
-          <div className="flex items-center space-x-3">
-            <span className="text-xl font-semibold text-white">
-              ${product.price}
-            </span>
-            {product.originalPrice > product.price && (
-              <span className="text-sm text-gray-400 line-through">
-                ${product.originalPrice}
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex items-center space-x-3">
+              <span className="text-xl font-semibold text-white">
+                ${product.price}
               </span>
-            )}
+              {product.originalPrice > product.price && (
+                <span className="text-sm text-gray-400 line-through">${product.originalPrice}</span>
+              )}
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleAddToCart}
+              className="bg-yellow-500 text-black px-4 py-2 text-sm font-medium hover:bg-yellow-400 transition-colors duration-300"
+            >
+              Add to Cart
+            </motion.button>
           </div>
         </div>
       </div>

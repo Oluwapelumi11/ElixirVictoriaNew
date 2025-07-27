@@ -9,7 +9,7 @@ export function Footer() {
   const footerLinks = {
             company: [
           { name: 'About Us', href: '/about' },
-          { name: 'Brand Story', href: '/brand-story' },
+          { name: 'Our Story', href: '/brand-story' },
         ],
     support: [
       { name: 'Contact Us', href: '/contact' },

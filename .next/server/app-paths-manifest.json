@@ -1,1 +1,7 @@
-{}
+{
+  "/collection/page": "app/collection/page.js",
+  "/wishlist/page": "app/wishlist/page.js",
+  "/cart/page": "app/cart/page.js",
+  "/bespoke/page": "app/bespoke/page.js",
+  "/page": "app/page.js"
+}
