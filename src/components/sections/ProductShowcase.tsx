@@ -3,52 +3,13 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Heart, Eye, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
+import { getFeaturedProducts, type SimpleProduct } from '@/data/products'
 
-// Mock product data - replace with actual data from API
-const featuredProducts = [
-  {
-    id: 1,
-    name: 'Victoria Nocturne',
-    description: 'A mysterious blend of oud, vanilla, and rare spices',
-    price: 850,
-    originalPrice: 950,
-    image: '/images/products/victoria-nocturne.jpg',
-    category: 'Fragrance',
-    isNew: true,
-  },
-  {
-    id: 2,
-    name: 'Luxury Body Scrub',
-    description: 'Exfoliating scrub with Himalayan salt and essential oils',
-    price: 120,
-    originalPrice: 140,
-    image: '/images/products/luxury-body-scrub.jpg',
-    category: 'Body Care',
-    isNew: false,
-  },
-  {
-    id: 3,
-    name: 'Elixir Royal',
-    description: 'Regal rose and jasmine with hints of amber',
-    price: 1200,
-    originalPrice: 1200,
-    image: '/images/products/elixir-royal.jpg',
-    category: 'Fragrance',
-    isNew: true,
-  },
-  {
-    id: 4,
-    name: 'Silk Body Oil',
-    description: 'Nourishing body oil with argan and jojoba',
-    price: 95,
-    originalPrice: 110,
-    image: '/images/products/silk-body-oil.jpg',
-    category: 'Body Care',
-    isNew: false,
-  },
-]
+// Get featured products from centralized data
+const featuredProducts = getFeaturedProducts()
 
 export function ProductShowcase() {
   const [ref, inView] = useInView({
@@ -133,16 +94,7 @@ export function ProductShowcase() {
 }
 
 interface ProductCardProps {
-  product: {
-    id: number
-    name: string
-    description: string
-    price: number
-    originalPrice: number
-    image: string
-    category: string
-    isNew: boolean
-  }
+  product: SimpleProduct
   index: number
 }
 
@@ -181,13 +133,14 @@ function ProductCard({ product, index }: ProductCardProps) {
 
         {/* Product Image */}
         <div className="relative aspect-product mb-6 overflow-hidden">
-          <div className="w-full h-full bg-gray-800 rounded-sm">
-            {/* Placeholder for product image */}
-            <div className="w-full h-full bg-gradient-to-br from-yellow-500/20 to-yellow-200/10 flex items-center justify-center">
-              <div className="text-yellow-500 text-4xl font-serif">
-                {product.name.charAt(0)}
-              </div>
-            </div>
+          <div className="w-full h-full bg-gray-800 rounded-sm relative">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            />
           </div>
 
           {/* Hover Overlay */}

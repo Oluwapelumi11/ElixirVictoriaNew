@@ -109,7 +109,7 @@ export function HeroSection() {
                         </motion.button>
                       </Link>
                       
-                      <Link href="/brand-story">
+                      <Link href="/brand-story" className="hidden sm:block">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}

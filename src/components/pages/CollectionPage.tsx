@@ -4,101 +4,9 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Search, Filter, Heart, Eye, ShoppingBag, Star } from 'lucide-react'
-
-// Mock product data - replace with actual data from API
-const products = [
-  {
-    id: 1,
-    name: 'Victoria Nocturne',
-    description: 'A mysterious blend of oud, vanilla, and rare spices that evokes the magic of midnight',
-    price: 850,
-    originalPrice: 950,
-    image: '/images/products/victoria-nocturne.jpg',
-    category: 'Fragrance',
-    tags: ['Evening', 'Oriental', 'Luxury'],
-    isNew: true,
-    isFeatured: true,
-    rating: 5.0,
-    reviews: 12,
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: 'Luxury Body Scrub',
-    description: 'Exfoliating scrub with Himalayan salt and essential oils for silky smooth skin',
-    price: 120,
-    originalPrice: 140,
-    image: '/images/products/luxury-body-scrub.jpg',
-    category: 'Body Care',
-    tags: ['Exfoliating', 'Wellness', 'Natural'],
-    isNew: false,
-    isFeatured: true,
-    rating: 4.9,
-    reviews: 8,
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: 'Elixir Royal',
-    description: 'Regal rose and jasmine with hints of amber - fit for royalty',
-    price: 1200,
-    originalPrice: 1200,
-    image: '/images/products/elixir-royal.jpg',
-    category: 'Fragrance',
-    tags: ['Royal', 'Floral', 'Luxury'],
-    isNew: true,
-    isFeatured: true,
-    rating: 5.0,
-    reviews: 15,
-    inStock: true,
-  },
-  {
-    id: 4,
-    name: 'Silk Body Oil',
-    description: 'Nourishing body oil with argan and jojoba for ultimate hydration',
-    price: 95,
-    originalPrice: 110,
-    image: '/images/products/silk-body-oil.jpg',
-    category: 'Body Care',
-    tags: ['Hydrating', 'Natural', 'Wellness'],
-    isNew: false,
-    isFeatured: false,
-    rating: 4.8,
-    reviews: 6,
-    inStock: true,
-  },
-  {
-    id: 5,
-    name: 'Champagne Dreams',
-    description: 'Effervescent bergamot and champagne with white flowers',
-    price: 650,
-    originalPrice: 750,
-    image: '/images/products/champagne-dreams.jpg',
-    category: 'Fragrance',
-    tags: ['Day', 'Fresh', 'Luxury'],
-    isNew: false,
-    isFeatured: false,
-    rating: 4.7,
-    reviews: 10,
-    inStock: true,
-  },
-  {
-    id: 6,
-    name: 'Wellness Bath Salts',
-    description: 'Therapeutic bath salts with lavender and eucalyptus for ultimate relaxation',
-    price: 85,
-    originalPrice: 100,
-    image: '/images/products/wellness-bath-salts.jpg',
-    category: 'Body Care',
-    tags: ['Relaxing', 'Wellness', 'Natural'],
-    isNew: true,
-    isFeatured: false,
-    rating: 4.9,
-    reviews: 4,
-    inStock: true,
-  },
-]
+import { products, type SimpleProduct } from '@/data/products'
 
 const categories = [
   { name: 'All Products', value: 'all' },
@@ -269,12 +177,25 @@ export function CollectionPage() {
               >
                 {/* Product Image */}
                 <div className="relative aspect-square bg-gradient-to-br from-yellow-500/20 to-yellow-200/10 overflow-hidden">
+                  {/* Placeholder for product image - replace with actual image */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center space-y-4">
                       <div className="text-yellow-500 text-4xl font-serif">{product.name.charAt(0)}</div>
                       <div className="text-white text-lg font-medium">{product.category}</div>
+                      <div className="text-gray-400 text-sm">Image Placeholder</div>
                     </div>
                   </div>
+                  
+                  {/* Uncomment and replace with actual image when ready */}
+                  {/* 
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  */}
                   
                   {/* Badges */}
                   <div className="absolute top-4 left-4 flex space-x-2">
