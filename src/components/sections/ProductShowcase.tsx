@@ -178,6 +178,15 @@ function ProductCard({ product, index }: ProductCardProps) {
           </div>
         )}
 
+        {/* Sold Out Badge */}
+        {!product.inStock && (
+          <div className="absolute top-4 right-4 z-10">
+            <span className="bg-red-500 text-white text-xs font-medium px-3 py-1">
+              SOLD OUT
+            </span>
+          </div>
+        )}
+
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden">
           <div className="w-full h-full bg-gray-800 relative">
@@ -242,6 +251,14 @@ function ProductCard({ product, index }: ProductCardProps) {
                 title="Contact via WhatsApp"
               >
                 <MessageCircle size={20} />
+              </motion.button>
+            ) : !product.inStock ? (
+              <motion.button
+                className="bg-gray-500 text-white p-3 rounded-full cursor-not-allowed"
+                title="Sold Out"
+                disabled
+              >
+                <ShoppingBag size={20} />
               </motion.button>
             ) : (
               <motion.button
@@ -312,6 +329,13 @@ function ProductCard({ product, index }: ProductCardProps) {
               >
                 <MessageCircle size={16} />
                 <span>WhatsApp</span>
+              </motion.button>
+            ) : !product.inStock ? (
+              <motion.button
+                disabled
+                className="bg-gray-500 text-white px-4 py-2 text-sm font-medium cursor-not-allowed"
+              >
+                Sold Out
               </motion.button>
             ) : (
               <motion.button

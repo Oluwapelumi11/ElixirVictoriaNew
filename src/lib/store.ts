@@ -65,6 +65,12 @@ export const useCartStore = create<CartStore>()(
           return
         }
 
+        // Prevent out-of-stock products from being added to cart
+        if (!product.isAvailable) {
+          console.log('Cannot add out-of-stock product to cart:', product.name)
+          return
+        }
+
         console.log('Adding to cart:', { product, quantity, size })
         set((state) => {
           const existingItem = state.items.find(

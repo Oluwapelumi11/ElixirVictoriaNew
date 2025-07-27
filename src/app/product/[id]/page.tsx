@@ -419,7 +419,7 @@ export default function ProductDetailPage() {
 
               {/* Add to Cart Section */}
               <motion.div variants={itemVariants} className="space-y-6">
-                {!product.whatsappOnly && (
+                {!product.whatsappOnly && product.inStock && (
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center border border-gray-700 rounded-sm">
                       <button
@@ -449,6 +449,13 @@ export default function ProductDetailPage() {
                     >
                       <MessageCircle size={20} className="mr-2" />
                       Contact via WhatsApp
+                    </button>
+                  ) : !product.inStock ? (
+                    <button
+                      disabled
+                      className="flex-1 flex items-center justify-center bg-gray-500 text-white cursor-not-allowed py-4 px-6 rounded-sm"
+                    >
+                      Sold Out
                     </button>
                   ) : (
                     <button

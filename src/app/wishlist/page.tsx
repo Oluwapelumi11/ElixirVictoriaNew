@@ -203,6 +203,8 @@ export default function WishlistPage() {
                     <div className="flex items-center space-x-3">
                       {product.whatsappOnly ? (
                         <span className="text-xl font-semibold text-white">Contact for Pricing</span>
+                      ) : !product.isAvailable ? (
+                        <span className="text-xl font-semibold text-red-500">Sold Out</span>
                       ) : (
                         <>
                           <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
@@ -221,6 +223,13 @@ export default function WishlistPage() {
                       >
                         <MessageCircle size={16} />
                         <span>WhatsApp</span>
+                      </motion.button>
+                    ) : !product.isAvailable ? (
+                      <motion.button
+                        disabled
+                        className="bg-gray-500 text-white px-4 py-2 text-sm font-medium cursor-not-allowed"
+                      >
+                        Sold Out
                       </motion.button>
                     ) : (
                       <motion.button
