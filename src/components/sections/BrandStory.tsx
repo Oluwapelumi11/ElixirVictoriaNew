@@ -167,7 +167,7 @@ export function BrandStory() {
                 "We're not just creating products—we're redefining what luxury beauty and wellness means for a new generation."
               </p>
               <p className="text-xs text-champagne-gold mt-2 font-medium">
-                — Victoria Elixir, Founder & Creative Director
+                — Elixir Victoria, Founder & Creative Director
               </p>
             </motion.div>
           </motion.div>

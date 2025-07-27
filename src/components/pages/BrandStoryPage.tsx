@@ -57,8 +57,8 @@ export function BrandStoryPage() {
               Our Story
             </motion.h1>
 
-            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
-              How a vision for authentic luxury launches today as the most anticipated beauty and wellness brand in the world
+            <motion.p variants={itemVariants} className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed mb-8">
+              Today, July 27, 2025, Elixir Victoria launches Elixir Victoria after years of perfecting her vision.
             </motion.p>
           </motion.div>
         </div>
@@ -198,7 +198,7 @@ export function BrandStoryPage() {
               <div className="w-32 h-32 bg-gradient-to-br from-yellow-500/20 to-yellow-200/10 rounded-full mx-auto flex items-center justify-center">
                 <Users size={48} className="text-yellow-500" />
               </div>
-              <h3 className="text-xl font-semibold text-white">Victoria Elixir</h3>
+              <h3 className="text-xl font-semibold text-white">Elixir Victoria</h3>
               <p className="text-yellow-500 font-medium">Founder & Creative Director</p>
               <p className="text-gray-400 text-sm leading-relaxed">
                 The visionary behind Elixir Victoria, bringing fresh perspectives to luxury beauty and wellness creation.
