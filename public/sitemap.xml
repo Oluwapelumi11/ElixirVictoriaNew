@@ -58,7 +58,7 @@
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://elixirvictoria.com/images/products/luxury-body-scrub.png</image:loc>
-      <image:caption>Honey & Sugar Luxury Body Scrub</image:caption>
+      <image:caption>Honey &amp; Sugar Luxury Body Scrub</image:caption>
     </image:image>
   </url>
   <url>
@@ -67,7 +67,7 @@
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://elixirvictoria.com/images/products/luxury-body-scrub.png</image:loc>
-      <image:caption>Honey & Sugar Luxury Body Scrub (Small)</image:caption>
+      <image:caption>Honey &amp; Sugar Luxury Body Scrub (Small)</image:caption>
     </image:image>
   </url>
   <url>
