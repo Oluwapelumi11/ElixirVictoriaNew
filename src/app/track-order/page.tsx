@@ -77,8 +77,8 @@ export default function TrackOrderPage() {
     setHasSearched(true)
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/orders/email/${encodeURIComponent(email.trim())}`)
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/orders/email/${encodeURIComponent(email.trim())}`)
 
       if (response.ok) {
         const data = await response.json()

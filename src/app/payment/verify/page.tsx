@@ -36,8 +36,8 @@ function PaymentVerifyContent() {
 
   const verifyPayment = async (reference: string) => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/payments/verify`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/payments/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

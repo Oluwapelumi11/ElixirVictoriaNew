@@ -104,22 +104,25 @@ export default function CheckoutPage() {
     setError('')
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/orders`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` })
+          ...(token && { Authorization: `Bearer ${token}` })
         },
         body: JSON.stringify({
           customer_email: formData.customer_email,
           customer_name: formData.customer_name,
           customer_phone: formData.customer_phone,
-          items: items,
-          subtotal: subtotal,
-          tax: tax,
-          shipping: shipping,
-          total: total,
+          items: items.map(item => ({
+            product: item.product,
+            quantity: item.quantity
+          })),
+          subtotal,
+          tax,
+          shipping,
+          total,
           shipping_address_id: formData.shipping_address_id,
           billing_address_id: formData.billing_address_id,
           notes: formData.notes
@@ -129,13 +132,13 @@ export default function CheckoutPage() {
       const data = await response.json()
 
       if (response.ok) {
-        setOrderCreated(true)
+        // Initialize payment
         await initializePayment(data.order.id)
       } else {
         setError(data.message || 'Failed to create order')
       }
     } catch (err) {
-      setError('Network error. Please check your connection and try again.')
+      setError('Failed to create order. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -146,8 +149,8 @@ export default function CheckoutPage() {
     setError('')
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/payments/initialize`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/payments/initialize`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

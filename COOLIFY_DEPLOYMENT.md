@@ -32,27 +32,37 @@ elixir-victoria-ui/
 
 ### 3. Environment Variables
 
-Set these environment variables in Coolify:
+Set these environment variables in your Coolify deployment:
 
-```env
-# Frontend Configuration
-NODE_ENV=production
-NEXT_TELEMETRY_DISABLED=1
-NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+### Required Variables
+- `NODE_ENV=production`
+- `NEXT_TELEMETRY_DISABLED=1`
+- `PORT=3000`
+- `HOSTNAME=0.0.0.0`
 
-# Backend Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-ADMIN_EMAIL=info@elixirvictoria.com
-DATABASE_URL=postgresql://username:password@host:port/database
-FRONTEND_URL=https://your-domain.com
+### Database
+- `DATABASE_URL=your_postgresql_connection_string`
 
-# Optional: Custom ports
-PORT=3000
-BACKEND_PORT=5000
-```
+### Email Configuration
+- `SMTP_HOST=smtppro.zoho.com`
+- `SMTP_PORT=587`
+- `SMTP_USER=your_email@elixirvictoria.com`
+- `SMTP_PASS=your_email_password`
+- `ADMIN_EMAIL=info@elixirvictoria.com`
+
+### Frontend URL
+- `FRONTEND_URL=https://yourdomain.com`
+
+### Paystack Payment Gateway
+- `PAYSTACK_SECRET_KEY=your_paystack_secret_key`
+- `PAYSTACK_PUBLIC_KEY=your_paystack_public_key`
+
+### Telegram Bot (Optional)
+- `TELEGRAM_BOT_TOKEN=your_telegram_bot_token`
+- `TELEGRAM_CHAT_ID=your_telegram_chat_id`
+
+### JWT Secret
+- `JWT_SECRET=your_jwt_secret_key`
 
 ### 4. Database Setup
 

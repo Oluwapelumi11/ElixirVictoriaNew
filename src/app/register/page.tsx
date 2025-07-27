@@ -57,17 +57,13 @@ export default function RegisterPage() {
     }
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/auth/register`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
+        body: JSON.stringify(formData),
       })
 
       const data = await response.json()

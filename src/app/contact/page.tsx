@@ -61,8 +61,8 @@ export default function ContactPage() {
     setError('')
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/contact`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

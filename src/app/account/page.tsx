@@ -41,14 +41,14 @@ export default function AccountPage() {
   // Load user addresses
   useEffect(() => {
     if (isAuthenticated && user) {
-      loadAddresses()
+      loadUserAddresses()
     }
   }, [isAuthenticated, user])
 
-  const loadAddresses = async () => {
+  const loadUserAddresses = async () => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
-      const response = await fetch(`${backendUrl}/api/addresses`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '/api'
+      const response = await fetch(`${backendUrl}/addresses`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
