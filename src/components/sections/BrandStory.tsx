@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
+import { Logo } from '@/components/ui/Logo'
 
 export function BrandStory() {
   const [ref, inView] = useInView({
@@ -135,15 +136,10 @@ export function BrandStory() {
             <div className="relative aspect-square bg-gradient-to-br from-champagne-gold/20 to-soft-gold/10 rounded-sm overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-luxury-black/40 to-transparent" />
               
-              {/* Placeholder for brand story image */}
+              {/* Logo instead of text */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="text-champagne-gold text-6xl font-playfair">
-                    EV
-                  </div>
-                  <div className="text-pearl-white text-lg font-medium">
-                    Elixir Victoria
-                  </div>
+                  <Logo size="lg" className="mx-auto w-96 h-48" />
                   <div className="text-subtle-gray text-sm">
                     Launching Today
                   </div>
