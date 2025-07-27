@@ -151,12 +151,12 @@ export default function FAQPage() {
                 Can't find what you're looking for? Our customer service team is here to help.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="mailto:info@elixirvictoria.com"
+                <Link 
+                  href="/contact"
                   className="btn-luxury"
                 >
                   Email Us
-                </a>
+                </Link>
                 <a 
                   href="https://wa.me/2347048928368"
                   target="_blank"

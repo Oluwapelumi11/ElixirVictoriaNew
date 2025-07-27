@@ -168,12 +168,12 @@ export default function ShippingPage() {
                   Our customer service team is here to assist you with any shipping or return questions.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a 
-                    href="mailto:info@elixirvictoria.com"
+                  <Link 
+                    href="/contact"
                     className="btn-luxury"
                   >
                     Contact Us
-                  </a>
+                  </Link>
                   <a 
                     href="https://wa.me/2347048928368"
                     target="_blank"

@@ -134,12 +134,12 @@ export default function PrivacyPage() {
                 <p className="text-gray-400 text-body-lg mb-6">
                   If you have any questions about our privacy practices, please contact us.
                 </p>
-                <a 
-                  href="mailto:info@elixirvictoria.com"
+                <Link 
+                  href="/contact"
                   className="btn-luxury"
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
             </motion.section>
           </motion.div>

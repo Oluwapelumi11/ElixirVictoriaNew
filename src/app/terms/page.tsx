@@ -124,12 +124,12 @@ export default function TermsPage() {
                 <p className="text-gray-400 text-body-lg mb-6">
                   If you have any questions about our terms of service, please contact us.
                 </p>
-                <a 
-                  href="mailto:info@elixirvictoria.com"
+                <Link 
+                  href="/contact"
                   className="btn-luxury"
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
             </motion.section>
           </motion.div>
