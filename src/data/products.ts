@@ -274,48 +274,7 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
       'Long-lasting moisturization'
     ]
   },
-  {
-    id: 6,
-    name: 'Magic Lip Gloss',
-    description: 'A mesmerizing pink lip gloss that creates a magical, enchanting effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a work of art.',
-    price: 5000,
-    originalPrice: 5000,
-    image: '/images/products/pink-gloss.png',
-    category: 'Makeup',
-    tags: ['Vibrant', 'Enchanting', 'High-Shine', 'Pink Hue', 'Magical'],
-    isNew: true,
-    isFeatured: true,
-    rating: 4.8,
-    reviews: 16,
-    inStock: true,
-    // Additional product details
-    ingredients: ['Rosehip Oil', 'Vitamin E', 'Pink Pigments', 'Hyaluronic Acid', 'Natural Waxes'],
-    benefits: ['Vibrant Pink Color', 'Intense Hydration', 'Long-Lasting Shine', 'Plumping Effect', 'Magical Glow'],
-    skinType: ['All Skin Types', 'Sensitive Lips Friendly'],
-    usage: 'Apply directly to lips for instant color and shine',
-    frequency: 'As needed throughout the day',
-    volume: '8ml',
-    longDescription: `Discover the magic of transformation with Magic Lip Gloss - a mesmerizing pink lip gloss that creates an enchanting, magical effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a captivating work of art.
-
-The carefully selected pink pigments create a beautiful, buildable color that enhances your natural lip tone while providing a magical glow. Enriched with rosehip oil and hyaluronic acid, this gloss deeply hydrates and plumps your lips, creating a youthful, radiant appearance.
-
-Magic Lip Gloss is perfect for those who want to add a touch of enchantment to their beauty routine. The vibrant pink color creates a magical, eye-catching effect that's perfect for special occasions, date nights, or whenever you want to feel extraordinary. The high-shine finish catches the light beautifully, creating a mesmerizing, magical glow that draws attention to your beautiful smile.`,
-    keyFeatures: [
-      'Vibrant pink color with magical glow',
-      'Intense hydration with rosehip oil',
-      'Non-sticky, comfortable formula',
-      'Long-lasting color and shine',
-      'Buildable pink pigment',
-      'Enchanting high-shine finish'
-    ],
-    results: [
-      'Instant vibrant pink color',
-      'Deeply hydrated, plump lips',
-      'Magical high-shine glow',
-      'Comfortable, non-sticky wear',
-      'Long-lasting color retention'
-    ]
-  },
+  
  
   // {
   //   id: 4,

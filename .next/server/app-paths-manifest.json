@@ -1,8 +1,7 @@
 {
   "/bespoke/page": "app/bespoke/page.js",
   "/page": "app/page.js",
-  "/cart/page": "app/cart/page.js",
   "/wishlist/page": "app/wishlist/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/cart/page": "app/cart/page.js",
+  "/contact/page": "app/contact/page.js"
 }

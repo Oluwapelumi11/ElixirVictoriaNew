@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://elixirvictoria.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/victoria-nocturne.png</image:loc>
+      <image:caption>Elixir Victoria - Ultra-Luxury Perfume</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/collection</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/1</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/victoria-nocturne.png</image:loc>
+      <image:caption>Elixir Victoria (100ml) - Luxury Perfume</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/2</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/oil.png</image:loc>
+      <image:caption>Elixir Custom Signature - Bespoke Perfume</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/3</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/white-gloss.png</image:loc>
+      <image:caption>High Class Lip Gloss - Luxury Makeup</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/4</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/luxury-body-scrub.png</image:loc>
+      <image:caption>Honey & Sugar Luxury Body Scrub</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/5</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/luxury-body-scrub.png</image:loc>
+      <image:caption>Honey & Sugar Luxury Body Scrub (Small)</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/product/6</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://elixirvictoria.com/images/products/pink-gloss.png</image:loc>
+      <image:caption>Magic Lip Gloss - Pink Luxury Makeup</image:caption>
+    </image:image>
+  </url>
+</urlset> 

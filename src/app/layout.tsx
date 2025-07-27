@@ -40,6 +40,38 @@ export default function RootLayout({
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="msapplication-TileColor" content="#0a0a0a" />
         <meta name="msapplication-TileColor" content="#2d5016" />
+        {/* SEO Meta Tags */}
+        <meta name="keywords" content="perfume, elixir, luxury perfume, signature scent, fragrance, body care, bespoke fragrance, custom perfume, high-end perfume, luxury elixir, Elixir Victoria, buy perfume online, best perfume, premium fragrance, niche perfume, artisan perfume, luxury beauty, exclusive perfume, celebrity perfume, unisex perfume, long-lasting perfume, oud perfume, floral perfume, oriental perfume, woody perfume, fruity perfume, luxury body care, luxury lip gloss, luxury scrub" />
+        <meta property="og:title" content="Elixir Victoria - Ultra-Luxury Perfume Collection" />
+        <meta property="og:description" content="Discover the finest luxury fragrances and body care products, crafted with rare ingredients and unparalleled artistry." />
+        <meta property="og:image" content="/images/products/victoria-nocturne.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://elixirvictoria.com/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Elixir Victoria - Ultra-Luxury Perfume Collection" />
+        <meta name="twitter:description" content="Discover the finest luxury fragrances and body care products, crafted with rare ingredients and unparalleled artistry." />
+        <meta name="twitter:image" content="/images/products/victoria-nocturne.png" />
+        {/* Organization Schema */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Elixir Victoria',
+          url: 'https://elixirvictoria.com/',
+          logo: '/images/products/victoria-nocturne.png',
+          sameAs: [
+            'https://www.instagram.com/elixirvictoria/',
+            'https://www.facebook.com/elixirvictoria',
+            'https://twitter.com/elixirvictoria'
+          ],
+          contactPoint: [{
+            '@type': 'ContactPoint',
+            telephone: '+2347048928368',
+            contactType: 'customer service',
+            email: 'info@elixirvictoria.com',
+            areaServed: 'NG',
+            availableLanguage: ['English']
+          }]
+        }) }} />
       </head>
       <body className="antialiased">
         <Providers>
