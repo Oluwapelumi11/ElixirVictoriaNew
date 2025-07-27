@@ -59,6 +59,12 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       addItem: (product: Product, quantity = 1, size?: string) => {
+        // Prevent WhatsApp-only products from being added to cart
+        if (product.whatsappOnly) {
+          console.log('Cannot add WhatsApp-only product to cart:', product.name)
+          return
+        }
+
         console.log('Adding to cart:', { product, quantity, size })
         set((state) => {
           const existingItem = state.items.find(

@@ -21,6 +21,7 @@ export interface Product {
     width: number
     height: number
   }
+  whatsappOnly?: boolean
   createdAt: Date
   updatedAt: Date
 }

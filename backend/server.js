@@ -450,7 +450,7 @@ const sendOrderNotification = async (order, items) => {
 ⏰ <b>Time:</b> ${orderTime}
 
 📋 <b>Items:</b>
-${items.map(item => `• ${item.product_name} (Qty: ${item.quantity})`).join('\n')}
+${items.map(item => `• ${item.product_name || 'Unknown Product'} (Qty: ${item.quantity})`).join('\n')}
 
 ${order.notes ? `📝 <b>Notes:</b> ${order.notes}` : ''}
 
@@ -921,11 +921,12 @@ app.post('/api/orders', [
     const order = orderResult.rows[0]
 
     // Create order items
+    const orderItems = []
     for (const item of items) {
-      await pool.query(
+      const itemResult = await pool.query(
         `INSERT INTO order_items (
           order_id, product_id, product_name, product_image, quantity, unit_price, total_price
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
         [
           order.id,
           item.product.id,
@@ -936,6 +937,7 @@ app.post('/api/orders', [
           item.product.price * item.quantity
         ]
       )
+      orderItems.push(itemResult.rows[0])
     }
 
     // Add initial status history
@@ -944,14 +946,14 @@ app.post('/api/orders', [
       [order.id, 'pending', 'Order created successfully']
     )
 
-    // Send Telegram notification
-    await sendOrderNotification(order, items)
+    // Send Telegram notification with database items
+    await sendOrderNotification(order, orderItems)
 
     res.status(201).json({
       message: 'Order created successfully',
       order: {
         ...order,
-        items
+        items: orderItems
       }
     })
 

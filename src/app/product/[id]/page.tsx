@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
-import { ArrowLeft, Heart, ShoppingBag, Eye, Star, Clock, Users, Zap, Check } from 'lucide-react'
+import { ArrowLeft, Heart, ShoppingBag, Eye, Star, Clock, Users, Zap, Check, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useCartStore, useWishlistStore, useUIStore } from '@/lib/store'
 import { products, convertToProduct } from '@/data/products'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function ProductDetailPage() {
   const [ref, inView] = useInView({
@@ -17,6 +17,7 @@ export default function ProductDetailPage() {
   })
 
   const params = useParams()
+  const router = useRouter()
   const productId = parseInt(params.id as string)
   const product = products.find(p => p.id === productId)
 
@@ -27,6 +28,13 @@ export default function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
+
+  // Redirect WhatsApp-only products to bespoke page
+  useEffect(() => {
+    if (product?.whatsappOnly) {
+      router.push('/bespoke')
+    }
+  }, [product, router])
 
   if (!product) {
     return (
@@ -54,6 +62,11 @@ export default function ProductDetailPage() {
     setTimeout(() => {
       setIsAddingToCart(false)
     }, 1000)
+  }
+
+  const handleWhatsAppClick = () => {
+    const message = `Hi! I'm interested in your ${product.name} service. Can you help me get started?`;
+    window.open(`https://wa.me/2347048928368?text=${encodeURIComponent(message)}`, '_blank');
   }
 
   const handleWishlistToggle = () => {
@@ -146,13 +159,21 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="flex items-center space-x-4 mb-6">
-                  <span className="text-heading-lg font-serif text-yellow-500">
-                    ₦{product.price.toLocaleString()}
-                  </span>
-                  {product.originalPrice > product.price && (
-                    <span className="text-gray-400 line-through">
-                      ₦{product.originalPrice.toLocaleString()}
+                  {product.whatsappOnly ? (
+                    <span className="text-heading-lg font-serif text-yellow-500">
+                      Contact for Pricing
                     </span>
+                  ) : (
+                    <>
+                      <span className="text-heading-lg font-serif text-yellow-500">
+                        ₦{product.price.toLocaleString()}
+                      </span>
+                      {product.originalPrice > product.price && (
+                        <span className="text-gray-400 line-through">
+                          ₦{product.originalPrice.toLocaleString()}
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
 
@@ -398,53 +419,65 @@ export default function ProductDetailPage() {
 
               {/* Add to Cart Section */}
               <motion.div variants={itemVariants} className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center border border-gray-700 rounded-sm">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-2 text-white hover:text-yellow-500 transition-colors"
-                    >
-                      -
-                    </button>
-                    <span className="px-4 py-2 text-white border-x border-gray-700">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="px-4 py-2 text-white hover:text-yellow-500 transition-colors"
-                    >
-                      +
-                    </button>
+                {!product.whatsappOnly && (
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center border border-gray-700 rounded-sm">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="px-4 py-2 text-white hover:text-yellow-500 transition-colors"
+                      >
+                        -
+                      </button>
+                      <span className="px-4 py-2 text-white border-x border-gray-700">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="px-4 py-2 text-white hover:text-yellow-500 transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex space-x-4">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={isAddingToCart}
-                    className={`flex-1 flex items-center justify-center ${
-                      isAddingToCart 
-                        ? 'bg-green-500 text-white cursor-not-allowed' 
-                        : 'btn-luxury'
-                    }`}
-                  >
-                    {isAddingToCart ? (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 200 }}
-                        className="flex items-center"
-                      >
-                        <Check size={20} className="mr-2" />
-                        Added!
-                      </motion.div>
-                    ) : (
-                      <>
-                        <ShoppingBag size={20} className="mr-2" />
-                        Add to Cart
-                      </>
-                    )}
-                  </button>
+                  {product.whatsappOnly ? (
+                    <button
+                      onClick={handleWhatsAppClick}
+                      className="flex-1 flex items-center justify-center bg-green-500 text-white hover:bg-green-600 transition-colors duration-300 py-4 px-6 rounded-sm"
+                    >
+                      <MessageCircle size={20} className="mr-2" />
+                      Contact via WhatsApp
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isAddingToCart}
+                      className={`flex-1 flex items-center justify-center ${
+                        isAddingToCart 
+                          ? 'bg-green-500 text-white cursor-not-allowed' 
+                          : 'btn-luxury'
+                      }`}
+                    >
+                      {isAddingToCart ? (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 200 }}
+                          className="flex items-center"
+                        >
+                          <Check size={20} className="mr-2" />
+                          Added!
+                        </motion.div>
+                      ) : (
+                        <>
+                          <ShoppingBag size={20} className="mr-2" />
+                          Add to Cart
+                        </>
+                      )}
+                    </button>
+                  )}
                   <button
                     onClick={handleWishlistToggle}
                     className={`p-4 border rounded-sm transition-colors ${

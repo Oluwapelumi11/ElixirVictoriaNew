@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Heart, ShoppingBag, Trash2, Check } from 'lucide-react'
+import { ArrowLeft, Heart, ShoppingBag, Trash2, Check, MessageCircle } from 'lucide-react'
 import { useWishlistStore, useCartStore } from '@/lib/store'
 import { useState } from 'react'
 
@@ -49,6 +49,11 @@ export default function WishlistPage() {
     setTimeout(() => {
       setAddingToCart(null)
     }, 1000)
+  }
+
+  const handleWhatsAppClick = (product: any) => {
+    const message = `Hi! I'm interested in your ${product.name} service. Can you help me get started?`;
+    window.open(`https://wa.me/2347048928368?text=${encodeURIComponent(message)}`, '_blank');
   }
 
   if (items.length === 0) {
@@ -196,36 +201,54 @@ export default function WishlistPage() {
                   {/* Price */}
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center space-x-3">
-                      <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
-                      {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-sm text-gray-400 line-through">₦{product.originalPrice.toLocaleString()}</span>
+                      {product.whatsappOnly ? (
+                        <span className="text-xl font-semibold text-white">Contact for Pricing</span>
+                      ) : (
+                        <>
+                          <span className="text-xl font-semibold text-white">₦{product.price.toLocaleString()}</span>
+                          {product.originalPrice && product.originalPrice > product.price && (
+                            <span className="text-sm text-gray-400 line-through">₦{product.originalPrice.toLocaleString()}</span>
+                          )}
+                        </>
                       )}
                     </div>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleAddToCart(product)}
-                      disabled={addingToCart === product.id}
-                      className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                        addingToCart === product.id 
-                          ? 'bg-green-500 text-white cursor-not-allowed' 
-                          : 'bg-yellow-500 text-black hover:bg-yellow-400'
-                      }`}
-                    >
-                      {addingToCart === product.id ? (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 200 }}
-                          className="flex items-center space-x-2"
-                        >
-                          <Check size={16} />
-                          <span>Added!</span>
-                        </motion.div>
-                      ) : (
-                        'Add to Cart'
-                      )}
-                    </motion.button>
+                    {product.whatsappOnly ? (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleWhatsAppClick(product)}
+                        className="bg-green-500 text-white px-4 py-2 text-sm font-medium hover:bg-green-600 transition-colors duration-300 flex items-center space-x-2"
+                      >
+                        <MessageCircle size={16} />
+                        <span>WhatsApp</span>
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleAddToCart(product)}
+                        disabled={addingToCart === product.id}
+                        className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                          addingToCart === product.id 
+                            ? 'bg-green-500 text-white cursor-not-allowed' 
+                            : 'bg-yellow-500 text-black hover:bg-yellow-400'
+                        }`}
+                      >
+                        {addingToCart === product.id ? (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: 'spring', stiffness: 200 }}
+                            className="flex items-center space-x-2"
+                          >
+                            <Check size={16} />
+                            <span>Added!</span>
+                          </motion.div>
+                        ) : (
+                          'Add to Cart'
+                        )}
+                      </motion.button>
+                    )}
                   </div>
                 </div>
               </motion.div>

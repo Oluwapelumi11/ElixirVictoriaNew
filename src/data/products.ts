@@ -15,6 +15,7 @@ export interface SimpleProduct {
   rating: number
   reviews: number
   inStock: boolean
+  whatsappOnly?: boolean
   // Optional fragrance-specific properties
   fragranceFamily?: string[]
   scentType?: string
@@ -41,7 +42,7 @@ export interface SimpleProduct {
 export const products: SimpleProduct[] = [
   {
     id: 1,
-    name: 'Elixir Victoria',
+    name: 'Elixir Victoria (100ml)',
     description: 'A bold yet tender blend that opens with a burst of fruits, blooms into elegant florals, and settles into a sensual oud embrace. Elixir Victoria is a journey of grace, strength, and unforgettable presence.',
     price: 100000,
     originalPrice: 100000,
@@ -57,9 +58,9 @@ export const products: SimpleProduct[] = [
     fragranceFamily: ['Floral', 'Woody', 'Fruity'],
     scentType: 'Fruity Woody Oriental',
     keyNotes: {
-      top: ['Bergamot', 'Juicy Pear'],
-      middle: ['Jasmine', 'Rose', 'Orange Blossom'],
-      base: ['Sandalwood', 'Vanilla']
+      top: ['Bergamot', 'Fruity'],
+      middle: ['Jasmine', 'Rose', 'Peach'],
+      base: ['Sandalwood', 'Vanilla','Mandarin']
     },
     longDescription: `Elixir Victoria represents confidence, elegance, and sensuality. This scent is soft but seductive, perfect for date nights or elegant dinners. Inspired by the phrase "Toque real, aire seductor", it denotes A Royal touch with a seductive vibe on a warm evening breeze and golden skin. Stays up to 18 hours without reapplying.`,
     volume: '100ml',
@@ -69,6 +70,44 @@ export const products: SimpleProduct[] = [
   },
   {
     id: 2,
+    name: 'Elixir Custom Signature',
+    description: 'Create your own unique fragrance or body care product with our bespoke custom signature service. Our master artisans will work with you to craft a one-of-a-kind scent or product that perfectly captures your personality and preferences.',
+    price: 0,
+    originalPrice: 0,
+    image: '/images/products/custom-signature.png',
+    category: 'Custom Service',
+    tags: ['Bespoke', 'Custom', 'Luxury', 'Personalized', 'Exclusive'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    whatsappOnly: true,
+    longDescription: `Experience the ultimate in luxury personalization with our Elixir Custom Signature service. This exclusive bespoke offering allows you to create your own unique fragrance or body care product, crafted specifically for you by our master artisans.
+
+Our custom signature service begins with a comprehensive consultation where we explore your preferences, personality, and lifestyle. Whether you're looking for a signature fragrance that captures your essence, a personalized body care product tailored to your skin's needs, or a unique gift for someone special, our artisans will guide you through the entire creative process.
+
+From selecting the finest ingredients to perfecting the final formula, every step is carefully crafted to ensure your custom creation is truly one-of-a-kind. Our master artisans combine traditional techniques with innovative approaches to create products that are as unique as you are.
+
+Perfect for those who seek exclusivity and personalization in their luxury beauty and wellness journey.`,
+    keyFeatures: [
+      'Personalized consultation with master artisans',
+      'One-of-a-kind fragrance or body care creation',
+      'Premium ingredients and craftsmanship',
+      'Exclusive and bespoke experience',
+      'Perfect for gifts or personal use',
+      'Luxury packaging and presentation'
+    ],
+    results: [
+      'Unique signature fragrance or product',
+      'Personalized luxury experience',
+      'Exclusive bespoke creation',
+      'Professional consultation and guidance',
+      'Luxury packaging and presentation'
+    ]
+  },
+  {
+    id: 3,
     name: 'Honey & Sugar Luxury Body Scrub (Large)',
     description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
     price: 10000,
@@ -110,7 +149,7 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
     ]
   },
   {
-    id: 5,
+    id: 4,
     name: 'Honey & Sugar Luxury Body Scrub (Small)',
     description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
     price: 5000,
@@ -152,7 +191,7 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
     ]
   },
   {
-    id: 3,
+    id: 5,
     name: 'High Class Lip Gloss',
     description: 'A sophisticated white lip gloss that delivers high-shine luxury with a subtle pearl finish. This premium formula provides intense hydration while creating a stunning, high-class appearance.',
     price: 5000,
@@ -194,7 +233,7 @@ High Class Lip Gloss is designed for those who appreciate the finer things in li
     ]
   },
   {
-    id: 4,
+    id: 6,
     name: 'Magic Lip Gloss',
     description: 'A mesmerizing pink lip gloss that creates a magical, enchanting effect. This vibrant formula delivers a stunning pink hue with a high-shine finish that transforms your lips into a work of art.',
     price: 5000,
@@ -235,6 +274,7 @@ Magic Lip Gloss is perfect for those who want to add a touch of enchantment to t
       'Long-lasting color retention'
     ]
   },
+ 
   // {
   //   id: 4,
   //   name: 'Silk Body Oil',
@@ -310,6 +350,7 @@ export const convertToProduct = (simpleProduct: SimpleProduct): Product => {
       width: 5,
       height: 15
     },
+    whatsappOnly: simpleProduct.whatsappOnly || false,
     createdAt: new Date(),
     updatedAt: new Date()
   }
