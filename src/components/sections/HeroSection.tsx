@@ -83,16 +83,7 @@ export function HeroSection() {
                       </p>
                     </motion.div>
 
-                    {/* Luxury Badge */}
-                    <motion.div
-                      variants={itemVariants}
-                      className="mb-8"
-                    >
-                      <div className="inline-flex items-center space-x-2 bg-yellow-500/10 border border-yellow-500/30 px-6 py-3 rounded-full">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                        <span className="text-yellow-500 text-sm font-medium tracking-wide">LAUNCHING TODAY</span>
-                      </div>
-                    </motion.div>
+
 
         {/* CTA Buttons */}
                             <motion.div

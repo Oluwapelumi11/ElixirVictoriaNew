@@ -63,7 +63,7 @@ export function BrandStory() {
                             Where Luxury Meets Wellness
                           </h2>
                           <p className="text-body text-subtle-gray leading-relaxed mb-6">
-                            Today, Elixir Victoria launches to redefine what luxury beauty and wellness means in the modern age.
+                            Elixir Victoria redefines what luxury beauty and wellness means in the modern age.
                             Born from a vision to bridge timeless elegance with contemporary innovation, we're ready to become
                             the choice of discerning individuals who seek authenticity in an industry often dominated by tradition.
                           </p>
@@ -140,9 +140,6 @@ export function BrandStory() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center space-y-4">
                   <Logo size="lg" className="mx-auto w-96 h-48" />
-                  <div className="text-subtle-gray text-sm">
-                    Launching Today
-                  </div>
                 </div>
               </div>
 

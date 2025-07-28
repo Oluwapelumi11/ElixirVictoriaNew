@@ -58,7 +58,7 @@ export function BrandStoryPage() {
             </motion.h1>
 
             <motion.p variants={itemVariants} className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed mb-8">
-              Today, July 27, 2025, Elixir Victoria launches Elixir Victoria after years of perfecting her vision.
+              Elixir Victoria was born from a vision of redefining luxury beauty and wellness for a new generation.
             </motion.p>
           </motion.div>
         </div>
@@ -79,7 +79,7 @@ export function BrandStoryPage() {
                   The Vision
                 </h2>
                 <p className="text-lg text-gray-400 leading-relaxed mb-6">
-                  Today, July 27, 2025, Victoria Elixir launches Elixir Victoria after years of perfecting her vision. 
+                  Victoria Elixir created Elixir Victoria after years of perfecting her vision. 
                   While traditional brands focused on heritage and legacy, she saw an opportunity to create 
                   something entirely new—a brand that would bridge timeless elegance with contemporary innovation.
                 </p>
@@ -111,9 +111,9 @@ export function BrandStoryPage() {
               <div className="aspect-square bg-gradient-to-br from-yellow-500/20 to-yellow-200/10 rounded-sm overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center space-y-4">
-                                      <div className="text-yellow-500 text-6xl font-serif">2025</div>
-                  <div className="text-white text-lg font-medium">Launch Day</div>
-                  <div className="text-gray-400 text-sm">July 27, 2025</div>
+                    <div className="text-yellow-500 text-6xl font-serif">2025</div>
+                    <div className="text-white text-lg font-medium">Founded</div>
+                    <div className="text-gray-400 text-sm">Est. 2025</div>
                   </div>
                 </div>
               </div>
@@ -189,7 +189,7 @@ export function BrandStoryPage() {
               Meet Our Team
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Visionaries launching today to redefine luxury beauty and wellness
+              Visionaries redefining luxury beauty and wellness
             </motion.p>
           </motion.div>
 
@@ -243,7 +243,7 @@ export function BrandStoryPage() {
               The Future of Luxury
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
-              As we launch today, our commitment to innovation, sustainability, and authenticity is unwavering. 
+              Our commitment to innovation, sustainability, and authenticity is unwavering. 
               We're not just creating products—we're building a new standard for luxury beauty and wellness in the modern age.
             </motion.p>
 

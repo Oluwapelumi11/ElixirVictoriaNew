@@ -173,7 +173,7 @@ export function Footer() {
           className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
         >
           <p className="text-gray-400 text-body-sm">
-            © 2024 Elixir Victoria. All rights reserved.
+            © {new Date().getFullYear()} Elixir Victoria. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 text-body-sm">

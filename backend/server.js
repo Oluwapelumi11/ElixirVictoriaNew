@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -5,14 +7,20 @@ const rateLimit = require('express-rate-limit')
 const { body, validationResult } = require('express-validator')
 const nodemailer = require('nodemailer')
 const { Pool } = require('pg')
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-})
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const TelegramBot = require('node-telegram-bot-api')
-require('dotenv').config()
+
+// Database connection with fallback
+let pool = null
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+  })
+} else {
+  console.log('⚠️  DATABASE_URL not configured - database features will be disabled')
+}
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -33,6 +41,11 @@ const testDatabaseConnection = async () => {
   try {
     if (!process.env.DATABASE_URL) {
       console.log('⚠️  DATABASE_URL not configured - database features will be limited')
+      return false
+    }
+    
+    if (!pool) {
+      console.log('⚠️  Database pool not initialized')
       return false
     }
     
@@ -105,26 +118,66 @@ const createTransporter = () => {
 
 // Real implementation for storing newsletter subscribers
 const ensureSubscribersTable = async () => {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS subscribers (
-      id SERIAL PRIMARY KEY,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      name VARCHAR(255),
-      created_at TIMESTAMP DEFAULT NOW()
-    )
-  `)
+  console.log('[DB] Ensuring subscribers table exists...')
+  if (!pool) {
+    console.log('[DB] No database connection available')
+    throw new Error('Database connection not available')
+  }
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS subscribers (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `)
+    console.log('[DB] Subscribers table ensured successfully')
+  } catch (error) {
+    console.error('[DB] Error ensuring subscribers table:', error.message)
+    console.error('[DB] Full error:', error)
+    throw error
+  }
 }
 
 const storeEmailInDatabase = async (email) => {
-  await ensureSubscribersTable()
-  // Check if email exists
-  const existing = await pool.query('SELECT id FROM subscribers WHERE email = $1', [email])
-  if (existing.rows.length > 0) {
-    return { status: 'exists' }
+  console.log('[DB] Starting storeEmailInDatabase for email:', email)
+  if (!pool) {
+    console.log('[DB] No database connection available, returning mock success')
+    return { status: 'new' }
   }
-  // Insert new subscriber
-  await pool.query('INSERT INTO subscribers (email) VALUES ($1)', [email])
-  return { status: 'new' }
+  try {
+    await ensureSubscribersTable()
+    console.log('[DB] Subscribers table ensured')
+    
+    // Try to fix the table schema if it has the old structure
+    try {
+      await pool.query('ALTER TABLE subscribers ALTER COLUMN name DROP NOT NULL')
+      console.log('[DB] Fixed table schema - made name column nullable')
+    } catch (alterError) {
+      console.log('[DB] Table schema is already correct or alter failed:', alterError.message)
+    }
+    
+    // Check if email exists
+    console.log('[DB] Checking if email exists...')
+    const existing = await pool.query('SELECT id FROM subscribers WHERE email = $1', [email])
+    console.log('[DB] Existing query result:', existing.rows.length, 'rows found')
+    
+    if (existing.rows.length > 0) {
+      console.log('[DB] Email already exists, returning exists status')
+      return { status: 'exists' }
+    }
+    
+    // Insert new subscriber
+    console.log('[DB] Email not found, inserting new subscriber...')
+    await pool.query('INSERT INTO subscribers (email) VALUES ($1)', [email])
+    console.log('[DB] New subscriber inserted successfully')
+    return { status: 'new' }
+  } catch (error) {
+    console.error('[DB] Error in storeEmailInDatabase:', error.message)
+    console.error('[DB] Full error:', error)
+    throw error
+  }
 }
 
 // Send newsletter welcome email
@@ -1629,41 +1682,58 @@ app.post('/api/contact', [
 app.post('/api/newsletter', [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required')
 ], async (req, res) => {
+  console.log('[NEWSLETTER] Request received:', req.body)
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
+      console.log('[NEWSLETTER] Validation errors:', errors.array())
       return res.status(400).json({
         message: 'Validation failed',
         errors: errors.array()
       })
     }
     const { email } = req.body
+    console.log('[NEWSLETTER] Processing email:', email)
+    
     let subscriberStatus = null
     try {
+      console.log('[NEWSLETTER] Attempting to store email in database...')
       subscriberStatus = await storeEmailInDatabase(email)
+      console.log('[NEWSLETTER] Database result:', subscriberStatus)
     } catch (error) {
-      console.log('Failed to store newsletter subscriber:', error.message)
+      console.error('[NEWSLETTER] Failed to store newsletter subscriber:', error.message)
+      console.error('[NEWSLETTER] Full error:', error)
     }
+    
     if (subscriberStatus && subscriberStatus.status === 'new') {
+      console.log('[NEWSLETTER] New subscriber, sending welcome email...')
       try {
         await sendNewsletterWelcomeEmail(email)
+        console.log('[NEWSLETTER] Welcome email sent successfully')
       } catch (error) {
-        console.error('Failed to send newsletter welcome email:', error.message)
+        console.error('[NEWSLETTER] Failed to send newsletter welcome email:', error.message)
       }
-    }
-    if (subscriberStatus && subscriberStatus.status === 'exists') {
+      console.log('[NEWSLETTER] Sending success response')
+      res.status(200).json({
+        message: 'Successfully subscribed to newsletter!',
+        success: true
+      })
+    } else if (subscriberStatus && subscriberStatus.status === 'exists') {
+      console.log('[NEWSLETTER] Email already exists, sending exists response')
       res.status(200).json({
         message: 'This email is already subscribed to our newsletter.',
         success: false
       })
     } else {
+      console.log('[NEWSLETTER] No subscriber status or unknown status, sending failure response')
+      console.log('[NEWSLETTER] subscriberStatus:', subscriberStatus)
       res.status(500).json({
         message: 'Failed to subscribe to newsletter.',
         success: false
       })
     }
   } catch (error) {
-    console.error('Newsletter subscription error:', error)
+    console.error('[NEWSLETTER] Newsletter subscription error:', error)
     res.status(500).json({
       message: 'Internal server error. Please try again later.',
       success: false

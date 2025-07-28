@@ -21,10 +21,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/_not-found/page.js"
     ],
-    "/contact/page": [
+    "/collection/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/contact/page.js"
+      "static/chunks/app/collection/page.js"
     ]
   }
 }

@@ -1526,15 +1526,6 @@ video {
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-@keyframes pulse {
-
-  50% {
-    opacity: .5;
-  }
-}
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
 @keyframes spin {
 
   to {
@@ -2059,6 +2050,9 @@ video {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
+.pb-16 {
+  padding-bottom: 4rem;
+}
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -2083,6 +2077,9 @@ video {
 .pt-20 {
   padding-top: 5rem;
 }
+.pt-24 {
+  padding-top: 6rem;
+}
 .pt-3 {
   padding-top: 0.75rem;
 }
@@ -2094,12 +2091,6 @@ video {
 }
 .pt-8 {
   padding-top: 2rem;
-}
-.pb-16 {
-  padding-bottom: 4rem;
-}
-.pt-24 {
-  padding-top: 6rem;
 }
 .text-left {
   text-align: left;
