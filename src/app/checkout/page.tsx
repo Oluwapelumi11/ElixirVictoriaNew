@@ -70,7 +70,8 @@ export default function CheckoutPage() {
   const [addressesLoaded, setAddressesLoaded] = useState(false)
 
   const subtotal = getSubtotal()
-  const total = subtotal
+  const tax = (subtotal * 0.015) + 100 // 1.5% of subtotal + ₦100
+  const total = subtotal + tax
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -196,6 +197,7 @@ export default function CheckoutPage() {
             quantity: item.quantity
           })),
           subtotal,
+          tax,
           total,
           shipping_address_id: formData.shipping_address_id,
           billing_address_id: formData.billing_address_id,
@@ -348,6 +350,10 @@ export default function CheckoutPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-400">Subtotal</span>
                     <span className="text-white">₦{subtotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Tax (1.5% + ₦100)</span>
+                    <span className="text-white">₦{tax.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-lg font-medium border-t border-gray-700 pt-3">
                     <span className="text-white">Total</span>
