@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
     <loc>https://elixirvictoria.com/</loc>
     <changefreq>daily</changefreq>
@@ -17,8 +18,13 @@
   </url>
   <url>
     <loc>https://elixirvictoria.com/faq</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/blog</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://elixirvictoria.com/contact</loc>
@@ -78,5 +84,10 @@
       <image:loc>https://elixirvictoria.com/images/products/pink-gloss.png</image:loc>
       <image:caption>Magic Lip Gloss - Pink Luxury Makeup</image:caption>
     </image:image>
+  </url>
+  <url>
+    <loc>https://elixirvictoria.com/feed.xml</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset> 

@@ -1,194 +1,159 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import Link from 'next/link'
-import { ArrowLeft, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { Metadata } from 'next'
+import { Plus, Minus } from 'lucide-react'
 import { useState } from 'react'
-import Head from 'next/head'
+
+export const metadata: Metadata = {
+  title: 'FAQ - Elixir Victoria | #1 Luxury Perfume Brand Questions',
+  description: 'Get answers to all your questions about Elixir Victoria luxury perfumes, shipping, returns, and more. The #1 luxury perfume brand in Nigeria.',
+  keywords: 'Elixir Victoria FAQ, luxury perfume questions, perfume shipping Nigeria, perfume returns, Victoria Nocturne FAQ, bespoke perfume questions, luxury fragrance FAQ, perfume delivery Nigeria, luxury beauty FAQ, premium perfume questions, exclusive perfume FAQ, luxury brand questions, perfume customer service, luxury fragrance support, premium beauty FAQ, exclusive beauty questions, luxury perfume Nigeria FAQ, premium fragrance Nigeria questions, exclusive perfume Nigeria FAQ, luxury beauty Nigeria questions, premium beauty Nigeria FAQ, exclusive beauty Nigeria questions',
+  openGraph: {
+    title: 'FAQ - Elixir Victoria | #1 Luxury Perfume Brand Questions',
+    description: 'Get answers to all your questions about Elixir Victoria luxury perfumes, shipping, returns, and more.',
+    url: 'https://elixirvictoria.com/faq',
+    type: 'website',
+  },
+}
 
 const faqs = [
   {
-    question: "How long does shipping take?",
-    answer: "Standard shipping takes 3-5 business days. Express shipping is available for 1-2 business days with an additional $25 fee. Free shipping is included on orders over $200."
+    question: "What makes Elixir Victoria the #1 luxury perfume brand in Nigeria?",
+    answer: "Elixir Victoria stands as the #1 luxury perfume brand in Nigeria through our commitment to exceptional quality, rare ingredients, and unparalleled craftsmanship. Our Victoria Nocturne fragrance, crafted with premium oud, rare florals, and exclusive ingredients, represents the pinnacle of luxury perfumery. We offer bespoke services, personalized consultations, and a curated collection that defines sophistication and exclusivity in the Nigerian luxury market."
   },
   {
-    question: "What is your return policy?",
-    answer: "We offer a 30-day return window for unused and unopened items in their original packaging. Return shipping is included, and there are no restocking fees."
+    question: "How do I choose the perfect luxury perfume for me?",
+    answer: "Choosing the perfect luxury perfume involves understanding your preferences and lifestyle. Start by identifying your preferred fragrance families - floral, oriental, woody, or fresh. Consider your skin chemistry, as perfumes react differently on each person. Test fragrances on your skin and wear them for a few hours to experience the full development. Our expert consultants can guide you through this process, helping you find your signature scent that reflects your personality and lifestyle."
   },
   {
-    question: "Are your products authentic?",
-    answer: "All our products are 100% authentic and sourced directly from authorized manufacturers. We guarantee the authenticity of every item in our collection."
+    question: "What is Victoria Nocturne and why is it so special?",
+    answer: "Victoria Nocturne is our flagship luxury fragrance that embodies sophistication and sensuality. This exceptional perfume features a complex blend of rare ingredients including premium oud, jasmine sambac, and sandalwood. The fragrance opens with vibrant citrus notes, evolves into elegant florals, and settles into a warm, sensual base. With 18-hour longevity and exceptional sillage, Victoria Nocturne represents the ultimate luxury experience, making it the most sought-after fragrance in Nigeria."
   },
   {
-    question: "Do you ship internationally?",
-    answer: "Currently, we ship to select countries. Please contact our customer service team for specific shipping information to your location."
+    question: "How does your bespoke perfume service work?",
+    answer: "Our bespoke perfume service is the ultimate luxury experience. It begins with a comprehensive consultation where we explore your personality, preferences, and lifestyle. Our master perfumers then create a unique fragrance using rare and premium ingredients. The process includes multiple iterations to perfect your signature scent, ensuring it's truly one-of-a-kind. This exclusive service typically takes 4-6 weeks and includes a personalized presentation box and detailed fragrance notes."
   },
   {
-    question: "How can I track my order?",
-    answer: "You'll receive a tracking number via email once your order ships. You can also track your order through your account dashboard."
+    question: "Do you ship nationwide in Nigeria?",
+    answer: "Yes, we offer nationwide shipping across Nigeria with secure, tracked delivery. Our premium packaging ensures your luxury fragrances arrive in perfect condition. We provide free shipping on orders above ₦50,000, and standard delivery takes 2-5 business days. For urgent orders, we offer express delivery options. All packages are fully insured and require signature confirmation for your security."
   },
   {
-    question: "What payment methods do you accept?",
-    answer: "We accept a comprehensive range of payment methods through Paystack, including: Credit/Debit Cards (Visa, Mastercard, Verve), Bank Transfers, USSD payments, Mobile Money, and other local payment options. All transactions are secure and encrypted for your protection."
+    question: "What is your return and exchange policy?",
+    answer: "We offer a 30-day return policy for all unopened and unused products in their original packaging. Due to the personal nature of fragrances, we cannot accept returns on opened products for hygiene reasons. However, if you're unsatisfied with your purchase, we offer fragrance consultations and exchanges for alternative scents. Our customer service team is dedicated to ensuring your complete satisfaction with every Elixir Victoria experience."
   },
   {
-    question: "Are your products cruelty-free?",
-    answer: "Yes, all our products are cruelty-free and we are committed to ethical sourcing and production practices."
+    question: "How long do your luxury perfumes last?",
+    answer: "Our luxury perfumes are formulated for exceptional longevity. Victoria Nocturne lasts up to 18 hours on the skin, while our other fragrances provide 8-12 hours of wear. The longevity depends on factors like skin type, climate, and application method. We recommend applying to pulse points and using our matching body products to enhance longevity. Our fragrances are designed to evolve beautifully throughout the day, maintaining their sophisticated character."
   },
   {
-    question: "How do I contact customer service?",
-    answer: "You can reach us via email at info@elixirvictoria.com, WhatsApp at +234 704 892 8368, or phone at +234 704 892 8368. We typically respond within 24 hours."
+    question: "Are your perfumes suitable for sensitive skin?",
+    answer: "Yes, all Elixir Victoria fragrances are formulated with skin-friendly ingredients and undergo rigorous testing for sensitivity. We use high-quality, hypoallergenic ingredients and avoid common irritants. However, we recommend testing on a small area first if you have very sensitive skin. Our fragrances are alcohol-based but contain moisturizing agents to prevent dryness. We also offer fragrance-free alternatives for those with extreme sensitivities."
+  },
+  {
+    question: "Can I layer different Elixir Victoria fragrances?",
+    answer: "Absolutely! Fragrance layering is an art that we encourage. Our fragrances are designed to complement each other beautifully. You can layer Victoria Nocturne with our body care products for enhanced longevity, or combine different fragrances to create your unique scent profile. We recommend starting with lighter fragrances as a base and adding stronger notes on top. Our expert consultants can guide you through the perfect layering combinations for your style."
+  },
+  {
+    question: "Do you offer gift wrapping and personalization?",
+    answer: "Yes, we provide exquisite gift wrapping and personalization services. Our luxury gift boxes feature premium materials and elegant design, perfect for special occasions. We offer personalized messages, custom packaging, and even bespoke gift experiences. For corporate clients, we provide branded packaging and bulk gift solutions. Our gift service includes complimentary samples and care instructions to enhance the luxury experience."
+  },
+  {
+    question: "How can I become a VIP customer?",
+    answer: "Our VIP program offers exclusive benefits including early access to new collections, private consultations, bespoke services, and exclusive events. VIP members receive personalized fragrance recommendations, priority customer service, and invitations to luxury events. To become a VIP, you can apply through our website or be invited based on your purchase history and engagement with our brand. VIP membership includes complimentary consultations and exclusive product previews."
+  },
+  {
+    question: "What makes your luxury body care products special?",
+    answer: "Our luxury body care products are formulated with the same attention to detail as our fragrances. We use premium ingredients like honey, sugar, and rare botanical extracts. Our products are designed to complement our fragrances, creating a complete luxury experience. Each product is crafted in small batches to ensure quality and freshness. Our body care range includes scrubs, lotions, and oils that enhance fragrance longevity while providing exceptional skincare benefits."
   }
 ]
 
 export default function FAQPage() {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
-
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
-    },
-  }
-
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    'mainEntity': faqs.map(faq => ({
-      '@type': 'Question',
-      'name': faq.question,
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': faq.answer
-      }
-    }))
-  }
-
   return (
-    <>
-      <Head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      </Head>
-      <div className="min-h-screen bg-black pt-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            {/* Header */}
-            <div className="mb-12">
-              <Link href="/" className="inline-flex items-center text-yellow-500 hover:text-yellow-400 transition-colors duration-300 mb-6">
-                <ArrowLeft size={20} className="mr-2" />
-                Back to Home
-              </Link>
-              <h1 className="text-heading-xl font-serif text-white mb-6">
-                Frequently Asked Questions
-              </h1>
-              <p className="text-body-lg text-gray-400">
-                Find answers to common questions about our products, shipping, returns, and more.
-              </p>
-            </div>
+    <div className="min-h-screen bg-black pt-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-heading-xl font-serif text-white mb-6">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-body-lg text-gray-400 max-w-2xl mx-auto">
+            Get answers to all your questions about Elixir Victoria luxury perfumes, shipping, returns, and more.
+          </p>
+        </div>
 
-            {/* FAQ Section */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate={inView ? 'visible' : 'hidden'}
-              className="space-y-4"
-            >
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-gray-800 border border-gray-700 rounded-sm overflow-hidden"
-                >
-                  <button
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-700 transition-colors duration-300"
-                  >
-                    <span className="text-heading-sm font-serif text-white">{faq.question}</span>
-                    {openFaq === index ? (
-                      <ChevronUp size={20} className="text-yellow-500" />
-                    ) : (
-                      <ChevronDown size={20} className="text-yellow-500" />
-                    )}
-                  </button>
-                  
-                  {openFaq === index && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="px-6 pb-4"
-                    >
-                      <p className="text-gray-400 text-body-md leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: faqs.map(faq => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer
+                }
+              }))
+            })
+          }}
+        />
 
-            {/* Contact Section */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-12 text-center"
+        {/* FAQ List */}
+        <div className="space-y-6">
+          {faqs.map((faq, index) => (
+            <FAQItem key={index} question={faq.question} answer={faq.answer} />
+          ))}
+        </div>
+
+        {/* Contact Section */}
+        <div className="mt-16 text-center">
+          <h2 className="text-heading-lg font-serif text-white mb-6">
+            Still Have Questions?
+          </h2>
+          <p className="text-body-lg text-gray-400 mb-8">
+            Our luxury fragrance experts are here to help you find your perfect scent.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://wa.me/2347048928368"
+              className="btn-luxury inline-flex items-center justify-center"
             >
-              <div className="bg-gray-800 border border-gray-700 rounded-sm p-8">
-                <div className="flex items-center justify-center space-x-3 mb-4">
-                  <HelpCircle size={24} className="text-yellow-500" />
-                  <h3 className="text-heading-lg font-serif text-white">Still Have Questions?</h3>
-                </div>
-                <p className="text-gray-400 text-body-lg mb-6">
-                  Can't find what you're looking for? Our customer service team is here to help.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link 
-                    href="/contact"
-                    className="btn-luxury"
-                  >
-                    Email Us
-                  </Link>
-                  <a 
-                    href="https://wa.me/2347048928368"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-luxury-ghost"
-                  >
-                    WhatsApp Support
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+              Contact via WhatsApp
+            </a>
+            <a
+              href="mailto:info@elixirvictoria.com"
+              className="btn-luxury-outline inline-flex items-center justify-center"
+            >
+              Send Email
+            </a>
+          </div>
         </div>
       </div>
-    </>
+    </div>
+  )
+}
+
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="bg-gray-800 border border-gray-700 rounded-sm">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-700 transition-colors"
+      >
+        <h3 className="text-white font-medium text-body-lg">{question}</h3>
+        {isOpen ? (
+          <Minus size={24} className="text-yellow-500 flex-shrink-0" />
+        ) : (
+          <Plus size={24} className="text-yellow-500 flex-shrink-0" />
+        )}
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-4">
+          <p className="text-gray-300 leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
   )
 } 

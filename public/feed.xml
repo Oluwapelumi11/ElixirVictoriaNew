@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>Elixir Victoria - Luxury Perfume Collection</title>
+    <link>https://elixirvictoria.com</link>
+    <description>Ultra-luxury perfume and fragrance collection featuring premium scents, bespoke fragrances, and exclusive beauty products.</description>
+    
+    <item>
+      <g:id>ELX-001</g:id>
+      <title>Elixir Victoria (100ml) - Ultra-Luxury Perfume</title>
+      <description>A bold yet tender blend that opens with a burst of fruits, blooms into elegant florals, and settles into a sensual oud embrace. Elixir Victoria is a journey of grace, strength, and unforgettable presence.</description>
+      <link>https://elixirvictoria.com/product/1</link>
+      <g:image_link>https://elixirvictoria.com/images/products/victoria-nocturne.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/victoria-nocturne.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>100000 NGN</g:price>
+      <g:sale_price>100000 NGN</g:sale_price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Fragrances &gt; Perfumes</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Luxury</g:custom_label_0>
+      <g:custom_label_1>Premium</g:custom_label_1>
+      <g:custom_label_2>Unisex</g:custom_label_2>
+      <g:custom_label_3>100ml</g:custom_label_3>
+      <g:custom_label_4>18 hours longevity</g:custom_label_4>
+      <g:mpn>ELX-001</g:mpn>
+      <g:gtin>ELX-001</g:gtin>
+      <g:shipping_weight>
+        <g:value>0.5</g:value>
+        <g:unit>kg</g:unit>
+      </g:shipping_weight>
+      <g:shipping>
+        <g:country>NG</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0 NGN</g:price>
+      </g:shipping>
+    </item>
+    
+    <item>
+      <g:id>ELX-002</g:id>
+      <title>Elixir Custom Signature - Bespoke Perfume Service</title>
+      <description>Create your own unique fragrance or body care product with our bespoke custom signature service. Our master artisans will work with you to craft a one-of-a-kind scent or product that perfectly captures your personality and preferences.</description>
+      <link>https://elixirvictoria.com/product/2</link>
+      <g:image_link>https://elixirvictoria.com/images/products/oil.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/oil.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>0 NGN</g:price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Fragrances &gt; Custom Perfumes</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Bespoke</g:custom_label_0>
+      <g:custom_label_1>Custom</g:custom_label_1>
+      <g:custom_label_2>Service</g:custom_label_2>
+      <g:custom_label_3>Personalized</g:custom_label_3>
+      <g:custom_label_4>Luxury</g:custom_label_4>
+      <g:mpn>ELX-002</g:mpn>
+      <g:gtin>ELX-002</g:gtin>
+    </item>
+    
+    <item>
+      <g:id>ELX-003</g:id>
+      <title>High Class Lip Gloss - Luxury Makeup</title>
+      <description>Premium luxury lip gloss with high-shine finish and long-lasting formula. Perfect for achieving a glamorous, sophisticated look.</description>
+      <link>https://elixirvictoria.com/product/3</link>
+      <g:image_link>https://elixirvictoria.com/images/products/white-gloss.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/white-gloss.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>15000 NGN</g:price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Makeup &gt; Lip Products</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Luxury</g:custom_label_0>
+      <g:custom_label_1>Makeup</g:custom_label_1>
+      <g:custom_label_2>Lip Gloss</g:custom_label_2>
+      <g:custom_label_3>Premium</g:custom_label_3>
+      <g:custom_label_4>High Shine</g:custom_label_4>
+      <g:mpn>ELX-003</g:mpn>
+      <g:gtin>ELX-003</g:gtin>
+      <g:shipping_weight>
+        <g:value>0.1</g:value>
+        <g:unit>kg</g:unit>
+      </g:shipping_weight>
+      <g:shipping>
+        <g:country>NG</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0 NGN</g:price>
+      </g:shipping>
+    </item>
+    
+    <item>
+      <g:id>ELX-004</g:id>
+      <title>Honey &amp; Sugar Luxury Body Scrub</title>
+      <description>Luxurious body scrub with honey and sugar for gentle exfoliation and smooth, radiant skin. Premium ingredients for ultimate pampering experience.</description>
+      <link>https://elixirvictoria.com/product/4</link>
+      <g:image_link>https://elixirvictoria.com/images/products/luxury-body-scrub.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/luxury-body-scrub.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>25000 NGN</g:price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Skin Care &gt; Body Care</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Luxury</g:custom_label_0>
+      <g:custom_label_1>Body Care</g:custom_label_1>
+      <g:custom_label_2>Scrub</g:custom_label_2>
+      <g:custom_label_3>Honey</g:custom_label_3>
+      <g:custom_label_4>Sugar</g:custom_label_4>
+      <g:mpn>ELX-004</g:mpn>
+      <g:gtin>ELX-004</g:gtin>
+      <g:shipping_weight>
+        <g:value>0.3</g:value>
+        <g:unit>kg</g:unit>
+      </g:shipping_weight>
+      <g:shipping>
+        <g:country>NG</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0 NGN</g:price>
+      </g:shipping>
+    </item>
+    
+    <item>
+      <g:id>ELX-005</g:id>
+      <title>Honey &amp; Sugar Luxury Body Scrub (Small)</title>
+      <description>Compact luxury body scrub with honey and sugar for gentle exfoliation. Perfect for travel or sampling our premium body care range.</description>
+      <link>https://elixirvictoria.com/product/5</link>
+      <g:image_link>https://elixirvictoria.com/images/products/luxury-body-scrub.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/luxury-body-scrub.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>15000 NGN</g:price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Skin Care &gt; Body Care</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Luxury</g:custom_label_0>
+      <g:custom_label_1>Body Care</g:custom_label_1>
+      <g:custom_label_2>Scrub</g:custom_label_2>
+      <g:custom_label_3>Travel Size</g:custom_label_3>
+      <g:custom_label_4>Small</g:custom_label_4>
+      <g:mpn>ELX-005</g:mpn>
+      <g:gtin>ELX-005</g:gtin>
+      <g:shipping_weight>
+        <g:value>0.2</g:value>
+        <g:unit>kg</g:unit>
+      </g:shipping_weight>
+      <g:shipping>
+        <g:country>NG</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0 NGN</g:price>
+      </g:shipping>
+    </item>
+    
+    <item>
+      <g:id>ELX-006</g:id>
+      <title>Magic Lip Gloss - Pink Luxury Makeup</title>
+      <description>Magical pink lip gloss with shimmer and shine. Premium formula for a glamorous, sophisticated look with long-lasting color and moisture.</description>
+      <link>https://elixirvictoria.com/product/6</link>
+      <g:image_link>https://elixirvictoria.com/images/products/pink-gloss.png</g:image_link>
+      <g:additional_image_link>https://elixirvictoria.com/images/products/pink-gloss.png</g:additional_image_link>
+      <g:availability>in stock</g:availability>
+      <g:price>18000 NGN</g:price>
+      <g:brand>Elixir Victoria</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>Beauty &amp; Personal Care &gt; Makeup &gt; Lip Products</g:product_type>
+      <g:google_product_category>263</g:google_product_category>
+      <g:custom_label_0>Luxury</g:custom_label_0>
+      <g:custom_label_1>Makeup</g:custom_label_1>
+      <g:custom_label_2>Lip Gloss</g:custom_label_2>
+      <g:custom_label_3>Pink</g:custom_label_3>
+      <g:custom_label_4>Shimmer</g:custom_label_4>
+      <g:mpn>ELX-006</g:mpn>
+      <g:gtin>ELX-006</g:gtin>
+      <g:shipping_weight>
+        <g:value>0.1</g:value>
+        <g:unit>kg</g:unit>
+      </g:shipping_weight>
+      <g:shipping>
+        <g:country>NG</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0 NGN</g:price>
+      </g:shipping>
+    </item>
+  </channel>
+</rss> 

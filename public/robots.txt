@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://elixirvictoria.com/sitemap.xml 
+Sitemap: https://elixirvictoria.com/sitemap.xml
+Sitemap: https://elixirvictoria.com/feed.xml 

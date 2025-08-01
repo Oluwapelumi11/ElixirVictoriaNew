@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useCartStore, useWishlistStore, useUIStore } from '@/lib/store'
 import { products, convertToProduct } from '@/data/products'
 import { useParams, useRouter } from 'next/navigation'
-import Head from 'next/head'
+import { ProductSchema } from '@/components/ProductSchema'
 
 export default function ProductDetailPage() {
   const [ref, inView] = useInView({
@@ -103,33 +103,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-      <Head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          '@context': 'https://schema.org/',
-          '@type': 'Product',
-          name: product.name,
-          image: [product.image],
-          description: product.description,
-          sku: `ELX-${product.id.toString().padStart(3, '0')}`,
-          brand: {
-            '@type': 'Brand',
-            name: 'Elixir Victoria'
-          },
-          offers: {
-            '@type': 'Offer',
-            url: `https://elixirvictoria.com/product/${product.id}`,
-            priceCurrency: 'NGN',
-            price: product.price,
-            availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-            itemCondition: 'https://schema.org/NewCondition'
-          },
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: product.rating,
-            reviewCount: product.reviews
-          }
-        }) }} />
-      </Head>
+      <ProductSchema product={product} />
       <div className="min-h-screen bg-black pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <motion.div
