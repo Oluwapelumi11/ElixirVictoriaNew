@@ -1,5 +1,9 @@
 {
   "/page": "app/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/brand-story/page": "app/brand-story/page.js",
   "/collection/page": "app/collection/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/faq/page": "app/faq/page.js",
+  "/shipping/page": "app/shipping/page.js",
+  "/size-guide/page": "app/size-guide/page.js"
 }
