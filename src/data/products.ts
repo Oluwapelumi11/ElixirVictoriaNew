@@ -42,7 +42,7 @@ export interface SimpleProduct {
 export const products: SimpleProduct[] = [
   {
     id: 1,
-    name: 'Elixir Victoria (100ml)',
+    name: 'Elixir Victoria (Unisex) 100ml',
     description: 'A bold yet tender blend that opens with a burst of fruits, blooms into elegant florals, and settles into a sensual oud embrace. Elixir Victoria is a journey of grace, strength, and unforgettable presence.',
     price: 100000,
     originalPrice: 100000,
