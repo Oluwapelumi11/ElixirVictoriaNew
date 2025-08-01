@@ -352,7 +352,7 @@ export default function CheckoutPage() {
                     <span className="text-white">₦{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Tax (1.5% + ₦100)</span>
+                    <span className="text-gray-400">Tax </span>
                     <span className="text-white">₦{tax.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-lg font-medium border-t border-gray-700 pt-3">
