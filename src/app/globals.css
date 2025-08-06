@@ -141,6 +141,15 @@
     @apply space-y-8 md:space-y-12 lg:space-y-16;
   }
 
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+
   /* Luxury Animations */
   .animate-luxury-fade {
     animation: luxury-fade 0.8s ease-out;

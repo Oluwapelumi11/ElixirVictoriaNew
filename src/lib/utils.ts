@@ -61,12 +61,10 @@ export function throttle<T extends (...args: any[]) => any>(
  */
 export const calculateTwoLevelTax = (productPrice: number): number => {
   // First level tax: (product price × 1.5%) + ₦100
-  const firstLevelTax = (productPrice * 0.015) + 100
+  const Tax = (productPrice * 0.0155) + 100
   
-  // Final tax: (first level tax × 1.5%) + ₦100
-  const finalTax = (firstLevelTax * 0.015) + 100
   
-  return finalTax
+  return Tax
 }
 
 /**

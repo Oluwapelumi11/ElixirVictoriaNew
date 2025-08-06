@@ -467,7 +467,33 @@ Ideal for creating a fresh, welcoming atmosphere in any space. Whether you're re
 ]
 
 // Helper functions
-export const getFeaturedProducts = () => products.filter(product => product.isFeatured)
+export const getFeaturedProducts = () => {
+  // Get all featured products
+  const featuredProducts = products.filter(product => product.isFeatured)
+  
+  // Define the specific order we want
+  const orderedProducts = []
+  
+  // 1. First: Elixir Victoria (Unisex) 100ml - the main perfume
+  const mainPerfume = featuredProducts.find(p => p.id === 1)
+  if (mainPerfume) orderedProducts.push(mainPerfume)
+  
+  // 2. Second: Elixir Custom Signature
+  const customSignature = featuredProducts.find(p => p.id === 2)
+  if (customSignature) orderedProducts.push(customSignature)
+  
+  // 3. Third: Car Diffuser (one of the oils/diffusers)
+  const carDiffuser = featuredProducts.find(p => p.id === 17)
+  if (carDiffuser) orderedProducts.push(carDiffuser)
+  
+  // Add any remaining featured products that weren't in our specific order
+  const remainingProducts = featuredProducts.filter(p => 
+    ![1, 2, 17].includes(p.id)
+  )
+  orderedProducts.push(...remainingProducts)
+  
+  return orderedProducts
+}
 
 export const getProductsByCategory = (category: string) => 
   products.filter(product => product.category === category)

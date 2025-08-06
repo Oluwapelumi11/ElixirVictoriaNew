@@ -201,7 +201,7 @@ export default function CartPage() {
                     <span>₦{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
-                    <span>Tax (Two-Level)</span>
+                    <span>Tax</span>
                     <span>₦{tax.toLocaleString()}</span>
                   </div>
                   <div className="border-t border-gray-700 pt-4">
