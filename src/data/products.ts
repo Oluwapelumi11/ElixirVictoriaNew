@@ -191,7 +191,7 @@ Magic Lip Gloss is perfect for those who want to add a touch of enchantment to t
     ]
   },
   {
-    id: 4,
+    id: 11,
     name: 'Honey & Sugar Luxury Body Scrub (Large)',
     description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
     price: 10000,
@@ -200,7 +200,7 @@ Magic Lip Gloss is perfect for those who want to add a touch of enchantment to t
     category: 'Body Care',
     tags: ['Exfoliating', 'Wellness', 'Natural', 'Moisturizing', 'Luxury'],
     isNew: false,
-    isFeatured: true,
+    isFeatured: false,
     rating: 4.9,
     reviews: 8,
     inStock: false,
@@ -233,7 +233,7 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
     ]
   },
   {
-    id: 5,
+    id: 12,
     name: 'Honey & Sugar Luxury Body Scrub (Small)',
     description: 'A luxurious exfoliating experience that combines the natural sweetness of raw honey with fine sugar crystals to reveal your skin\'s natural radiance. This indulgent scrub gently removes dead skin cells while deeply nourishing and moisturizing.',
     price: 5000,
@@ -273,6 +273,164 @@ Perfect for those seeking a natural, indulgent skincare experience that delivers
       'Gentle exfoliation without irritation',
       'Long-lasting moisturization'
     ]
+  },
+  {
+    id: 13,
+    name: 'Speechless Elixir',
+    description: 'A captivating 30ml perfume oil that leaves you speechless with its mesmerizing blend of rare ingredients. This intimate fragrance creates an aura of mystery and allure that speaks volumes without words.',
+    price: 25000,
+    originalPrice: 25000,
+    image: '/images/products/speechless-elixir.png',
+    category: 'Fragrance',
+    tags: ['Intimate', 'Mysterious', 'Alluring', 'Luxury', 'Perfume Oil'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    // Additional product details
+    fragranceFamily: ['Oriental', 'Mysterious', 'Intimate'],
+    scentType: 'Mysterious Oriental',
+    keyNotes: {
+      top: ['Bergamot', 'Black Pepper'],
+      middle: ['Jasmine', 'Rose', 'Amber'],
+      base: ['Sandalwood', 'Musk', 'Vanilla']
+    },
+    longDescription: `Speechless Elixir is a captivating 30ml perfume oil that embodies the essence of silent seduction. This intimate fragrance is designed to leave both the wearer and those around them speechless with its mesmerizing blend of rare and precious ingredients.
+
+The fragrance opens with a sophisticated burst of bergamot and black pepper, creating an immediate sense of intrigue. As it develops, the heart reveals a luxurious blend of jasmine and rose, enhanced by warm amber notes that add depth and sensuality. The base notes of sandalwood, musk, and vanilla create a lingering, intimate aura that speaks of mystery and allure.
+
+Perfect for intimate moments and special occasions where words are unnecessary. Speechless Elixir is designed for those who understand that true luxury speaks through presence rather than words.`,
+    volume: '30ml',
+    gender: 'Unisex',
+    longevity: '12-16 hours',
+    occasion: ['Intimate Moments', 'Special Occasions', 'Evening Events', 'Date Nights']
+  },
+  {
+    id: 14,
+    name: 'Sensual Elixir',
+    description: 'A deeply sensual 30ml perfume oil that awakens the senses with its provocative blend of exotic spices and rare florals. This intimate fragrance is designed to enhance your natural sensuality and create unforgettable moments.',
+    price: 25000,
+    originalPrice: 25000,
+    image: '/images/products/sensual-elixir.png',
+    category: 'Fragrance',
+    tags: ['Sensual', 'Provocative', 'Exotic', 'Luxury', 'Perfume Oil'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    // Additional product details
+    fragranceFamily: ['Oriental', 'Sensual', 'Exotic'],
+    scentType: 'Sensual Oriental',
+    keyNotes: {
+      top: ['Saffron', 'Cardamom'],
+      middle: ['Ylang-Ylang', 'Tuberose', 'Jasmine'],
+      base: ['Oud', 'Amber', 'Musk']
+    },
+    longDescription: `Sensual Elixir is a deeply provocative 30ml perfume oil that awakens the senses with its exotic blend of rare spices and precious florals. This intimate fragrance is crafted to enhance your natural sensuality and create moments of pure enchantment.
+
+The fragrance begins with the luxurious warmth of saffron and cardamom, creating an immediate sense of exotic allure. The heart reveals an intoxicating blend of ylang-ylang, tuberose, and jasmine - three of the most sensual flowers in perfumery. The base notes of oud, amber, and musk create a deep, lingering sensuality that becomes part of your natural aura.
+
+Designed for those who embrace their sensuality and want to create unforgettable moments. Sensual Elixir is perfect for intimate encounters, romantic evenings, or whenever you want to feel your most alluring and confident.`,
+    volume: '30ml',
+    gender: 'Unisex',
+    longevity: '12-16 hours',
+    occasion: ['Intimate Encounters', 'Romantic Evenings', 'Special Occasions', 'Date Nights']
+  },
+  {
+    id: 15,
+    name: 'Elixir Victoria White Oud',
+    description: 'A luxurious 250ml air freshener featuring the rare and precious white oud fragrance. This sophisticated room spray creates an atmosphere of pure luxury and elegance, transforming any space into a sanctuary of refined beauty.',
+    price: 10000,
+    originalPrice: 10000,
+    image: '/images/products/white-oud-air-freshener.png',
+    category: 'Home Fragrance',
+    tags: ['Luxury', 'White Oud', 'Air Freshener', 'Elegant', 'Sophisticated'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    // Additional product details
+    fragranceFamily: ['Woody', 'Oriental', 'Luxury'],
+    scentType: 'Luxury Woody Oriental',
+    keyNotes: {
+      top: ['White Oud', 'Bergamot'],
+      middle: ['Sandalwood', 'Rose'],
+      base: ['Amber', 'Musk', 'Vanilla']
+    },
+    longDescription: `Elixir Victoria White Oud is a luxurious 250ml air freshener that brings the rare and precious essence of white oud into your living space. This sophisticated room spray creates an atmosphere of pure luxury and elegance, transforming any room into a sanctuary of refined beauty.
+
+White oud, one of the rarest and most precious ingredients in perfumery, forms the heart of this exceptional fragrance. Known for its clean, woody, and slightly sweet character, white oud is prized for its ability to create an atmosphere of sophistication and tranquility. Combined with sandalwood, rose, and warm amber notes, this air freshener creates a luxurious ambiance that elevates any space.
+
+Perfect for creating a sophisticated atmosphere in your home, office, or any space where you want to make a lasting impression. The 250ml size ensures long-lasting fragrance that continues to delight and inspire.`,
+    volume: '250ml',
+    longevity: '6-8 hours per spray',
+    occasion: ['Home Ambiance', 'Office Environment', 'Luxury Spaces', 'Special Events'],
+    usage: 'Spray 2-3 times in desired space for optimal fragrance distribution',
+    frequency: 'As needed to maintain desired ambiance'
+  },
+  {
+    id: 16,
+    name: 'Elixir Victoria Mist',
+    description: 'A refreshing 250ml air freshener that creates a clean, invigorating atmosphere with its blend of fresh citrus and crisp florals. This versatile mist transforms any space into a haven of freshness and vitality.',
+    price: 10000,
+    originalPrice: 10000,
+    image: '/images/products/victoria-mist.png',
+    category: 'Home Fragrance',
+    tags: ['Fresh', 'Invigorating', 'Citrus', 'Clean', 'Vitality'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    // Additional product details
+    fragranceFamily: ['Fresh', 'Citrus', 'Floral'],
+    scentType: 'Fresh Citrus Floral',
+    keyNotes: {
+      top: ['Lemon', 'Bergamot', 'Grapefruit'],
+      middle: ['White Flowers', 'Green Tea'],
+      base: ['Musk', 'Cedar', 'Amber']
+    },
+    longDescription: `Elixir Victoria Mist is a refreshing 250ml air freshener that creates a clean, invigorating atmosphere with its perfect blend of fresh citrus and crisp florals. This versatile mist transforms any space into a haven of freshness and vitality, perfect for daily use and special occasions alike.
+
+The fragrance opens with a bright burst of lemon, bergamot, and grapefruit, creating an immediate sense of freshness and energy. The heart reveals delicate white flowers and green tea notes that add sophistication and depth. The base notes of musk, cedar, and amber provide a clean, grounding finish that ensures the fragrance lingers beautifully.
+
+Ideal for creating a fresh, welcoming atmosphere in any space. Whether you're refreshing your home, office, or car, Elixir Victoria Mist provides the perfect balance of freshness and elegance.`,
+    volume: '250ml',
+    longevity: '4-6 hours per spray',
+    occasion: ['Daily Freshness', 'Home Refresh', 'Office Environment', 'Car Interior'],
+    usage: 'Spray 2-3 times in desired space for optimal freshness',
+    frequency: 'As needed to maintain fresh atmosphere'
+  },
+  {
+    id: 17,
+    name: 'Car Diffuser',
+    description: 'A convenient and stylish car diffuser that fills your vehicle with a pleasant, long-lasting fragrance. Perfect for keeping your car fresh and inviting on every journey.',
+    price: 5000,
+    originalPrice: 5000,
+    image: '/images/products/car-diffuser.png',
+    category: 'Car Fragrance',
+    tags: ['Car', 'Diffuser', 'Fresh', 'Convenient', 'Travel'],
+    isNew: true,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 0,
+    inStock: true,
+    fragranceFamily: ['Fresh', 'Aromatic'],
+    scentType: 'Fresh Aromatic',
+    keyNotes: {
+      top: ['Citrus', 'Mint'],
+      middle: ['Lavender', 'Eucalyptus'],
+      base: ['Cedar', 'Amber']
+    },
+    longDescription: `The Car Diffuser is designed to keep your vehicle smelling fresh and inviting. With a blend of citrus, mint, lavender, and cedar, it creates a pleasant and relaxing atmosphere for every drive. Easy to use and stylishly designed, it’s the perfect accessory for your car.`,
+    volume: '10ml',
+    longevity: '2-4 weeks per refill',
+    occasion: ['Daily Commute', 'Road Trips', 'Travel'],
+    usage: 'Attach to car vent and enjoy continuous fragrance',
+    frequency: 'Replace refill as needed'
   },
   
  

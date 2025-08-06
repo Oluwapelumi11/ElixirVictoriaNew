@@ -8,6 +8,7 @@ import { ArrowLeft, CreditCard, MapPin, User, Mail, Phone, ShoppingBag, CheckCir
 import { useCartStore, useUserStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { calculateTwoLevelTax, calculateTotalWithTwoLevelTax } from '@/lib/utils'
 
 interface CheckoutForm {
   customer_name: string
@@ -70,8 +71,8 @@ export default function CheckoutPage() {
   const [addressesLoaded, setAddressesLoaded] = useState(false)
 
   const subtotal = getSubtotal()
-  const tax = (subtotal * 0.015) + 100 // 1.5% of subtotal + ₦100
-  const total = subtotal + tax
+  const tax = calculateTwoLevelTax(subtotal)
+  const total = calculateTotalWithTwoLevelTax(subtotal)
 
   // Redirect if cart is empty
   useEffect(() => {

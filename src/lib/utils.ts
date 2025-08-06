@@ -52,4 +52,29 @@ export function throttle<T extends (...args: any[]) => any>(
       setTimeout(() => (inThrottle = false), limit)
     }
   }
+}
+
+/**
+ * Calculate two-level tax: first level on product price, then second level on the first tax
+ * @param productPrice - The original product price in naira
+ * @returns The final tax amount after two levels of calculation
+ */
+export const calculateTwoLevelTax = (productPrice: number): number => {
+  // First level tax: (product price × 1.5%) + ₦100
+  const firstLevelTax = (productPrice * 0.015) + 100
+  
+  // Final tax: (first level tax × 1.5%) + ₦100
+  const finalTax = (firstLevelTax * 0.015) + 100
+  
+  return finalTax
+}
+
+/**
+ * Calculate total with two-level tax
+ * @param productPrice - The original product price in naira
+ * @returns The total amount including two-level tax
+ */
+export const calculateTotalWithTwoLevelTax = (productPrice: number): number => {
+  const finalTax = calculateTwoLevelTax(productPrice)
+  return productPrice + finalTax
 } 

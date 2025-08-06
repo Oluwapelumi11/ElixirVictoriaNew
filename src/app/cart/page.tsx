@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Trash2, Minus, Plus, ShoppingBag, CreditCard } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
+import { calculateTwoLevelTax, calculateTotalWithTwoLevelTax } from '@/lib/utils'
 
 export default function CartPage() {
   const [ref, inView] = useInView({
@@ -15,7 +16,8 @@ export default function CartPage() {
 
   const { items, removeItem, updateQuantity, getSubtotal, getTotal, clearCart } = useCartStore()
   const subtotal = getSubtotal()
-  const total = subtotal
+  const tax = calculateTwoLevelTax(subtotal)
+  const total = calculateTotalWithTwoLevelTax(subtotal)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -197,6 +199,10 @@ export default function CartPage() {
                   <div className="flex justify-between text-gray-400">
                     <span>Subtotal</span>
                     <span>₦{subtotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-400">
+                    <span>Tax (Two-Level)</span>
+                    <span>₦{tax.toLocaleString()}</span>
                   </div>
                   <div className="border-t border-gray-700 pt-4">
                     <div className="flex justify-between text-white font-semibold text-lg">

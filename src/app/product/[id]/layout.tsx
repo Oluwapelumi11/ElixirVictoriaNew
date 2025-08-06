@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: ProductLayoutProps): Promise<
           alt: `${product.name} - Elixir Victoria Luxury Perfume`,
         },
       ],
-      type: 'product',
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',

@@ -14,6 +14,9 @@ const categories = [
   { name: 'All Products', value: 'all' },
   { name: 'Fragrances', value: 'Fragrance' },
   { name: 'Body Care', value: 'Body Care' },
+  { name: 'Makeup', value: 'Makeup' },
+  { name: 'Home Fragrance', value: 'Home Fragrance' },
+  { name: 'Car Fragrance', value: 'Car Fragrance' },
   { name: 'Custom Services', value: 'Custom Service' },
 ]
 

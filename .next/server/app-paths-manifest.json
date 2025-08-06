@@ -1,9 +1,5 @@
 {
   "/page": "app/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/brand-story/page": "app/brand-story/page.js",
   "/collection/page": "app/collection/page.js",
-  "/faq/page": "app/faq/page.js",
-  "/shipping/page": "app/shipping/page.js",
-  "/size-guide/page": "app/size-guide/page.js"
+  "/product/[id]/page": "app/product/[id]/page.js"
 }
